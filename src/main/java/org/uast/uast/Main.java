@@ -5,6 +5,9 @@
 
 package org.uast.uast;
 
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import java.util.logging.Logger;
 
 /**
@@ -32,6 +35,31 @@ public final class Main {
     public static void main(final String... args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("No action specified.");
+        }
+        if ("parse-java".equals(args[0])) {
+            final CompilationUnit root = StaticJavaParser.parse("class X{void y(){int z;}}");
+            final Node.BreadthFirstIterator iterator = new Node.BreadthFirstIterator(root);
+            while (iterator.hasNext()) {
+                LOG.info(String.format("* %s",  iterator.next().toString()));
+            }
+            root.stream(Node.TreeTraversal.PREORDER).forEach(
+                node ->
+                LOG.info(
+                    String.format(
+                        "* type: %s fragment: %s",
+                        node.getClass().getSimpleName(), node
+                    )
+                )
+            );
+            root.walk(
+                node ->
+                LOG.info(
+                    String.format(
+                        "* node children: %s",
+                        node.getChildNodes()
+                    )
+                )
+            );
         }
         LOG.fine("Welcome to Unified AST project!");
     }
