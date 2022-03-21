@@ -61,6 +61,13 @@ public final class Main {
                 )
             );
         }
-        LOG.fine("Welcome to Unified AST project!");
+        if ("parse-python".equals(args[0])) {
+            final CodeHandler handler = new CodeHandler("def sum(a, b):\n\treturn a + b");
+            handler.processPythonCode();
+        }
+        if ("parse-js".equals(args[0])) {
+            final CodeHandler handler = new CodeHandler("function sum(a, b){\n\treturn a + b;\n}");
+            handler.processJavaScriptCode();
+        }
     }
 }

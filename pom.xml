@@ -52,6 +52,13 @@
                 <version>0.19.4</version>
                 <configuration>
                     <license>file:${qulice.license}</license>
+                    <excludes combine.children="append">
+                        <exclude>checkstyle:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
+                        <exclude>pmd:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
+                        <exclude>dependencies:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
+                        <exclude>duplicatefinder:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
+                        <exclude>findbugs:~src.main.java.org.uast.uast.generated.antlr4.*</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -87,6 +94,18 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
             </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>4.9.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
@@ -106,6 +125,11 @@
             <groupId>com.github.javaparser</groupId>
             <artifactId>javaparser-core</artifactId>
             <version>3.24.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.9.3</version>
         </dependency>
     </dependencies>
 </project>
