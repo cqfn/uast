@@ -14,21 +14,21 @@ import java.util.Objects;
  *
  * @since 1.0
  */
-public class DraftNode implements Node {
+public final class DraftNode implements Node {
     /**
      * The node type.
      */
-    final Type type;
+    private final Type type;
 
     /**
      * The node data.
      */
-    final String data;
+    private final String data;
 
     /**
      * The list of children nodes.
      */
-    final List<Node> children;
+    private final List<Node> children;
 
     /**
      * Constructor.
@@ -63,7 +63,7 @@ public class DraftNode implements Node {
     }
 
     @Override
-    public Node getChild(int index) {
+    public Node getChild(final int index) {
         return this.children.get(index);
     }
 }
