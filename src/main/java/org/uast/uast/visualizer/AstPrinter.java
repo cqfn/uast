@@ -3,16 +3,17 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast;
+package org.uast.uast.visualizer;
 
-import java.util.logging.Logger;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * CLI printer of Python ANTLR ASTs.
+ * CLI printer of ANTLR ASTs.
  *
  * @since 1.0
  */
@@ -20,7 +21,7 @@ public class AstPrinter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(AstPrinter.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(AstPrinter.class);
 
     /**
      * ANTLR language parser.
