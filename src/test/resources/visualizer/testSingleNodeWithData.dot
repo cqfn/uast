@@ -1,0 +1,4 @@
+digraph AST {
+  node [shape=box style=rounded];
+  node_0 [label=<Node<br/><font color="blue">data</font>>];
+}

@@ -1,0 +1,8 @@
+digraph AST {
+  node [shape=box style=rounded];
+  node_0 [label=<TestNode>];
+  node_1 [label=<Child>];
+  node_0 -> node_1 [label=" 0"];
+  node_2 [label=<NULL>];
+  node_0 -> node_2 [label=" 1"];
+}
