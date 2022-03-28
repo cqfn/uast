@@ -1,0 +1,3 @@
+ignore:
+  - "src/main/antlr"  # ignore ANTLR lexers and parsers
+  - "src/main/java/org/uast/uast/generated/antlr4"  # ignore ANTLR generated classes
