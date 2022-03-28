@@ -7,8 +7,15 @@ package org.uast.uast;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
-import java.util.logging.Logger;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.uast.uast.exceptions.VisualizerException;
+import org.uast.uast.visualizer.ImageRender;
 
 /**
  * Main class.
@@ -19,7 +26,7 @@ public final class Main {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(Main.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
     /**
      * Private constructor.
@@ -38,19 +45,6 @@ public final class Main {
         }
         if ("parse-java".equals(args[0])) {
             final CompilationUnit root = StaticJavaParser.parse("class X{void y(){int z;}}");
-            final Node.BreadthFirstIterator iterator = new Node.BreadthFirstIterator(root);
-            while (iterator.hasNext()) {
-                LOG.info(String.format("* %s",  iterator.next().toString()));
-            }
-            root.stream(Node.TreeTraversal.PREORDER).forEach(
-                node ->
-                LOG.info(
-                    String.format(
-                        "* type: %s fragment: %s",
-                        node.getClass().getSimpleName(), node
-                    )
-                )
-            );
             root.walk(
                 node ->
                 LOG.info(
@@ -68,6 +62,19 @@ public final class Main {
         if ("parse-js".equals(args[0])) {
             final CodeHandler handler = new CodeHandler("function sum(a, b){\n\treturn a + b;\n}");
             handler.processJavaScriptCode();
+        }
+        if ("visualize".equals(args[0])) {
+            try (InputStream stream = Files.newInputStream(Paths.get("dot/gr.dot"))) {
+                final StringBuilder builder = new StringBuilder();
+                for (int chr = stream.read(); chr != -1; chr = stream.read()) {
+                    builder.append((char) chr);
+                }
+                final String code = builder.toString();
+                final ImageRender visualizer = new ImageRender(code);
+                visualizer.render(new File("dot/ex_gr.svg"));
+            } catch (final IOException | VisualizerException exception) {
+                LOG.error(exception.getMessage());
+            }
         }
     }
 }

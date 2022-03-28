@@ -58,6 +58,7 @@
                         <exclude>dependencies:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
                         <exclude>duplicatefinder:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
                         <exclude>findbugs:~src.main.java.org.uast.uast.generated.antlr4.*</exclude>
+                        <exclude>dependencies:org.slf4j:slf4j-nop</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -130,6 +131,21 @@
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
             <version>4.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>guru.nidi</groupId>
+            <artifactId>graphviz-java</artifactId>
+            <version>0.18.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.36</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.36</version>
         </dependency>
     </dependencies>
 </project>
