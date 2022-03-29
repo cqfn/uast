@@ -6,9 +6,6 @@
 package org.uast.uast.visualizer;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -16,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
+import org.uast.uast.utils.FilesReader;
 
 /**
  * Test for {@link DotRender} class.
@@ -36,7 +34,7 @@ public class DotRenderTest {
     @Test
     public void testSingleNode() throws IOException {
         final Node root = new DraftNode("SingleNode", "", new LinkedList<>());
-        final String expected = this.readFileAsString(DIR.concat("testSingleNode.dot"));
+        final String expected = new FilesReader(DIR.concat("testSingleNode.dot")).readAsString();
         final String result = this.renderDot(root);
         Assertions.assertEquals(expected, result);
     }
@@ -49,9 +47,9 @@ public class DotRenderTest {
     @Test
     public void testSingleNodeWithData() throws IOException {
         final Node root = new DraftNode("Node", "data", new LinkedList<>());
-        final String expected = this.readFileAsString(
+        final String expected = new FilesReader(
             DotRenderTest.DIR.concat("testSingleNodeWithData.dot")
-        );
+        ).readAsString();
         final String result = this.renderDot(root);
         Assertions.assertEquals(expected, result);
     }
@@ -69,9 +67,9 @@ public class DotRenderTest {
         children.add(new DraftNode("ChildNode1", "value", new LinkedList<>()));
         children.add(new DraftNode("ChildNode2", "", new LinkedList<>()));
         final Node root = new DraftNode("RootNode", "", children);
-        final String expected = this.readFileAsString(
+        final String expected = new FilesReader(
             DotRenderTest.DIR.concat("testNodeWithChildren.dot")
-        );
+        ).readAsString();
         final String result = this.renderDot(root);
         Assertions.assertEquals(expected, result);
     }
@@ -95,9 +93,9 @@ public class DotRenderTest {
         firstl.add(firstch);
         firstl.add(new DraftNode("Child1", "", new LinkedList<>()));
         final Node root = new DraftNode("Root", "", firstl);
-        final String expected = this.readFileAsString(
+        final String expected = new FilesReader(
             DotRenderTest.DIR.concat("testNodeWithNestedChildren.dot")
-        );
+        ).readAsString();
         final String result = this.renderDot(root);
         Assertions.assertEquals(expected, result);
     }
@@ -113,27 +111,11 @@ public class DotRenderTest {
         children.add(new DraftNode("Child", "", new LinkedList<>()));
         children.add(EmptyTree.INSTANCE);
         final Node root = new DraftNode("TestNode", "", children);
-        final String expected = this.readFileAsString(
+        final String expected = new FilesReader(
             DotRenderTest.DIR.concat("testNodeWithNullChild.dot")
-        );
+        ).readAsString();
         final String result = this.renderDot(root);
         Assertions.assertEquals(expected, result);
-    }
-
-    /**
-     * Reads a text from a stream and closes it.
-     *
-     * @param path A path to the DOT file
-     * @return A text.
-     * @throws IOException If input stream cannot be read from a DOT file
-     */
-    private String readFileAsString(final String path) throws IOException {
-        final InputStream stream = Files.newInputStream(Paths.get(path));
-        final StringBuilder builder = new StringBuilder();
-        for (int chr = stream.read(); chr != -1; chr = stream.read()) {
-            builder.append((char) chr);
-        }
-        return builder.toString();
     }
 
     /**
