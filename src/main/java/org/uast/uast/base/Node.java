@@ -11,6 +11,12 @@ package org.uast.uast.base;
  */
 public interface Node {
     /**
+     * Returns the fragment associated with the node.
+     * @return The fragment
+     */
+    Fragment getFragment();
+
+    /**
      * Returns the type of the node.
      * @return The type
      */

@@ -4,8 +4,6 @@
  */
 package org.uast.uast.lang;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -38,17 +36,19 @@ public class AntlrConverter {
      * @return A node
      */
     public Node convert(final RuleContext ctx) {
-        final String type = this.parser.getRuleNames()[ctx.getRuleIndex()];
+        final DraftNode.Constructor ctor = new DraftNode.Constructor();
+        final String name = this.parser.getRuleNames()[ctx.getRuleIndex()];
+        ctor.setName(name);
         final String data = ctx.getText();
-        final List<Node> children = new LinkedList<>();
+        ctor.setData(data);
         for (int idx = 0; idx < ctx.getChildCount(); idx += 1) {
             final ParseTree element = ctx.getChild(idx);
             if (!(element instanceof RuleContext)) {
                 continue;
             }
             final Node child = this.convert((RuleContext) element);
-            children.add(child);
+            ctor.addChild(child);
         }
-        return new DraftNode(type, data, children);
+        return ctor.create();
     }
 }

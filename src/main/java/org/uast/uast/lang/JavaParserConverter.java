@@ -10,8 +10,6 @@ import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.type.PrimitiveType;
-import java.util.LinkedList;
-import java.util.List;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 
@@ -29,14 +27,14 @@ public class JavaParserConverter {
      * @return A node
      */
     public Node convert(final com.github.javaparser.ast.Node node) {
-        final String type = node.getClass().getSimpleName();
-        final String data = getData(node);
-        final List<Node> children = new LinkedList<>();
+        final DraftNode.Constructor ctor = new DraftNode.Constructor();
+        ctor.setName(node.getClass().getSimpleName());
+        ctor.setData(getData(node));
         for (final com.github.javaparser.ast.Node child : node.getChildNodes()) {
             final Node converted = this.convert(child);
-            children.add(converted);
+            ctor.addChild(converted);
         }
-        return new DraftNode(type, data, children);
+        return ctor.create();
     }
 
     /**

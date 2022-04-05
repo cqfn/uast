@@ -4,6 +4,8 @@
  */
 package org.uast.uast.base;
 
+import java.util.List;
+
 /**
  * A type of abstract syntax tree node.
  *
@@ -15,4 +17,25 @@ public interface Type {
      * @return The type name
      */
     String getName();
+
+    /**
+     * Returns the list of child types.
+     * @return The list of descriptors
+     */
+    List<ChildDescriptor> getChildTypes();
+
+    /**
+     * The hierarchy of names of groups the node type belongs to.
+     * @return The list of type names
+     */
+    List<String> getHierarchy();
+
+    /**
+     * Checks whether the type belongs to group.
+     * @param type The type name
+     * @return Checking result, {@code true} if the type belongs to the group
+     */
+    default boolean belongsToGroup(final String type) {
+        return this.getHierarchy().contains(type);
+    }
 }

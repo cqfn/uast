@@ -4,6 +4,9 @@
  */
 package org.uast.uast.base;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * The empty syntax tree.
  *
@@ -18,6 +21,16 @@ public final class EmptyTree implements Node {
         public String getName() {
             return "<null>";
         }
+
+        @Override
+        public List<ChildDescriptor> getChildTypes() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public List<String> getHierarchy() {
+            return Collections.emptyList();
+        }
     };
 
     /**
@@ -29,6 +42,11 @@ public final class EmptyTree implements Node {
      * Private constructor.
      */
     private EmptyTree() {
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return EmptyFragment.INSTANCE;
     }
 
     @Override

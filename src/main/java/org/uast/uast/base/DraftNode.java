@@ -5,6 +5,8 @@
 package org.uast.uast.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,35 +18,34 @@ import java.util.Objects;
  */
 public final class DraftNode implements Node {
     /**
+     * The fragment associated with the node.
+     */
+    private Fragment fragment;
+
+    /**
      * The node type.
      */
-    private final Type type;
+    private Type type;
 
     /**
      * The node data.
      */
-    private final String data;
+    private String data;
 
     /**
      * The list of children nodes.
      */
-    private final List<Node> children;
+    private List<Node> children;
 
     /**
-     * Constructor.
-     * @param name Type name
-     * @param data Data associated with the node (in a textual format)
-     * @param children List of children nodes
+     * Private constructor.
      */
-    public DraftNode(final String name, final String data, final List<Node> children) {
-        this.type = new Type() {
-            @Override
-            public String getName() {
-                return name;
-            }
-        };
-        this.data = Objects.requireNonNull(data);
-        this.children = new ArrayList<>(children);
+    private DraftNode() {
+    }
+
+    @Override
+    public Fragment getFragment() {
+        return this.fragment;
     }
 
     @Override
@@ -65,5 +66,141 @@ public final class DraftNode implements Node {
     @Override
     public Node getChild(final int index) {
         return this.children.get(index);
+    }
+
+    /**
+     * Type implementation for the draft node.
+     *
+     * @since 1.0
+     */
+    private static class TypeImpl implements Type {
+        /**
+         * The type name.
+         */
+        private final String name;
+
+        /**
+         * Constructor.
+         * @param name The type name
+         */
+        TypeImpl(final String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        @Override
+        public List<ChildDescriptor> getChildTypes() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public List<String> getHierarchy() {
+            return Collections.singletonList(this.name);
+        }
+    }
+
+    /**
+     * The constructor class for draft node.
+     * @since 1.0
+     */
+    public static class Constructor {
+        /**
+         * The fragment associated with the node.
+         */
+        private Fragment fragment;
+
+        /**
+         * The type name.
+         */
+        private String name;
+
+        /**
+         * The node data.
+         */
+        private String data;
+
+        /**
+         * The list of children nodes.
+         */
+        private final List<Node> children;
+
+        /**
+         * Constructor.
+         */
+        public Constructor() {
+            this.fragment = EmptyFragment.INSTANCE;
+            this.name = "";
+            this.data = "";
+            this.children = new LinkedList<>();
+        }
+
+        /**
+         * Associate a new fragment with the node.
+         * @param obj A new fragment
+         */
+        public void setFragment(final Fragment obj) {
+            this.fragment = obj;
+        }
+
+        /**
+         * Sets the type name.
+         * @param str Type mane
+         */
+        public void setName(final String str) {
+            this.name = str;
+        }
+
+        /**
+         * Sets the data.
+         * @param str Data as a string
+         */
+        public void setData(final String str) {
+            this.data = Objects.requireNonNull(str);
+        }
+
+        /**
+         * Adds a child node.
+         * @param node Node
+         */
+        public void addChild(final Node node) {
+            this.children.add(Objects.requireNonNull(node));
+        }
+
+        /**
+         * Set a new list of children.
+         * @param list The list of children
+         */
+        public void setChildrenList(final List<Node> list) {
+            this.children.clear();
+            this.children.addAll(list);
+        }
+
+        /**
+         * Verifies that there is enough data to create a node.
+         * @return Checking result.
+         */
+        public boolean valid() {
+            return this.name != null;
+        }
+
+        /**
+         * Creates a new node from the collected data.
+         * @return A new node
+         */
+        public DraftNode create() {
+            if (!this.valid()) {
+                throw new IllegalStateException();
+            }
+            final DraftNode node = new DraftNode();
+            node.fragment = this.fragment;
+            node.type = new TypeImpl(this.name);
+            node.data = this.data;
+            node.children = new ArrayList<>(this.children);
+            return node;
+        }
     }
 }
