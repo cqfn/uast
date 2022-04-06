@@ -7,6 +7,7 @@ package org.uast.uast.example.green;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
@@ -143,6 +144,11 @@ public final class Addition implements BinaryExpression {
         public List<String> getHierarchy() {
             return TypeImpl.HIERARCHY;
         }
+
+        @Override
+        public Builder createBuilder() {
+            return new Constructor();
+        }
     }
 
     /**
@@ -150,7 +156,7 @@ public final class Addition implements BinaryExpression {
      *
      * @since 1.0
      */
-    public static class Constructor {
+    public static final class Constructor implements Builder {
         /**
          * The fragment associated with the node.
          */
@@ -166,12 +172,14 @@ public final class Addition implements BinaryExpression {
          */
         private Expression right;
 
-        /**
-         * Associate a new fragment with the node.
-         * @param obj A new fragment
-         */
+        @Override
         public void setFragment(final Fragment obj) {
             this.fragment = obj;
+        }
+
+        @Override
+        public boolean setData(final String str) {
+            return str.isEmpty();
         }
 
         /**
@@ -190,12 +198,29 @@ public final class Addition implements BinaryExpression {
             this.right = node;
         }
 
-        /**
-         * Creates a new node from the collected data.
-         * @return A new node
-         */
+        @Override
+        public boolean setChildrenList(final List<Node> list) {
+            boolean success = false;
+            if (list.size() == 2) {
+                final Node first = list.get(0);
+                final Node second = list.get(1);
+                if (first instanceof Expression && second instanceof Expression) {
+                    this.left = (Expression) first;
+                    this.right = (Expression) second;
+                    success = true;
+                }
+            }
+            return success;
+        }
+
+        @Override
+        public boolean isValid() {
+            return this.left != null && this.right != null;
+        }
+
+        @Override
         public Addition create() {
-            if (this.left == null || this.right == null) {
+            if (!this.isValid()) {
                 throw new IllegalStateException();
             }
             final Addition node = new Addition();

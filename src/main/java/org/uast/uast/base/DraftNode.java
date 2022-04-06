@@ -101,13 +101,18 @@ public final class DraftNode implements Node {
         public List<String> getHierarchy() {
             return Collections.singletonList(this.name);
         }
+
+        @Override
+        public Builder createBuilder() {
+            return new Constructor();
+        }
     }
 
     /**
      * The constructor class for draft node.
      * @since 1.0
      */
-    public static class Constructor {
+    public static final class Constructor implements Builder {
         /**
          * The fragment associated with the node.
          */
@@ -138,10 +143,7 @@ public final class DraftNode implements Node {
             this.children = new LinkedList<>();
         }
 
-        /**
-         * Associate a new fragment with the node.
-         * @param obj A new fragment
-         */
+        @Override
         public void setFragment(final Fragment obj) {
             this.fragment = obj;
         }
@@ -154,12 +156,10 @@ public final class DraftNode implements Node {
             this.name = str;
         }
 
-        /**
-         * Sets the data.
-         * @param str Data as a string
-         */
-        public void setData(final String str) {
+        @Override
+        public boolean setData(final String str) {
             this.data = Objects.requireNonNull(str);
+            return true;
         }
 
         /**
@@ -170,29 +170,21 @@ public final class DraftNode implements Node {
             this.children.add(Objects.requireNonNull(node));
         }
 
-        /**
-         * Set a new list of children.
-         * @param list The list of children
-         */
-        public void setChildrenList(final List<Node> list) {
+        @Override
+        public boolean setChildrenList(final List<Node> list) {
             this.children.clear();
             this.children.addAll(list);
+            return true;
         }
 
-        /**
-         * Verifies that there is enough data to create a node.
-         * @return Checking result.
-         */
-        public boolean valid() {
-            return this.name != null;
+        @Override
+        public boolean isValid() {
+            return !this.name.isEmpty();
         }
 
-        /**
-         * Creates a new node from the collected data.
-         * @return A new node
-         */
+        @Override
         public DraftNode create() {
-            if (!this.valid()) {
+            if (!this.isValid()) {
                 throw new IllegalStateException();
             }
             final DraftNode node = new DraftNode();

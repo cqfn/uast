@@ -7,6 +7,7 @@ package org.uast.uast.example.green;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
@@ -106,6 +107,11 @@ public final class IntegerLiteral implements Expression {
         public List<String> getHierarchy() {
             return TypeImpl.HIERARCHY;
         }
+
+        @Override
+        public Builder createBuilder() {
+            return new Constructor();
+        }
     }
 
     /**
@@ -113,7 +119,7 @@ public final class IntegerLiteral implements Expression {
      *
      * @since 1.0
      */
-    public static class Constructor {
+    public static final class Constructor implements Builder {
         /**
          * The fragment associated with the node.
          */
@@ -124,26 +130,33 @@ public final class IntegerLiteral implements Expression {
          */
         private int data;
 
-        /**
-         * Associate a new fragment with the node.
-         * @param obj A new fragment
-         */
+        @Override
         public void setFragment(final Fragment obj) {
             this.fragment = obj;
         }
 
-        /**
-         * Sets the data.
-         * @param str Data as a string
-         */
-        public void setData(final String str) {
-            this.data = Integer.parseInt(str);
+        @Override
+        public boolean setData(final String str) {
+            boolean success = true;
+            try {
+                this.data = Integer.parseInt(str);
+            } catch (final NumberFormatException ignored) {
+                success = false;
+            }
+            return success;
         }
 
-        /**
-         * Creates a new node from the collected data.
-         * @return A new node
-         */
+        @Override
+        public boolean setChildrenList(final List<Node> list) {
+            return list.isEmpty();
+        }
+
+        @Override
+        public boolean isValid() {
+            return true;
+        }
+
+        @Override
         public IntegerLiteral create() {
             final IntegerLiteral node = new IntegerLiteral();
             node.fragment = this.fragment;

@@ -4,9 +4,12 @@
  */
 package org.uast.uast.example;
 
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.uast.uast.base.Node;
 import org.uast.uast.example.green.Addition;
+import org.uast.uast.example.green.Expression;
 import org.uast.uast.example.green.IntegerLiteral;
 
 /**
@@ -19,13 +22,9 @@ public class ConstructorsTest {
      * The first test.
      */
     @Test
-    void testAddition() {
-        IntegerLiteral.Constructor ilc = new IntegerLiteral.Constructor();
-        ilc.setData("2");
-        final IntegerLiteral left = ilc.create();
-        ilc = new IntegerLiteral.Constructor();
-        ilc.setData("3");
-        final IntegerLiteral right = ilc.create();
+    void testSettingSeparateChild() {
+        final Expression left = this.createIntegerNode(2);
+        final Expression right = this.createIntegerNode(3);
         final Addition.Constructor ctor = new Addition.Constructor();
         ctor.setLeft(left);
         ctor.setRight(right);
@@ -35,5 +34,35 @@ public class ConstructorsTest {
         Assertions.assertEquals(node.getChild(1).getData(), "3");
         Assertions.assertEquals(node.getType().getName(), "Addition");
         Assertions.assertEquals(node.getType().getChildTypes().size(), 2);
+    }
+
+    /**
+     * Testing the method 'setChildrenList'.
+     */
+    @Test
+    void testSettingChildrenList() {
+        final Node left = this.createIntegerNode(2);
+        final Node right = this.createIntegerNode(3);
+        final Addition.Constructor ctor = new Addition.Constructor();
+        final boolean result = ctor.setChildrenList(Arrays.asList(left, right));
+        Assertions.assertTrue(result);
+        boolean oops = false;
+        try {
+            ctor.create();
+        } catch (final IllegalStateException ignored) {
+            oops = true;
+        }
+        Assertions.assertFalse(oops);
+    }
+
+    /**
+     * Creates a new node that represents an integer number.
+     * @param value Integer number
+     * @return A node
+     */
+    private Expression createIntegerNode(final int value) {
+        final IntegerLiteral.Constructor ilc = new IntegerLiteral.Constructor();
+        ilc.setData(String.valueOf(value));
+        return ilc.create();
     }
 }
