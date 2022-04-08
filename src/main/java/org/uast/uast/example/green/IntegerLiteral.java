@@ -126,7 +126,7 @@ public final class IntegerLiteral implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node with the 'left' tag.
+         * The data.
          */
         private int data;
 
@@ -157,7 +157,7 @@ public final class IntegerLiteral implements Expression {
         }
 
         @Override
-        public IntegerLiteral create() {
+        public IntegerLiteral createNode() {
             final IntegerLiteral node = new IntegerLiteral();
             node.fragment = this.fragment;
             node.data = this.data;

@@ -32,7 +32,7 @@ public class AstVisualizerTest {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
         ctor.setName("TestNode");
         ctor.setData("value");
-        final Node root = ctor.create();
+        final Node root = ctor.createNode();
         final AstVisualizer visualizer = new AstVisualizer(root);
         boolean oops = false;
         try {

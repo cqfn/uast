@@ -28,7 +28,7 @@ public class ConstructorsTest {
         final Addition.Constructor ctor = new Addition.Constructor();
         ctor.setLeft(left);
         ctor.setRight(right);
-        final Addition node = ctor.create();
+        final Addition node = ctor.createNode();
         Assertions.assertEquals(node.getChildCount(), 2);
         Assertions.assertEquals(node.getChild(0).getData(), "2");
         Assertions.assertEquals(node.getChild(1).getData(), "3");
@@ -48,7 +48,7 @@ public class ConstructorsTest {
         Assertions.assertTrue(result);
         boolean oops = false;
         try {
-            ctor.create();
+            ctor.createNode();
         } catch (final IllegalStateException ignored) {
             oops = true;
         }
@@ -63,6 +63,6 @@ public class ConstructorsTest {
     private Expression createIntegerNode(final int value) {
         final IntegerLiteral.Constructor ilc = new IntegerLiteral.Constructor();
         ilc.setData(String.valueOf(value));
-        return ilc.create();
+        return ilc.createNode();
     }
 }

@@ -34,7 +34,7 @@ public class JavaParserConverter {
             final Node converted = this.convert(child);
             ctor.addChild(converted);
         }
-        return ctor.create();
+        return ctor.createNode();
     }
 
     /**

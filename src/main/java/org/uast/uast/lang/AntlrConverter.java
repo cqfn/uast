@@ -49,6 +49,6 @@ public class AntlrConverter {
             final Node child = this.convert((RuleContext) element);
             ctor.addChild(child);
         }
-        return ctor.create();
+        return ctor.createNode();
     }
 }

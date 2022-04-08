@@ -136,7 +136,7 @@ public class DotRenderTest {
     private Node createNode(final String name) {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
         ctor.setName(name);
-        return ctor.create();
+        return ctor.createNode();
     }
 
     /**
@@ -149,7 +149,7 @@ public class DotRenderTest {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
         ctor.setName(name);
         ctor.setData(data);
-        return ctor.create();
+        return ctor.createNode();
     }
 
     /**
@@ -162,6 +162,6 @@ public class DotRenderTest {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
         ctor.setName(name);
         ctor.setChildrenList(children);
-        return ctor.create();
+        return ctor.createNode();
     }
 }

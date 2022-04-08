@@ -183,7 +183,7 @@ public final class DraftNode implements Node {
         }
 
         @Override
-        public DraftNode create() {
+        public DraftNode createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }

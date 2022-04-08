@@ -371,16 +371,16 @@ public class ChildrenMapperTest {
         final ChildrenMapper mapper = new ChildrenMapper(descriptors);
         IntegerLiteral.Constructor icr = new IntegerLiteral.Constructor();
         icr.setData("7");
-        final Node first = icr.create();
+        final Node first = icr.createNode();
         icr = new IntegerLiteral.Constructor();
         icr.setData("11");
-        final Node second = icr.create();
+        final Node second = icr.createNode();
         final Addition.Constructor acr = new Addition.Constructor();
         acr.setChildrenList(Arrays.asList(first, second));
-        final Node addition = acr.create();
+        final Node addition = acr.createNode();
         icr = new IntegerLiteral.Constructor();
         icr.setData("13");
-        final Node third = icr.create();
+        final Node third = icr.createNode();
         final Node[] mapping = new Node[2];
         final boolean result = mapper.map(mapping, Arrays.asList(addition, third));
         Assertions.assertTrue(result);
@@ -403,7 +403,7 @@ public class ChildrenMapperTest {
             final DraftNode.Constructor ctor = new DraftNode.Constructor();
             ctor.setName(node.getTypeName());
             ctor.setData(node.getIndex());
-            children.add(ctor.create());
+            children.add(ctor.createNode());
         }
         final Node[] mapping = new Node[types.size()];
         final ChildrenMapper mapper = new ChildrenMapper(types);

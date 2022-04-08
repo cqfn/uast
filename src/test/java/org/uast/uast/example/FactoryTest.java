@@ -27,7 +27,7 @@ public class FactoryTest {
         final Builder builder = factory.createBuilder(type);
         builder.setData("13");
         Assertions.assertTrue(builder.isValid());
-        final Node node = builder.create();
+        final Node node = builder.createNode();
         Assertions.assertEquals(node.getType().getName(), type);
     }
 }

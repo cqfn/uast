@@ -86,7 +86,7 @@ public final class EmptyTree implements Node {
         }
 
         @Override
-        public Node create() {
+        public Node createNode() {
             return EmptyTree.INSTANCE;
         }
     }

@@ -44,5 +44,5 @@ public interface Builder {
      * Creates a specific node.
      * @return A node
      */
-    Node create();
+    Node createNode();
 }
