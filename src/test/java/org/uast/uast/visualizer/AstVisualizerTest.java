@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
-import java.util.LinkedList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,10 @@ public class AstVisualizerTest {
      */
     @Test
     public void testAstVisualizer() {
-        final Node root = new DraftNode("TestNode", "value", new LinkedList<>());
+        final DraftNode.Constructor ctor = new DraftNode.Constructor();
+        ctor.setName("TestNode");
+        ctor.setData("value");
+        final Node root = ctor.createNode();
         final AstVisualizer visualizer = new AstVisualizer(root);
         boolean oops = false;
         try {
