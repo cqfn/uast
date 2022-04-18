@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.uast.uast.example.green.GreenFactory;
+import org.uast.uast.example.javascript.rules.Rule0;
 
 /**
  * Test for {@link Adapter} class.
@@ -215,6 +216,32 @@ public class AdapterTest {
         );
         final Node empty = converter.convert(bad, factory);
         Assertions.assertEquals(empty, EmptyTree.INSTANCE);
+    }
+
+    /**
+     * Test covering the variable converter created as an example for generation.
+     */
+    @Test
+    public void exampleVariableConverterTest() {
+        final Factory factory = GreenFactory.INSTANCE;
+        final Converter converter = Rule0.INSTANCE;
+        final Node original = this.createNode(
+            AdapterTest.STR_SINGLE_EXPR,
+            "",
+            this.createNode(
+                AdapterTest.STR_IDENTIFIER,
+                "",
+                this.createNode(
+                    AdapterTest.STR_LITERAL,
+                    "Z"
+                )
+            )
+        );
+        final Node converted = converter.convert(original, factory);
+        Assertions.assertEquals(converted.getTypeName(), AdapterTest.STR_VARIABLE);
+        Assertions.assertEquals(converted.getChildCount(), 0);
+        Assertions.assertEquals(converted.getData(), "Z");
+        Assertions.assertTrue(converted.belongsToGroup(AdapterTest.STR_EXPRESSION));
     }
 
     /**
