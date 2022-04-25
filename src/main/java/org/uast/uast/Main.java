@@ -5,17 +5,13 @@
 
 package org.uast.uast;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.uast.uast.exceptions.VisualizerException;
-import org.uast.uast.visualizer.ImageRender;
+import org.uast.uast.lang.java.JavaParser;
+import org.uast.uast.visualizer.AstVisualizer;
 
 /**
  * Main class.
@@ -44,16 +40,14 @@ public final class Main {
             throw new IllegalArgumentException("No action specified.");
         }
         if ("parse-java".equals(args[0])) {
-            final CompilationUnit root = StaticJavaParser.parse("class X{void y(){int z;}}");
-            root.walk(
-                node ->
-                LOG.info(
-                    String.format(
-                        "* node children: %s",
-                        node.getChildNodes()
-                    )
-                )
+            final AstVisualizer visualizer = new AstVisualizer(
+                new JavaParser("class X{int calc(){return 2 + 3;}}").parse()
             );
+            try {
+                visualizer.visualize(new File(args[1]));
+            } catch (final IOException | VisualizerException exception) {
+                LOG.error(exception.getMessage());
+            }
         }
         if ("parse-python".equals(args[0])) {
             final CodeHandler handler = new CodeHandler("def sum(a, b):\n\treturn a + b");
@@ -62,19 +56,6 @@ public final class Main {
         if ("parse-js".equals(args[0])) {
             final CodeHandler handler = new CodeHandler("function sum(a, b){\n\treturn a + b;\n}");
             handler.processJavaScriptCode();
-        }
-        if ("visualize".equals(args[0])) {
-            try (InputStream stream = Files.newInputStream(Paths.get("dot/gr.dot"))) {
-                final StringBuilder builder = new StringBuilder();
-                for (int chr = stream.read(); chr != -1; chr = stream.read()) {
-                    builder.append((char) chr);
-                }
-                final String code = builder.toString();
-                final ImageRender visualizer = new ImageRender(code);
-                visualizer.render(new File("dot/ex_gr.svg"));
-            } catch (final IOException | VisualizerException exception) {
-                LOG.error(exception.getMessage());
-            }
         }
     }
 }

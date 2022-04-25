@@ -19,11 +19,11 @@ import org.uast.uast.generated.antlr4.JavaScriptLexer;
 import org.uast.uast.generated.antlr4.JavaScriptParser;
 
 /**
- * Test for {@link AntlrConverter} class.
+ * Test for {@link AntlrToNodeConverter} class.
  *
  * @since 1.0
  */
-public class AntlrConverterTest {
+public class AntlrToNodeConverterTest {
     /**
      * Parsing JavaScript source.
      */
@@ -39,7 +39,7 @@ public class AntlrConverterTest {
             final JavaScriptLexer lexer = new JavaScriptLexer(stream);
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final JavaScriptParser parser = new JavaScriptParser(tokens);
-            final AntlrConverter converter = new AntlrConverter(parser);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node node = converter.convert(parser.program());
             Assertions.assertEquals(node.getType().getName(), "program");
         } catch (final IOException exception) {

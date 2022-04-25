@@ -16,7 +16,7 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public class AntlrConverter {
+public class AntlrToNodeConverter {
     /**
      * ANTLR language parser.
      */
@@ -26,7 +26,7 @@ public class AntlrConverter {
      * Constructor.
      * @param parser ANTLR parser of the processed language
      */
-    public AntlrConverter(final Parser parser) {
+    public AntlrToNodeConverter(final Parser parser) {
         this.parser = parser;
     }
 

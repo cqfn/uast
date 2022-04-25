@@ -39,8 +39,8 @@ public class Adapter {
      * @return A converted tree or empty tree if the conversion is impossible
      */
     public Node convert(final Node root) {
-        Node result = EmptyTree.INSTANCE;
         final ConvertibleNode convertible = new ConvertibleNode(root);
+        Node result = convertible;
         final List<ConvertibleNode> nodes = new ArrayList<>(0);
         Adapter.buildNodeList(convertible, nodes);
         for (final ConvertibleNode original : nodes) {
