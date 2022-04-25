@@ -109,6 +109,11 @@ public final class Variable implements Expression {
         }
 
         @Override
+        public String getProperty(final String name) {
+            return "";
+        }
+
+        @Override
         public Builder createBuilder() {
             return new Constructor();
         }

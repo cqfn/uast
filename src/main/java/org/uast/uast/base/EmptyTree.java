@@ -113,6 +113,11 @@ public final class EmptyTree implements Node {
         }
 
         @Override
+        public String getProperty(final String name) {
+            return "";
+        }
+
+        @Override
         public Builder createBuilder() {
             return EmptyTree.BUILDER;
         }

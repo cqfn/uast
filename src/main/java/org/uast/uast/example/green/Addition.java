@@ -151,6 +151,11 @@ public final class Addition implements BinaryExpression {
         }
 
         @Override
+        public String getProperty(final String name) {
+            return "";
+        }
+
+        @Override
         public Builder createBuilder() {
             return new Constructor();
         }

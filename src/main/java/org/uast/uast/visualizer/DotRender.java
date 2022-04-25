@@ -8,6 +8,7 @@ package org.uast.uast.visualizer;
 import java.util.Objects;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
+import org.uast.uast.base.Type;
 
 /**
  * Renders an AST to a DOT file.
@@ -69,7 +70,8 @@ public class DotRender {
         if (empty) {
             this.appendNullNode();
         } else {
-            this.appendNode(node.getType().getName(), node.getData());
+            final Type type = node.getType();
+            this.appendNode(type.getName(), node.getData(), type.getProperty("color"));
             final int parent = this.index;
             for (int idx = 0; idx < node.getChildCount(); idx += 1) {
                 this.index += 1;
@@ -101,8 +103,9 @@ public class DotRender {
      *
      * @param type A node type
      * @param data A node data
+     * @param color A node color
      */
-    private void appendNode(final String type, final String data) {
+    private void appendNode(final String type, final String data, final String color) {
         this.builder.append(DotRender.NODE).append(this.index).append(" [");
         this.builder.append("label=<").append(type);
         if (!data.isEmpty()) {
@@ -110,7 +113,11 @@ public class DotRender {
             this.builder.append(encodeHtml(data));
             this.builder.append("</font>");
         }
-        this.builder.append(">];\n");
+        this.builder.append('>');
+        if (!color.isEmpty()) {
+            this.builder.append(" color=").append(color);
+        }
+        this.builder.append("];\n");
     }
 
     /**
