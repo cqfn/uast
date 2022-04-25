@@ -34,7 +34,7 @@ public class JavaParser {
      */
     public Node parse() {
         final CompilationUnit raw = StaticJavaParser.parse(this.source);
-        final RawToNodeConverter converter = new RawToNodeConverter();
+        final JavaRawToNodeConverter converter = new JavaRawToNodeConverter();
         final Node draft = converter.convert(raw);
         return JavaAdapter.INSTANCE.convert(draft);
     }

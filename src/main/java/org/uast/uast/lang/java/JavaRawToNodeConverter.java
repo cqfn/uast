@@ -19,7 +19,7 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public class RawToNodeConverter {
+public class JavaRawToNodeConverter {
     /**
      * Recursive converter from JavaParser context to {@link Node}.
      *
