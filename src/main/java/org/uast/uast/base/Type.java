@@ -31,6 +31,13 @@ public interface Type {
     List<String> getHierarchy();
 
     /**
+     * Returns the value of some property (depends on implementation).
+     * @param name The name of property
+     * @return Property value (if the property is not defined, returns an empty string)
+     */
+    String getProperty(String name);
+
+    /**
      * Creates a new builder who builds a node of this type.
      * @return A builder.
      */

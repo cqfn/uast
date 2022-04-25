@@ -8,6 +8,9 @@ package org.uast.uast.generated.tree.green;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.EmptyFragment;
@@ -87,6 +90,15 @@ public final class IntegerLiteral implements Node {
                 )
             );
 
+        /**
+         * Properties.
+         */
+        private static final Map<String, String> PROPERTIES = Stream.of(
+            new String[][] {
+                {"color", "green"},
+                {"language", "common"},
+            }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+
         @Override
         public String getName() {
             return TypeImpl.INTEGER_LITERAL;
@@ -100,6 +112,11 @@ public final class IntegerLiteral implements Node {
         @Override
         public List<String> getHierarchy() {
             return TypeImpl.HIERARCHY;
+        }
+
+        @Override
+        public String getProperty(final String name) {
+            return TypeImpl.PROPERTIES.getOrDefault(name, "");
         }
 
         @Override
