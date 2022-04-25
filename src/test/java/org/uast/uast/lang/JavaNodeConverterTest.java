@@ -10,13 +10,14 @@ import com.github.javaparser.ast.CompilationUnit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.uast.uast.base.Node;
+import org.uast.uast.lang.java.RawToNodeConverter;
 
 /**
- * Test for {@link JavaParserConverter} class.
+ * Test for {@link RawToNodeConverter} class.
  *
  * @since 1.0
  */
-public class JavaParserConverterTest {
+public class JavaNodeConverterTest {
     /**
      * Parsing Java source.
      */
@@ -24,7 +25,7 @@ public class JavaParserConverterTest {
     public void javaSource() {
         final String code = "class X{void y(){int z;}}";
         final CompilationUnit root = StaticJavaParser.parse(code);
-        final JavaParserConverter converter = new JavaParserConverter();
+        final RawToNodeConverter converter = new RawToNodeConverter();
         final Node node = converter.convert(root);
         Assertions.assertEquals(node.getType().getName(), "CompilationUnit");
     }

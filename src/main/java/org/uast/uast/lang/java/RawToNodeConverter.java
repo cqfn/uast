@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.lang;
+package org.uast.uast.lang.java;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.expr.BinaryExpr;
@@ -14,12 +14,12 @@ import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 
 /**
- * Converter from the format provided by the JavaParser parser
+ * Converter from the format provided by the JavaParser parser ("raw")
  * to the {@link Node} interface.
  *
  * @since 1.0
  */
-public class JavaParserConverter {
+public class RawToNodeConverter {
     /**
      * Recursive converter from ANTLR context to {@link Node}.
      *

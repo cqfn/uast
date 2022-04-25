@@ -47,7 +47,7 @@ public class ImageRender {
         if (isValidFileExtension(file.getPath())) {
             final MutableGraph graph = new Parser().read(this.dot);
             Graphviz.useEngine(new GraphvizV8Engine());
-            Graphviz.fromGraph(graph).render(Format.SVG).toFile(file);
+            Graphviz.fromGraph(graph).render(Format.PNG).toFile(file);
         } else {
             throw WrongFileExtension.INSTANCE;
         }
