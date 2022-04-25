@@ -21,7 +21,7 @@ import org.uast.uast.base.Node;
  */
 public class RawToNodeConverter {
     /**
-     * Recursive converter from ANTLR context to {@link Node}.
+     * Recursive converter from JavaParser context to {@link Node}.
      *
      * @param node Current JavaParser node
      * @return A node
