@@ -9,8 +9,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.converters.FileConverter;
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
 import java.io.File;
 import java.io.IOException;
 import org.slf4j.Logger;
@@ -18,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
-import org.uast.uast.lang.java.JavaRawToNodeConverter;
+import org.uast.uast.lang.java.JavaParser;
 import org.uast.uast.utils.FilesReader;
 import org.uast.uast.utils.cli.ImagePathValidator;
 import org.uast.uast.utils.cli.JsonPathValidator;
@@ -139,9 +137,8 @@ public final class Main {
         final String code = new FilesReader(this.source.getPath()).readAsString();
         switch (lang) {
             case "java":
-                final CompilationUnit root = StaticJavaParser.parse(code);
-                final JavaRawToNodeConverter converter = new JavaRawToNodeConverter();
-                node = converter.convert(root);
+                final JavaParser parser = new JavaParser(code);
+                node = parser.parse();
                 break;
             case "py":
                 new CodeHandler(code).processPythonCode();

@@ -23,7 +23,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
-public final class IntegerLiteral implements Node {
+public final class IntegerLiteral implements Expression {
     /**
      * The type.
      */
@@ -82,11 +82,18 @@ public final class IntegerLiteral implements Node {
         private static final String INTEGER_LITERAL = "IntegerLiteral";
 
         /**
+         * The 'Expression' string.
+         */
+        private static final String EXPRESSION = "Expression";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
+                    TypeImpl.INTEGER_LITERAL,
+                    TypeImpl.EXPRESSION
                 )
             );
 

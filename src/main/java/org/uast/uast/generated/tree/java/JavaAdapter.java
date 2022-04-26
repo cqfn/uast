@@ -11,6 +11,7 @@ import java.util.List;
 import org.uast.uast.base.Adapter;
 import org.uast.uast.base.Converter;
 import org.uast.uast.generated.tree.java.rules.Rule0;
+import org.uast.uast.generated.tree.java.rules.Rule1;
 
 /**
  * Adapter that converts syntax trees, prepared by the parser of the Java language.
@@ -36,7 +37,8 @@ public final class JavaAdapter extends Adapter {
      */
     private static List<Converter> init() {
         return Arrays.asList(
-            Rule0.INSTANCE
+            Rule0.INSTANCE,
+            Rule1.INSTANCE
         );
     }
 }

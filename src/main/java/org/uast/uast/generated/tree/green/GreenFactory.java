@@ -37,7 +37,9 @@ public final class GreenFactory extends Factory {
      */
     private static Map<String, Type> init() {
         final List<Type> types = Arrays.asList(
-            IntegerLiteral.TYPE
+            Addition.TYPE,
+            IntegerLiteral.TYPE,
+            Subtraction.TYPE
         );
         final Map<String, Type> map = new TreeMap<>();
         for (final Type type : types) {
