@@ -14,6 +14,7 @@ import org.uast.uast.base.Factory;
 import org.uast.uast.base.Type;
 import org.uast.uast.generated.tree.green.Addition;
 import org.uast.uast.generated.tree.green.IntegerLiteral;
+import org.uast.uast.generated.tree.green.Return;
 import org.uast.uast.generated.tree.green.Subtraction;
 
 /**
@@ -42,6 +43,7 @@ public final class JavaFactory extends Factory {
         final List<Type> types = Arrays.asList(
             Addition.TYPE,
             IntegerLiteral.TYPE,
+            Return.TYPE,
             Subtraction.TYPE
         );
         final Map<String, Type> map = new TreeMap<>();
