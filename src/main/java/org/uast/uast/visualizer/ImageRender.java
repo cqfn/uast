@@ -44,30 +44,36 @@ public class ImageRender {
      * @throws IOException If an error during input or output actions occurs
      */
     public void render(final File file) throws VisualizerException, IOException {
-        if (isValidFileExtension(file.getPath())) {
-            final MutableGraph graph = new Parser().read(this.dot);
-            Graphviz.useEngine(new GraphvizV8Engine());
-            Graphviz.fromGraph(graph).render(Format.PNG).toFile(file);
-        } else {
-            throw WrongFileExtension.INSTANCE;
-        }
+        final Enum<Format> format = getFileExtension(file.getPath());
+        final MutableGraph graph = new Parser().read(this.dot);
+        Graphviz.useEngine(new GraphvizV8Engine());
+        Graphviz.fromGraph(graph).render((Format) format).toFile(file);
     }
 
     /**
-     * Checks if an input file extension is png.
+     * Get supported graphical file extension.
      *
      * @param path A path to the file to be rendered
-     * @return A boolean {@code true} if a file has a valid exception or
-     *  {@code false} otherwise
+     * @return A file extension
+     * @throws VisualizerException If a file extension is invalid
      */
-    private static boolean isValidFileExtension(final String path) {
-        final Optional<String> ext = Optional.ofNullable(path)
+    private static Enum<Format> getFileExtension(final String path) throws VisualizerException {
+        final Optional<String> optional = Optional.ofNullable(path)
             .filter(f -> f.contains("."))
             .map(f -> f.substring(path.lastIndexOf('.') + 1));
-        boolean valid = false;
-        if (ext.isPresent()) {
-            valid = "png".equals(ext.get());
+        Enum<Format> format = null;
+        if (optional.isPresent()) {
+            final String ext = optional.get();
+            if ("png".equals(ext)) {
+                format = Format.PNG;
+            }
+            if ("svg".equals(ext)) {
+                format = Format.SVG;
+            }
         }
-        return valid;
+        if (format == null) {
+            throw WrongFileExtension.INSTANCE;
+        }
+        return format;
     }
 }
