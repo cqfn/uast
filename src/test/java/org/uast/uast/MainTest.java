@@ -5,8 +5,16 @@
 
 package org.uast.uast;
 
+import com.beust.jcommander.ParameterException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+import org.uast.uast.exceptions.VisualizerException;
 
 /**
  * Test for {@link Main} class.
@@ -15,29 +23,32 @@ import org.junit.jupiter.api.Test;
  */
 public class MainTest {
     /**
-     * Argument example.
+     * The parse option as an argument example.
      */
-    private static final String ARG = "test";
+    private static final String PARSE = "--parse";
 
     /**
-     * Test passing an argument to main().
+     * Test passing the {@code --generate} option to main().
+     * @param source A temporary directory
      */
     @Test
-    public void testNoException() {
+    public void testNoException(@TempDir final Path source) throws IOException {
+        final Path file = this.createTempTxtFile(source);
         final String[] example = {
-            MainTest.ARG,
+            MainTest.PARSE,
+            file.toString(),
         };
         boolean caught = false;
         try {
             Main.main(example);
-        } catch (final IllegalArgumentException exc) {
+        } catch (final ParameterException | IOException | VisualizerException exc) {
             caught = true;
         }
         Assertions.assertFalse(caught);
     }
 
     /**
-     * Test passing no argument to main().
+     * Test passing no option to main().
      */
     @Test
     public void testWithException() {
@@ -46,21 +57,42 @@ public class MainTest {
         boolean caught = false;
         try {
             Main.main(example);
-        } catch (final IllegalArgumentException exc) {
+        } catch (final ParameterException | IOException | VisualizerException exc) {
             caught = true;
         }
         Assertions.assertTrue(caught);
     }
 
     /**
-     * Test passing no argument to main().
+     * Test passing the {@code --parse} option with no parameters to main().
      */
     @Test
-    public void testMain() {
+    public void testGenerateWithoutParameters() {
         final String[] example = {
-            MainTest.ARG,
+            MainTest.PARSE,
         };
-        Main.main(example);
-        Assertions.assertTrue(example.length > 0);
+        boolean caught = false;
+        String message = "";
+        try {
+            Main.main(example);
+        } catch (final ParameterException | IOException | VisualizerException exc) {
+            caught = true;
+            message = exc.getMessage();
+        }
+        Assertions.assertTrue(caught);
+        Assertions.assertEquals("Expected a value after parameter --parse", message);
+    }
+
+    /**
+     * Creates a temporary directory to test passing files in CLI options.
+     * @param source A temporary directory
+     * @return The path to a temporary file
+     * @throws IOException If fails to create a temporary file
+     */
+    private Path createTempTxtFile(@TempDir final Path source) throws IOException {
+        final Path file = source.resolve("example.java");
+        final List<String> lines = Collections.singletonList("class X{int calc(){return 2 + 3;}}");
+        Files.write(file, lines);
+        return file;
     }
 }
