@@ -5,8 +5,6 @@
 
 package org.uast.uast.generated.tree.green;
 
-import org.uast.uast.base.Node;
-
 /**
  * Node that describes the 'BinaryExpression' type.
  *
