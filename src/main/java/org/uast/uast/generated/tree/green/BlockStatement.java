@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.green;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,18 +14,17 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
-import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Return' type.
+ * Node that describes the 'BlockStatement' type.
  *
  * @since 1.0
  */
-public final class Return implements Statement {
+public final class BlockStatement implements Statement {
     /**
      * The type.
      */
@@ -38,22 +38,17 @@ public final class Return implements Statement {
     /**
      * List of child nodes.
      */
-    private List<Node> children;
-
-    /**
-     * Child with the 'expression' tag.
-     */
-    private Expression expression;
+    private List<Statement> children;
 
     /**
      * Constructor.
      */
-    private Return() {
+    private BlockStatement() {
     }
 
     @Override
     public Type getType() {
-        return Return.TYPE;
+        return BlockStatement.TYPE;
     }
 
     @Override
@@ -71,47 +66,30 @@ public final class Return implements Statement {
         return this.children.size();
     }
 
+    /**
+     * Return a child node with 'Statement' type by its index.
+     * @param index Child index
+     * @return A node
+     */
+    public Statement getStatement(final int index) {
+        return this.children.get(index);
+    }
+
     @Override
     public Node getChild(final int index) {
         return this.children.get(index);
     }
 
     /**
-     * Returns the child with the 'expression' tag.
-     * @return The node
-     */
-    public Expression getExpression() {
-        return this.expression;
-    }
-
-    /**
-     * Type descriptor of the 'Return' node.
+     * Type descriptor of the 'BlockStatement' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Return' string.
+         * The 'BlockStatement' string.
          */
-        private static final String RETURN = "Return";
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
-
-        /**
-         * The list of child types.
-         */
-        private static final List<ChildDescriptor> CHILDREN =
-            Collections.unmodifiableList(
-                Arrays.asList(
-                    new ChildDescriptor(
-                        TypeImpl.EXPRESSION,
-                        false
-                    )
-                )
-            );
+        private static final String BLOCK_STATEMENT = "BlockStatement";
 
         /**
          * The 'Statement' string.
@@ -119,12 +97,23 @@ public final class Return implements Statement {
         private static final String STATEMENT = "Statement";
 
         /**
+         * The list of child types.
+         */
+        private static final List<ChildDescriptor> CHILDREN =
+            Collections.singletonList(
+                new ChildDescriptor(
+                    TypeImpl.STATEMENT,
+                    false
+                )
+            );
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.RETURN,
+                    TypeImpl.BLOCK_STATEMENT,
                     TypeImpl.STATEMENT
                 )
             );
@@ -140,7 +129,7 @@ public final class Return implements Statement {
 
         @Override
         public String getName() {
-            return TypeImpl.RETURN;
+            return TypeImpl.BLOCK_STATEMENT;
         }
 
         @Override
@@ -165,7 +154,7 @@ public final class Return implements Statement {
     }
 
     /**
-     * Class for 'Return' node construction.
+     * Class for 'BlockStatement' node construction.
      *
      * @since 1.0
      */
@@ -176,9 +165,9 @@ public final class Return implements Statement {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node with the 'expression' tag.
+         * List of child nodes.
          */
-        private Expression expression;
+        private List<Statement> children = Collections.emptyList();
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -190,21 +179,20 @@ public final class Return implements Statement {
             return str.isEmpty();
         }
 
-        /**
-         * Sets the node with the 'expression' tag.
-         * @param node The node
-         */
-        public void setExpression(final Expression node) {
-            this.expression = node;
-        }
-
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Return.TYPE.getChildTypes());
-            final boolean result = mapper.map(mapping, list);
+            boolean result = true;
+            final List<Statement> clarified = new ArrayList<>(list.size());
+            for (final Node node : list) {
+                if (node instanceof Statement) {
+                    clarified.add((Statement) node);
+                } else {
+                    result = false;
+                    break;
+                }
+            }
             if (result) {
-                this.expression = (Expression) mapping[0];
+                this.children = Collections.unmodifiableList(clarified);
             }
             return result;
         }
@@ -215,14 +203,10 @@ public final class Return implements Statement {
         }
 
         @Override
-        public Return createNode() {
-            if (!this.isValid()) {
-                throw new IllegalStateException();
-            }
-            final Return node = new Return();
+        public BlockStatement createNode() {
+            final BlockStatement node = new BlockStatement();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.expression);
-            node.expression = this.expression;
+            node.children = this.children;
             return node;
         }
     }

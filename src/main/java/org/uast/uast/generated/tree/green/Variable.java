@@ -20,15 +20,20 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Return' type.
+ * Node that describes the 'Variable' type.
  *
  * @since 1.0
  */
-public final class Return implements Statement {
+public final class Variable implements Expression {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
+
+    /**
+     * The number of children.
+     */
+    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -41,19 +46,14 @@ public final class Return implements Statement {
     private List<Node> children;
 
     /**
-     * Child with the 'expression' tag.
-     */
-    private Expression expression;
-
-    /**
      * Constructor.
      */
-    private Return() {
+    private Variable() {
     }
 
     @Override
     public Type getType() {
-        return Return.TYPE;
+        return Variable.TYPE;
     }
 
     @Override
@@ -68,7 +68,7 @@ public final class Return implements Statement {
 
     @Override
     public int getChildCount() {
-        return this.children.size();
+        return Variable.CHILD_COUNT;
     }
 
     @Override
@@ -77,28 +77,20 @@ public final class Return implements Statement {
     }
 
     /**
-     * Returns the child with the 'expression' tag.
-     * @return The node
-     */
-    public Expression getExpression() {
-        return this.expression;
-    }
-
-    /**
-     * Type descriptor of the 'Return' node.
+     * Type descriptor of the 'Variable' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Return' string.
+         * The 'Variable' string.
          */
-        private static final String RETURN = "Return";
+        private static final String VARIABLE = "Variable";
 
         /**
-         * The 'Expression' string.
+         * The 'Identifier' string.
          */
-        private static final String EXPRESSION = "Expression";
+        private static final String IDENTIFIER = "Identifier";
 
         /**
          * The list of child types.
@@ -107,16 +99,16 @@ public final class Return implements Statement {
             Collections.unmodifiableList(
                 Arrays.asList(
                     new ChildDescriptor(
-                        TypeImpl.EXPRESSION,
+                        TypeImpl.IDENTIFIER,
                         false
                     )
                 )
             );
 
         /**
-         * The 'Statement' string.
+         * The 'Expression' string.
          */
-        private static final String STATEMENT = "Statement";
+        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -124,8 +116,8 @@ public final class Return implements Statement {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.RETURN,
-                    TypeImpl.STATEMENT
+                    TypeImpl.VARIABLE,
+                    TypeImpl.EXPRESSION
                 )
             );
 
@@ -140,7 +132,7 @@ public final class Return implements Statement {
 
         @Override
         public String getName() {
-            return TypeImpl.RETURN;
+            return TypeImpl.VARIABLE;
         }
 
         @Override
@@ -165,7 +157,7 @@ public final class Return implements Statement {
     }
 
     /**
-     * Class for 'Return' node construction.
+     * Class for 'Variable' node construction.
      *
      * @since 1.0
      */
@@ -176,9 +168,9 @@ public final class Return implements Statement {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node with the 'expression' tag.
+         * Node 0.
          */
-        private Expression expression;
+        private Identifier first;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -190,39 +182,30 @@ public final class Return implements Statement {
             return str.isEmpty();
         }
 
-        /**
-         * Sets the node with the 'expression' tag.
-         * @param node The node
-         */
-        public void setExpression(final Expression node) {
-            this.expression = node;
-        }
-
         @Override
         public boolean setChildrenList(final List<Node> list) {
             final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Return.TYPE.getChildTypes());
+            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.expression = (Expression) mapping[0];
+                this.first = (Identifier) mapping[0];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return true;
+            return this.first != null;
         }
 
         @Override
-        public Return createNode() {
+        public Variable createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }
-            final Return node = new Return();
+            final Variable node = new Variable();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.expression);
-            node.expression = this.expression;
+            node.children = Arrays.asList(this.first);
             return node;
         }
     }

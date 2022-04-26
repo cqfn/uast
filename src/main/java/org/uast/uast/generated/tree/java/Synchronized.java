@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.green;
+package org.uast.uast.generated.tree.java;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,17 +18,24 @@ import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
+import org.uast.uast.generated.tree.green.BlockStatement;
+import org.uast.uast.generated.tree.green.Expression;
 
 /**
- * Node that describes the 'Return' type.
+ * Node that describes the 'Synchronized' type.
  *
  * @since 1.0
  */
-public final class Return implements Statement {
+public final class Synchronized implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
+
+    /**
+     * The number of children.
+     */
+    private static final int CHILD_COUNT = 2;
 
     /**
      * The fragment associated with the node.
@@ -41,19 +48,14 @@ public final class Return implements Statement {
     private List<Node> children;
 
     /**
-     * Child with the 'expression' tag.
-     */
-    private Expression expression;
-
-    /**
      * Constructor.
      */
-    private Return() {
+    private Synchronized() {
     }
 
     @Override
     public Type getType() {
-        return Return.TYPE;
+        return Synchronized.TYPE;
     }
 
     @Override
@@ -68,7 +70,7 @@ public final class Return implements Statement {
 
     @Override
     public int getChildCount() {
-        return this.children.size();
+        return Synchronized.CHILD_COUNT;
     }
 
     @Override
@@ -77,28 +79,25 @@ public final class Return implements Statement {
     }
 
     /**
-     * Returns the child with the 'expression' tag.
-     * @return The node
-     */
-    public Expression getExpression() {
-        return this.expression;
-    }
-
-    /**
-     * Type descriptor of the 'Return' node.
+     * Type descriptor of the 'Synchronized' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Return' string.
+         * The 'Synchronized' string.
          */
-        private static final String RETURN = "Return";
+        private static final String SYNCHRONIZED = "Synchronized";
 
         /**
          * The 'Expression' string.
          */
         private static final String EXPRESSION = "Expression";
+
+        /**
+         * The 'BlockStatement' string.
+         */
+        private static final String BLOCK_STATEMENT = "BlockStatement";
 
         /**
          * The list of child types.
@@ -109,14 +108,13 @@ public final class Return implements Statement {
                     new ChildDescriptor(
                         TypeImpl.EXPRESSION,
                         false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.BLOCK_STATEMENT,
+                        false
                     )
                 )
             );
-
-        /**
-         * The 'Statement' string.
-         */
-        private static final String STATEMENT = "Statement";
 
         /**
          * Hierarchy.
@@ -124,8 +122,7 @@ public final class Return implements Statement {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.RETURN,
-                    TypeImpl.STATEMENT
+                    TypeImpl.SYNCHRONIZED
                 )
             );
 
@@ -134,13 +131,13 @@ public final class Return implements Statement {
          */
         private static final Map<String, String> PROPERTIES = Stream.of(
             new String[][] {
-                {"color", "green"},
-                {"language", "common"},
+                {"color", "red"},
+                {"language", "java"},
             }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         @Override
         public String getName() {
-            return TypeImpl.RETURN;
+            return TypeImpl.SYNCHRONIZED;
         }
 
         @Override
@@ -165,7 +162,7 @@ public final class Return implements Statement {
     }
 
     /**
-     * Class for 'Return' node construction.
+     * Class for 'Synchronized' node construction.
      *
      * @since 1.0
      */
@@ -176,9 +173,14 @@ public final class Return implements Statement {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node with the 'expression' tag.
+         * Node 0.
          */
-        private Expression expression;
+        private Expression first;
+
+        /**
+         * Node 1.
+         */
+        private BlockStatement second;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -190,39 +192,32 @@ public final class Return implements Statement {
             return str.isEmpty();
         }
 
-        /**
-         * Sets the node with the 'expression' tag.
-         * @param node The node
-         */
-        public void setExpression(final Expression node) {
-            this.expression = node;
-        }
-
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Return.TYPE.getChildTypes());
+            final Node[] mapping = new Node[2];
+            final ChildrenMapper mapper = new ChildrenMapper(Synchronized.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.expression = (Expression) mapping[0];
+                this.first = (Expression) mapping[0];
+                this.second = (BlockStatement) mapping[1];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return true;
+            return this.first != null
+                && this.second != null;
         }
 
         @Override
-        public Return createNode() {
+        public Synchronized createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }
-            final Return node = new Return();
+            final Synchronized node = new Synchronized();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.expression);
-            node.expression = this.expression;
+            node.children = Arrays.asList(this.first, this.second);
             return node;
         }
     }

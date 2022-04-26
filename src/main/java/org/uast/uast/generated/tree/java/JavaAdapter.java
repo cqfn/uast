@@ -14,6 +14,9 @@ import org.uast.uast.generated.tree.java.rules.Rule0;
 import org.uast.uast.generated.tree.java.rules.Rule1;
 import org.uast.uast.generated.tree.java.rules.Rule2;
 import org.uast.uast.generated.tree.java.rules.Rule3;
+import org.uast.uast.generated.tree.java.rules.Rule4;
+import org.uast.uast.generated.tree.java.rules.Rule5;
+import org.uast.uast.generated.tree.java.rules.Rule6;
 
 /**
  * Adapter that converts syntax trees, prepared by the parser of the Java language.
@@ -42,7 +45,10 @@ public final class JavaAdapter extends Adapter {
             Rule0.INSTANCE,
             Rule1.INSTANCE,
             Rule2.INSTANCE,
-            Rule3.INSTANCE
+            Rule3.INSTANCE,
+            Rule4.INSTANCE,
+            Rule5.INSTANCE,
+            Rule6.INSTANCE
         );
     }
 }
