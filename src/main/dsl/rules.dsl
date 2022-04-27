@@ -3,12 +3,13 @@ Identifier <- $String$, $#$, $#$;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
-Expression <- BinaryExpression | IntegerLiteral | Variable;
+Expression <- BinaryExpression | IntegerLiteral | Variable | This;
 BinaryExpression <- Addition | Subtraction;
 Return <- [expression@Expression];
 Variable <- Identifier;
 BlockStatement <- {Statement};
 Statement <- Return | BlockStatement;
+This <- 0;
 
 java:
 
