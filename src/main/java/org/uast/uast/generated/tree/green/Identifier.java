@@ -19,11 +19,11 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'IntegerLiteral' type.
+ * Node that describes the 'Identifier' type.
  *
  * @since 1.0
  */
-public final class IntegerLiteral implements Expression {
+public final class Identifier implements Node {
     /**
      * The type.
      */
@@ -37,17 +37,17 @@ public final class IntegerLiteral implements Expression {
     /**
      * The data.
      */
-    private int data;
+    private String data;
 
     /**
      * Constructor.
      */
-    private IntegerLiteral() {
+    private Identifier() {
     }
 
     @Override
     public Type getType() {
-        return IntegerLiteral.TYPE;
+        return Identifier.TYPE;
     }
 
     @Override
@@ -57,7 +57,7 @@ public final class IntegerLiteral implements Expression {
 
     @Override
     public String getData() {
-        return String.valueOf(this.data);
+        return this.data;
     }
 
     @Override
@@ -71,20 +71,15 @@ public final class IntegerLiteral implements Expression {
     }
 
     /**
-     * Type descriptor of the 'IntegerLiteral' node.
+     * Type descriptor of the 'Identifier' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'IntegerLiteral' string.
+         * The 'Identifier' string.
          */
-        private static final String INTEGER_LITERAL = "IntegerLiteral";
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
+        private static final String IDENTIFIER = "Identifier";
 
         /**
          * Hierarchy.
@@ -92,8 +87,7 @@ public final class IntegerLiteral implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.INTEGER_LITERAL,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.IDENTIFIER
                 )
             );
 
@@ -108,7 +102,7 @@ public final class IntegerLiteral implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.INTEGER_LITERAL;
+            return TypeImpl.IDENTIFIER;
         }
 
         @Override
@@ -133,7 +127,7 @@ public final class IntegerLiteral implements Expression {
     }
 
     /**
-     * Class for 'IntegerLiteral' node construction.
+     * Class for 'Identifier' node construction.
      *
      * @since 1.0
      */
@@ -151,7 +145,7 @@ public final class IntegerLiteral implements Expression {
         /**
          * The data.
          */
-        private int data;
+        private String data;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -160,14 +154,9 @@ public final class IntegerLiteral implements Expression {
 
         @Override
         public boolean setData(final String value) {
-            boolean success = true;
-            try {
-                this.data = Integer.parseInt(value);
-                this.initialized = true;
-            } catch (final NumberFormatException ignored) {
-                success = false;
-            }
-            return success;
+            this.data = value;
+            this.initialized = true;
+            return true;
         }
 
         @Override
@@ -181,8 +170,8 @@ public final class IntegerLiteral implements Expression {
         }
 
         @Override
-        public IntegerLiteral createNode() {
-            final IntegerLiteral node = new IntegerLiteral();
+        public Identifier createNode() {
+            final Identifier node = new Identifier();
             node.fragment = this.fragment;
             node.data = this.data;
             return node;

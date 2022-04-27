@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.green;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -19,11 +20,11 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'IntegerLiteral' type.
+ * Node that describes the 'BlockStatement' type.
  *
  * @since 1.0
  */
-public final class IntegerLiteral implements Expression {
+public final class BlockStatement implements Statement {
     /**
      * The type.
      */
@@ -35,19 +36,19 @@ public final class IntegerLiteral implements Expression {
     private Fragment fragment;
 
     /**
-     * The data.
+     * List of child nodes.
      */
-    private int data;
+    private List<Statement> children;
 
     /**
      * Constructor.
      */
-    private IntegerLiteral() {
+    private BlockStatement() {
     }
 
     @Override
     public Type getType() {
-        return IntegerLiteral.TYPE;
+        return BlockStatement.TYPE;
     }
 
     @Override
@@ -57,34 +58,54 @@ public final class IntegerLiteral implements Expression {
 
     @Override
     public String getData() {
-        return String.valueOf(this.data);
+        return "";
     }
 
     @Override
     public int getChildCount() {
-        return 0;
+        return this.children.size();
+    }
+
+    /**
+     * Return a child node with 'Statement' type by its index.
+     * @param index Child index
+     * @return A node
+     */
+    public Statement getStatement(final int index) {
+        return this.children.get(index);
     }
 
     @Override
     public Node getChild(final int index) {
-        throw new IndexOutOfBoundsException();
+        return this.children.get(index);
     }
 
     /**
-     * Type descriptor of the 'IntegerLiteral' node.
+     * Type descriptor of the 'BlockStatement' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'IntegerLiteral' string.
+         * The 'BlockStatement' string.
          */
-        private static final String INTEGER_LITERAL = "IntegerLiteral";
+        private static final String BLOCK_STATEMENT = "BlockStatement";
 
         /**
-         * The 'Expression' string.
+         * The 'Statement' string.
          */
-        private static final String EXPRESSION = "Expression";
+        private static final String STATEMENT = "Statement";
+
+        /**
+         * The list of child types.
+         */
+        private static final List<ChildDescriptor> CHILDREN =
+            Collections.singletonList(
+                new ChildDescriptor(
+                    TypeImpl.STATEMENT,
+                    false
+                )
+            );
 
         /**
          * Hierarchy.
@@ -92,8 +113,8 @@ public final class IntegerLiteral implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.INTEGER_LITERAL,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.BLOCK_STATEMENT,
+                    TypeImpl.STATEMENT
                 )
             );
 
@@ -108,12 +129,12 @@ public final class IntegerLiteral implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.INTEGER_LITERAL;
+            return TypeImpl.BLOCK_STATEMENT;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return Collections.emptyList();
+            return TypeImpl.CHILDREN;
         }
 
         @Override
@@ -133,7 +154,7 @@ public final class IntegerLiteral implements Expression {
     }
 
     /**
-     * Class for 'IntegerLiteral' node construction.
+     * Class for 'BlockStatement' node construction.
      *
      * @since 1.0
      */
@@ -144,14 +165,9 @@ public final class IntegerLiteral implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * The flag indicating that the builder has been initialized.
+         * List of child nodes.
          */
-        private boolean initialized;
-
-        /**
-         * The data.
-         */
-        private int data;
+        private List<Statement> children = Collections.emptyList();
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -159,32 +175,38 @@ public final class IntegerLiteral implements Expression {
         }
 
         @Override
-        public boolean setData(final String value) {
-            boolean success = true;
-            try {
-                this.data = Integer.parseInt(value);
-                this.initialized = true;
-            } catch (final NumberFormatException ignored) {
-                success = false;
-            }
-            return success;
+        public boolean setData(final String str) {
+            return str.isEmpty();
         }
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            return list.isEmpty();
+            boolean result = true;
+            final List<Statement> clarified = new ArrayList<>(list.size());
+            for (final Node node : list) {
+                if (node instanceof Statement) {
+                    clarified.add((Statement) node);
+                } else {
+                    result = false;
+                    break;
+                }
+            }
+            if (result) {
+                this.children = Collections.unmodifiableList(clarified);
+            }
+            return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.initialized;
+            return true;
         }
 
         @Override
-        public IntegerLiteral createNode() {
-            final IntegerLiteral node = new IntegerLiteral();
+        public BlockStatement createNode() {
+            final BlockStatement node = new BlockStatement();
             node.fragment = this.fragment;
-            node.data = this.data;
+            node.children = this.children;
             return node;
         }
     }

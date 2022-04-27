@@ -13,17 +13,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
+import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'IntegerLiteral' type.
+ * Node that describes the 'Return' type.
  *
  * @since 1.0
  */
-public final class IntegerLiteral implements Expression {
+public final class Return implements Statement {
     /**
      * The type.
      */
@@ -35,19 +36,24 @@ public final class IntegerLiteral implements Expression {
     private Fragment fragment;
 
     /**
-     * The data.
+     * List of child nodes.
      */
-    private int data;
+    private List<Node> children;
+
+    /**
+     * Child with the 'expression' tag.
+     */
+    private Expression expression;
 
     /**
      * Constructor.
      */
-    private IntegerLiteral() {
+    private Return() {
     }
 
     @Override
     public Type getType() {
-        return IntegerLiteral.TYPE;
+        return Return.TYPE;
     }
 
     @Override
@@ -57,29 +63,37 @@ public final class IntegerLiteral implements Expression {
 
     @Override
     public String getData() {
-        return String.valueOf(this.data);
+        return "";
     }
 
     @Override
     public int getChildCount() {
-        return 0;
+        return this.children.size();
     }
 
     @Override
     public Node getChild(final int index) {
-        throw new IndexOutOfBoundsException();
+        return this.children.get(index);
     }
 
     /**
-     * Type descriptor of the 'IntegerLiteral' node.
+     * Returns the child with the 'expression' tag.
+     * @return The node
+     */
+    public Expression getExpression() {
+        return this.expression;
+    }
+
+    /**
+     * Type descriptor of the 'Return' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'IntegerLiteral' string.
+         * The 'Return' string.
          */
-        private static final String INTEGER_LITERAL = "IntegerLiteral";
+        private static final String RETURN = "Return";
 
         /**
          * The 'Expression' string.
@@ -87,13 +101,31 @@ public final class IntegerLiteral implements Expression {
         private static final String EXPRESSION = "Expression";
 
         /**
+         * The list of child types.
+         */
+        private static final List<ChildDescriptor> CHILDREN =
+            Collections.unmodifiableList(
+                Arrays.asList(
+                    new ChildDescriptor(
+                        TypeImpl.EXPRESSION,
+                        false
+                    )
+                )
+            );
+
+        /**
+         * The 'Statement' string.
+         */
+        private static final String STATEMENT = "Statement";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.INTEGER_LITERAL,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.RETURN,
+                    TypeImpl.STATEMENT
                 )
             );
 
@@ -108,12 +140,12 @@ public final class IntegerLiteral implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.INTEGER_LITERAL;
+            return TypeImpl.RETURN;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return Collections.emptyList();
+            return TypeImpl.CHILDREN;
         }
 
         @Override
@@ -133,7 +165,7 @@ public final class IntegerLiteral implements Expression {
     }
 
     /**
-     * Class for 'IntegerLiteral' node construction.
+     * Class for 'Return' node construction.
      *
      * @since 1.0
      */
@@ -144,14 +176,9 @@ public final class IntegerLiteral implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * The flag indicating that the builder has been initialized.
+         * Node with the 'expression' tag.
          */
-        private boolean initialized;
-
-        /**
-         * The data.
-         */
-        private int data;
+        private Expression expression;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -159,32 +186,43 @@ public final class IntegerLiteral implements Expression {
         }
 
         @Override
-        public boolean setData(final String value) {
-            boolean success = true;
-            try {
-                this.data = Integer.parseInt(value);
-                this.initialized = true;
-            } catch (final NumberFormatException ignored) {
-                success = false;
-            }
-            return success;
+        public boolean setData(final String str) {
+            return str.isEmpty();
+        }
+
+        /**
+         * Sets the node with the 'expression' tag.
+         * @param node The node
+         */
+        public void setExpression(final Expression node) {
+            this.expression = node;
         }
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            return list.isEmpty();
+            final Node[] mapping = new Node[1];
+            final ChildrenMapper mapper = new ChildrenMapper(Return.TYPE.getChildTypes());
+            final boolean result = mapper.map(mapping, list);
+            if (result) {
+                this.expression = (Expression) mapping[0];
+            }
+            return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.initialized;
+            return true;
         }
 
         @Override
-        public IntegerLiteral createNode() {
-            final IntegerLiteral node = new IntegerLiteral();
+        public Return createNode() {
+            if (!this.isValid()) {
+                throw new IllegalStateException();
+            }
+            final Return node = new Return();
             node.fragment = this.fragment;
-            node.data = this.data;
+            node.children = Arrays.asList(this.expression);
+            node.expression = this.expression;
             return node;
         }
     }

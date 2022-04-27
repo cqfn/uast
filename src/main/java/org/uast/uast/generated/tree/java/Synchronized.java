@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.green;
+package org.uast.uast.generated.tree.java;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,21 +13,29 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
+import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
+import org.uast.uast.generated.tree.green.BlockStatement;
+import org.uast.uast.generated.tree.green.Expression;
 
 /**
- * Node that describes the 'IntegerLiteral' type.
+ * Node that describes the 'Synchronized' type.
  *
  * @since 1.0
  */
-public final class IntegerLiteral implements Expression {
+public final class Synchronized implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
+
+    /**
+     * The number of children.
+     */
+    private static final int CHILD_COUNT = 2;
 
     /**
      * The fragment associated with the node.
@@ -35,19 +43,19 @@ public final class IntegerLiteral implements Expression {
     private Fragment fragment;
 
     /**
-     * The data.
+     * List of child nodes.
      */
-    private int data;
+    private List<Node> children;
 
     /**
      * Constructor.
      */
-    private IntegerLiteral() {
+    private Synchronized() {
     }
 
     @Override
     public Type getType() {
-        return IntegerLiteral.TYPE;
+        return Synchronized.TYPE;
     }
 
     @Override
@@ -57,29 +65,29 @@ public final class IntegerLiteral implements Expression {
 
     @Override
     public String getData() {
-        return String.valueOf(this.data);
+        return "";
     }
 
     @Override
     public int getChildCount() {
-        return 0;
+        return Synchronized.CHILD_COUNT;
     }
 
     @Override
     public Node getChild(final int index) {
-        throw new IndexOutOfBoundsException();
+        return this.children.get(index);
     }
 
     /**
-     * Type descriptor of the 'IntegerLiteral' node.
+     * Type descriptor of the 'Synchronized' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'IntegerLiteral' string.
+         * The 'Synchronized' string.
          */
-        private static final String INTEGER_LITERAL = "IntegerLiteral";
+        private static final String SYNCHRONIZED = "Synchronized";
 
         /**
          * The 'Expression' string.
@@ -87,13 +95,34 @@ public final class IntegerLiteral implements Expression {
         private static final String EXPRESSION = "Expression";
 
         /**
+         * The 'BlockStatement' string.
+         */
+        private static final String BLOCK_STATEMENT = "BlockStatement";
+
+        /**
+         * The list of child types.
+         */
+        private static final List<ChildDescriptor> CHILDREN =
+            Collections.unmodifiableList(
+                Arrays.asList(
+                    new ChildDescriptor(
+                        TypeImpl.EXPRESSION,
+                        false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.BLOCK_STATEMENT,
+                        false
+                    )
+                )
+            );
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.INTEGER_LITERAL,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.SYNCHRONIZED
                 )
             );
 
@@ -102,18 +131,18 @@ public final class IntegerLiteral implements Expression {
          */
         private static final Map<String, String> PROPERTIES = Stream.of(
             new String[][] {
-                {"color", "green"},
-                {"language", "common"},
+                {"color", "red"},
+                {"language", "java"},
             }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         @Override
         public String getName() {
-            return TypeImpl.INTEGER_LITERAL;
+            return TypeImpl.SYNCHRONIZED;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return Collections.emptyList();
+            return TypeImpl.CHILDREN;
         }
 
         @Override
@@ -133,7 +162,7 @@ public final class IntegerLiteral implements Expression {
     }
 
     /**
-     * Class for 'IntegerLiteral' node construction.
+     * Class for 'Synchronized' node construction.
      *
      * @since 1.0
      */
@@ -144,14 +173,14 @@ public final class IntegerLiteral implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * The flag indicating that the builder has been initialized.
+         * Node 0.
          */
-        private boolean initialized;
+        private Expression first;
 
         /**
-         * The data.
+         * Node 1.
          */
-        private int data;
+        private BlockStatement second;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -159,32 +188,36 @@ public final class IntegerLiteral implements Expression {
         }
 
         @Override
-        public boolean setData(final String value) {
-            boolean success = true;
-            try {
-                this.data = Integer.parseInt(value);
-                this.initialized = true;
-            } catch (final NumberFormatException ignored) {
-                success = false;
-            }
-            return success;
+        public boolean setData(final String str) {
+            return str.isEmpty();
         }
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            return list.isEmpty();
+            final Node[] mapping = new Node[2];
+            final ChildrenMapper mapper = new ChildrenMapper(Synchronized.TYPE.getChildTypes());
+            final boolean result = mapper.map(mapping, list);
+            if (result) {
+                this.first = (Expression) mapping[0];
+                this.second = (BlockStatement) mapping[1];
+            }
+            return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.initialized;
+            return this.first != null
+                && this.second != null;
         }
 
         @Override
-        public IntegerLiteral createNode() {
-            final IntegerLiteral node = new IntegerLiteral();
+        public Synchronized createNode() {
+            if (!this.isValid()) {
+                throw new IllegalStateException();
+            }
+            final Synchronized node = new Synchronized();
             node.fragment = this.fragment;
-            node.data = this.data;
+            node.children = Arrays.asList(this.first, this.second);
             return node;
         }
     }
