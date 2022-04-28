@@ -17,7 +17,7 @@ import org.uast.uast.generated.antlr4.JavaScriptLexer;
 import org.uast.uast.generated.antlr4.JavaScriptParser;
 import org.uast.uast.generated.antlr4.Python3Lexer;
 import org.uast.uast.generated.antlr4.Python3Parser;
-import org.uast.uast.visualizer.AstPrinter;
+import org.uast.uast.handlers.visualizer.AstPrinter;
 
 /**
  * Handler of source code.
