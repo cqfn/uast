@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
+import org.uast.uast.handlers.visualizer.DotRender;
 import org.uast.uast.utils.FilesReader;
 
 /**

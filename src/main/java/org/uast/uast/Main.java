@@ -11,17 +11,16 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.converters.FileConverter;
 import java.io.File;
 import java.io.IOException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
+import org.uast.uast.handlers.json.JsonSerializer;
+import org.uast.uast.handlers.visualizer.AstVisualizer;
 import org.uast.uast.lang.java.JavaParser;
 import org.uast.uast.utils.FilesReader;
 import org.uast.uast.utils.cli.ImagePathValidator;
 import org.uast.uast.utils.cli.JsonPathValidator;
 import org.uast.uast.utils.cli.LanguageConverter;
-import org.uast.uast.visualizer.AstVisualizer;
 
 /**
  * Main class.
@@ -30,11 +29,6 @@ import org.uast.uast.visualizer.AstVisualizer;
  */
 @SuppressWarnings("PMD.ImmutableField")
 public final class Main {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(Main.class);
-
     /**
      * The source file.
      */
@@ -154,7 +148,8 @@ public final class Main {
             visualizer.visualize(new File(this.image));
         }
         if (!this.json.isEmpty()) {
-            LOG.info(this.json);
+            final JsonSerializer serializer = new JsonSerializer(node);
+            serializer.serializeToFile(this.json);
         }
     }
 }

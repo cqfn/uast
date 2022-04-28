@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.visualizer;
+package org.uast.uast.handlers.visualizer;
 
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;

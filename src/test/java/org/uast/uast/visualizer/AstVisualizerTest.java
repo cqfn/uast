@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
+import org.uast.uast.handlers.visualizer.AstVisualizer;
 
 /**
  * Test for {@link AstVisualizer} class.

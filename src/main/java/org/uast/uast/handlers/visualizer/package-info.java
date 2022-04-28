@@ -8,4 +8,4 @@
  *
  * @since 1.0
  */
-package org.uast.uast.visualizer;
+package org.uast.uast.handlers.visualizer;
