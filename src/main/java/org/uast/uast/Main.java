@@ -14,6 +14,7 @@ import java.io.IOException;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
+import org.uast.uast.handlers.json.JsonDeserializer;
 import org.uast.uast.handlers.json.JsonSerializer;
 import org.uast.uast.handlers.visualizer.AstVisualizer;
 import org.uast.uast.lang.java.JavaParser;
@@ -139,6 +140,10 @@ public final class Main {
                 break;
             case "js":
                 new CodeHandler(code).processJavaScriptCode();
+                break;
+            case "json":
+                final JsonDeserializer deserializer = new JsonDeserializer(code);
+                node = deserializer.convert();
                 break;
             default:
                 break;

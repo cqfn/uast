@@ -36,7 +36,9 @@ public class Factory {
             final Type type = this.types.get(name);
             result = type.createBuilder();
         } else {
-            result = EmptyTree.BUILDER;
+            final DraftNode.Constructor draft = new DraftNode.Constructor();
+            draft.setName(name);
+            result = draft;
         }
         return result;
     }

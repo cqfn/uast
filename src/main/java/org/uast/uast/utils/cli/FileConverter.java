@@ -74,7 +74,7 @@ public class FileConverter implements IStringConverter<File> {
      *  {@code false} otherwise
      */
     private static boolean isValidFileExtension(final String value) {
-        final List<String> exts = Arrays.asList("java", "py", "js", "txt");
+        final List<String> exts = Arrays.asList("java", "py", "js", "txt", "json");
         final Optional<String> ext = Optional.ofNullable(value)
             .filter(f -> f.contains("."))
             .map(f -> f.substring(value.lastIndexOf('.') + 1));
