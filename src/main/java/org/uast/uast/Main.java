@@ -11,13 +11,11 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.converters.FileConverter;
 import java.io.File;
 import java.io.IOException;
-import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
 import org.uast.uast.handlers.json.JsonSerializer;
 import org.uast.uast.handlers.visualizer.AstVisualizer;
-import org.uast.uast.lang.java.JavaParser;
-import org.uast.uast.utils.FilesReader;
+import org.uast.uast.lang.SourceCodeParser;
 import org.uast.uast.utils.cli.ImagePathValidator;
 import org.uast.uast.utils.cli.JsonPathValidator;
 import org.uast.uast.utils.cli.LanguageConverter;
@@ -42,7 +40,7 @@ public final class Main {
     private File source;
 
     /**
-     * The programming language for which the analysis is conducted.
+     * The programming language for which the analysis is performed.
      */
     @Parameter(
         names = { "--lang", "-l" },
@@ -127,22 +125,7 @@ public final class Main {
                 lang = this.language;
             }
         }
-        Node node = EmptyTree.INSTANCE;
-        final String code = new FilesReader(this.source.getPath()).readAsString();
-        switch (lang) {
-            case "java":
-                final JavaParser parser = new JavaParser(code);
-                node = parser.parse();
-                break;
-            case "py":
-                new CodeHandler(code).processPythonCode();
-                break;
-            case "js":
-                new CodeHandler(code).processJavaScriptCode();
-                break;
-            default:
-                break;
-        }
+        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang);
         if (!this.image.isEmpty()) {
             final AstVisualizer visualizer = new AstVisualizer(node);
             visualizer.visualize(new File(this.image));
