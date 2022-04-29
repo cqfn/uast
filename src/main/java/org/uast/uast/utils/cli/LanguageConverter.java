@@ -62,9 +62,9 @@ public class LanguageConverter implements IStringConverter<String> {
      *  the input language is not supported
      */
     private static String getSourceLanguage(final String value) {
-        String lowercase = value.toLowerCase(Locale.ENGLISH);
+        final String lowercase = value.toLowerCase(Locale.ENGLISH);
         final String result;
-        switch(lowercase) {
+        switch (lowercase) {
             case "java":
             case "js":
             case "python":
@@ -76,6 +76,7 @@ public class LanguageConverter implements IStringConverter<String> {
                 break;
             default:
                 result = "";
+                break;
         }
         return result;
     }
