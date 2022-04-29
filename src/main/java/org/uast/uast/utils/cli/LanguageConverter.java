@@ -7,8 +7,7 @@ package org.uast.uast.utils.cli;
 
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Locale;
 
 /**
  * Custom implementation of CLI language parameter converter.
@@ -16,16 +15,6 @@ import java.util.List;
  * @since 1.0
  */
 public class LanguageConverter implements IStringConverter<String> {
-    /**
-     * The Java language identifier.
-     */
-    private static final String JAVA = "java";
-
-    /**
-     * The Python language identifier.
-     */
-    private static final String PYTHON = "python";
-
     /**
      * The option name.
      */
@@ -73,25 +62,21 @@ public class LanguageConverter implements IStringConverter<String> {
      *  the input language is not supported
      */
     private static String getSourceLanguage(final String value) {
-        final List<String> java = Arrays.asList(
-            LanguageConverter.JAVA, "Java"
-        );
-        final List<String> python = Arrays.asList(
-            LanguageConverter.PYTHON, "Python"
-        );
-        final List<String> javascript = Arrays.asList(
-            "javascript", "JavaScript", "JS", "js"
-        );
-        String lang = "";
-        if (java.contains(value)) {
-            lang = LanguageConverter.JAVA;
+        String lowercase = value.toLowerCase(Locale.ENGLISH);
+        final String result;
+        switch(lowercase) {
+            case "java":
+            case "js":
+            case "python":
+            case "json":
+                result = lowercase;
+                break;
+            case "javascript":
+                result = "js";
+                break;
+            default:
+                result = "";
         }
-        if (python.contains(value)) {
-            lang = LanguageConverter.PYTHON;
-        }
-        if (javascript.contains(value)) {
-            lang = "js";
-        }
-        return lang;
+        return result;
     }
 }
