@@ -125,7 +125,7 @@ public final class Main {
                 lang = this.language;
             }
         }
-        Node node = new SourceCodeParser(this.source.getPath()).parse(lang);
+        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang);
         if (!this.image.isEmpty()) {
             final AstVisualizer visualizer = new AstVisualizer(node);
             visualizer.visualize(new File(this.image));

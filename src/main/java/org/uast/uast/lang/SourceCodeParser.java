@@ -39,7 +39,7 @@ public class SourceCodeParser {
      */
     public Node parse(final String language) throws IOException {
         Node node = EmptyTree.INSTANCE;
-        final String code = new FilesReader(filename).readAsString();
+        final String code = new FilesReader(this.filename).readAsString();
         switch (language) {
             case "java":
                 final JavaParser parser = new JavaParser(code);

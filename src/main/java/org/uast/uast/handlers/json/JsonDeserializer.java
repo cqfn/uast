@@ -4,11 +4,11 @@
  */
 package org.uast.uast.handlers.json;
 
-import java.util.LinkedList;
-import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import java.util.LinkedList;
+import java.util.List;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
@@ -70,16 +70,16 @@ public class JsonDeserializer {
      */
     public Node convert() {
         Node result = EmptyTree.INSTANCE;
-        JsonElement element = new Gson().fromJson(this.source, JsonElement.class);
+        final JsonElement element = new Gson().fromJson(this.source, JsonElement.class);
         if (element.isJsonObject()) {
             final JsonObject obj = element.getAsJsonObject();
             String language = "";
             if (obj.has(JsonDeserializer.STR_LANGUAGE)) {
-                language = obj.get(STR_LANGUAGE).getAsString();
+                language = obj.get(JsonDeserializer.STR_LANGUAGE).getAsString();
             }
             this.factory = FactorySelector.INSTANCE.select(language);
             if (obj.has(JsonDeserializer.STR_ROOT)) {
-                result = convertElement(obj.get(JsonDeserializer.STR_ROOT));
+                result = this.convertElement(obj.get(JsonDeserializer.STR_ROOT));
             }
         }
         return result;
@@ -109,7 +109,7 @@ public class JsonDeserializer {
         if (obj.has(JsonDeserializer.STR_TYPE)) {
             final String type = obj.get(JsonDeserializer.STR_TYPE).getAsString();
             final Builder builder = this.factory.createBuilder(type);
-            fillNodeBuilder(obj, builder);
+            this.fillNodeBuilder(obj, builder);
             if (builder.isValid()) {
                 result = builder.createNode();
             }
