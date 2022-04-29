@@ -4,8 +4,9 @@
  */
 package org.uast.uast.handlers.json;
 
+import java.util.LinkedList;
+import java.util.List;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.uast.uast.base.Builder;
@@ -13,9 +14,6 @@ import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
 import org.uast.uast.base.Node;
 import org.uast.uast.lang.FactorySelector;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Converts a string contains JSON object to a syntax tree.
@@ -96,27 +94,47 @@ public class JsonDeserializer {
         Node result = EmptyTree.INSTANCE;
         if (element.isJsonObject()) {
             final JsonObject obj = element.getAsJsonObject();
-            if (obj.has(JsonDeserializer.STR_TYPE)) {
-                final String type = obj.get(JsonDeserializer.STR_TYPE).getAsString();
-                final Builder builder = this.factory.createBuilder(type);
-                if (obj.has(JsonDeserializer.STR_DATA)) {
-                    builder.setData(obj.get(JsonDeserializer.STR_DATA).getAsString());
-                }
-                if (obj.has(JsonDeserializer.STR_CHILDREN)) {
-                    final JsonElement children = obj.get(JsonDeserializer.STR_CHILDREN);
-                    if (children.isJsonArray()) {
-                        final List<Node> list = new LinkedList<>();
-                        for (final JsonElement child : children.getAsJsonArray()) {
-                            list.add(this.convertElement(child));
-                        }
-                        builder.setChildrenList(list);
-                    }
-                }
-                if (builder.isValid()) {
-                    result = builder.createNode();
-                }
+            result = this.convertObject(obj);
+        }
+        return result;
+    }
+
+    /**
+     * Converts JSON object to node.
+     * @param obj JSON element
+     * @return A node
+     */
+    private Node convertObject(final JsonObject obj) {
+        Node result = EmptyTree.INSTANCE;
+        if (obj.has(JsonDeserializer.STR_TYPE)) {
+            final String type = obj.get(JsonDeserializer.STR_TYPE).getAsString();
+            final Builder builder = this.factory.createBuilder(type);
+            fillNodeBuilder(obj, builder);
+            if (builder.isValid()) {
+                result = builder.createNode();
             }
         }
         return result;
+    }
+
+    /**
+     * Fills the node builder.
+     * @param obj JSON element
+     * @param builder The node builder
+     */
+    private void fillNodeBuilder(final JsonObject obj, final Builder builder) {
+        if (obj.has(JsonDeserializer.STR_DATA)) {
+            builder.setData(obj.get(JsonDeserializer.STR_DATA).getAsString());
+        }
+        if (obj.has(JsonDeserializer.STR_CHILDREN)) {
+            final JsonElement children = obj.get(JsonDeserializer.STR_CHILDREN);
+            if (children.isJsonArray()) {
+                final List<Node> list = new LinkedList<>();
+                for (final JsonElement child : children.getAsJsonArray()) {
+                    list.add(this.convertElement(child));
+                }
+                builder.setChildrenList(list);
+            }
+        }
     }
 }
