@@ -10,6 +10,7 @@ import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.handlers.json.JsonDeserializer;
 import org.uast.uast.lang.java.JavaParser;
+import org.uast.uast.lang.javascript.JavaScriptParser;
 import org.uast.uast.utils.FilesReader;
 
 /**
@@ -42,14 +43,15 @@ public class SourceCodeParser {
         final String code = new FilesReader(this.filename).readAsString();
         switch (language) {
             case "java":
-                final JavaParser parser = new JavaParser(code);
-                node = parser.parse();
+                final JavaParser jap = new JavaParser(code);
+                node = jap.parse();
                 break;
             case "py":
                 new CodeHandler(code).processPythonCode();
                 break;
             case "js":
-                new CodeHandler(code).processJavaScriptCode();
+                final JavaScriptParser jsp = new JavaScriptParser(code);
+                node = jsp.parse();
                 break;
             case "json":
                 final JsonDeserializer deserializer = new JsonDeserializer(code);

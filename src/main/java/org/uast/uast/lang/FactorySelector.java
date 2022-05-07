@@ -10,6 +10,7 @@ import java.util.TreeMap;
 import org.uast.uast.base.Factory;
 import org.uast.uast.example.green.GreenFactory;
 import org.uast.uast.generated.tree.java.JavaFactory;
+import org.uast.uast.generated.tree.js.JsFactory;
 
 /**
  * Selects a suitable factory for the specified programming language.
@@ -50,6 +51,7 @@ public final class FactorySelector {
     private static Map<String, Factory> init() {
         final Map<String, Factory> map = new TreeMap<>();
         map.put("java", JavaFactory.INSTANCE);
+        map.put("js", JsFactory.INSTANCE);
         return map;
     }
 }

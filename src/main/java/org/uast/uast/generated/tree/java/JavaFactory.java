@@ -18,6 +18,7 @@ import org.uast.uast.generated.tree.green.Identifier;
 import org.uast.uast.generated.tree.green.IntegerLiteral;
 import org.uast.uast.generated.tree.green.Return;
 import org.uast.uast.generated.tree.green.Subtraction;
+import org.uast.uast.generated.tree.green.This;
 import org.uast.uast.generated.tree.green.Variable;
 
 /**
@@ -51,6 +52,7 @@ public final class JavaFactory extends Factory {
             Return.TYPE,
             Subtraction.TYPE,
             Synchronized.TYPE,
+            This.TYPE,
             Variable.TYPE
         );
         final Map<String, Type> map = new TreeMap<>();
