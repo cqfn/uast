@@ -5,11 +5,12 @@
 package org.uast.uast.lang;
 
 import java.io.IOException;
-import org.uast.uast.CodeHandler;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.handlers.json.JsonDeserializer;
 import org.uast.uast.lang.java.JavaParser;
+import org.uast.uast.lang.javascript.JavaScriptParser;
+import org.uast.uast.lang.python.PythonParser;
 import org.uast.uast.utils.FilesReader;
 
 /**
@@ -34,22 +35,25 @@ public class SourceCodeParser {
     /**
      * Parses source code.
      * @param language The name of the programming language
-     * @return Root node of the unified syntax tree
+     * @param unified Convert to unified syntax tree
+     * @return Root node of the [unified] syntax tree
      * @throws IOException In case if impossible to read source code
      */
-    public Node parse(final String language) throws IOException {
+    public Node parse(final String language, final boolean unified) throws IOException {
         Node node = EmptyTree.INSTANCE;
         final String code = new FilesReader(this.filename).readAsString();
         switch (language) {
             case "java":
-                final JavaParser parser = new JavaParser(code);
-                node = parser.parse();
+                final JavaParser jap = new JavaParser(code);
+                node = jap.parse(unified);
                 break;
             case "py":
-                new CodeHandler(code).processPythonCode();
+                final PythonParser pyp = new PythonParser(code);
+                node = pyp.parse(unified);
                 break;
             case "js":
-                new CodeHandler(code).processJavaScriptCode();
+                final JavaScriptParser jsp = new JavaScriptParser(code);
+                node = jsp.parse(unified);
                 break;
             case "json":
                 final JsonDeserializer deserializer = new JsonDeserializer(code);

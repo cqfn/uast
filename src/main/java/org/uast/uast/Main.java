@@ -73,6 +73,15 @@ public final class Main {
     private String json;
 
     /**
+     * The raw option.
+     */
+    @Parameter(
+        names = "--raw",
+        description = "Do not convert to unified syntax tree"
+    )
+    private boolean raw;
+
+    /**
      * The help option.
      */
     @Parameter(names = "--help", help = true)
@@ -125,7 +134,7 @@ public final class Main {
                 lang = this.language;
             }
         }
-        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang);
+        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang, !this.raw);
         if (!this.image.isEmpty()) {
             final AstVisualizer visualizer = new AstVisualizer(node);
             visualizer.visualize(new File(this.image));

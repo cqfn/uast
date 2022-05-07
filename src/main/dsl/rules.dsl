@@ -22,3 +22,11 @@ ReturnStmt(#1) -> Return(#1);
 NameExpr(SimpleName<#1>) -> Variable(Identifier<#1>);
 BlockStmt -> BlockStatement;
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
+
+js:
+
+Yield <- Expression;
+
+python:
+
+self -> This;
