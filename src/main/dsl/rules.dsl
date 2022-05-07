@@ -26,3 +26,7 @@ SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
 js:
 
 Yield <- Expression;
+
+python:
+
+self -> This;

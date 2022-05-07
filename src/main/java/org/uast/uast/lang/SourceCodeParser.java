@@ -5,12 +5,12 @@
 package org.uast.uast.lang;
 
 import java.io.IOException;
-import org.uast.uast.CodeHandler;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 import org.uast.uast.handlers.json.JsonDeserializer;
 import org.uast.uast.lang.java.JavaParser;
 import org.uast.uast.lang.javascript.JavaScriptParser;
+import org.uast.uast.lang.python.PythonParser;
 import org.uast.uast.utils.FilesReader;
 
 /**
@@ -47,7 +47,8 @@ public class SourceCodeParser {
                 node = jap.parse();
                 break;
             case "py":
-                new CodeHandler(code).processPythonCode();
+                final PythonParser pyp = new PythonParser(code);
+                node = pyp.parse();
                 break;
             case "js":
                 final JavaScriptParser jsp = new JavaScriptParser(code);
