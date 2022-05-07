@@ -29,13 +29,20 @@ public class JavaParser {
     }
 
     /**
-     * Parses Java source code to unified syntax tree.
+     * Parses Java source code to [unified] syntax tree.
+     * @param unified Convert into unified syntax tree after parsing
      * @return Root node
      */
-    public Node parse() {
+    public Node parse(final boolean unified) {
+        final Node result;
         final CompilationUnit raw = StaticJavaParser.parse(this.source);
         final JavaRawToNodeConverter converter = new JavaRawToNodeConverter();
         final Node draft = converter.convert(raw);
-        return JavaAdapter.INSTANCE.convert(draft);
+        if (unified) {
+            result = JavaAdapter.INSTANCE.convert(draft);
+        } else {
+            result = draft;
+        }
+        return result;
     }
 }

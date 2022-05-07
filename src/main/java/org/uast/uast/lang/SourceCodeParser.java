@@ -35,24 +35,25 @@ public class SourceCodeParser {
     /**
      * Parses source code.
      * @param language The name of the programming language
-     * @return Root node of the unified syntax tree
+     * @param unified Convert to unified syntax tree
+     * @return Root node of the [unified] syntax tree
      * @throws IOException In case if impossible to read source code
      */
-    public Node parse(final String language) throws IOException {
+    public Node parse(final String language, final boolean unified) throws IOException {
         Node node = EmptyTree.INSTANCE;
         final String code = new FilesReader(this.filename).readAsString();
         switch (language) {
             case "java":
                 final JavaParser jap = new JavaParser(code);
-                node = jap.parse();
+                node = jap.parse(unified);
                 break;
             case "py":
                 final PythonParser pyp = new PythonParser(code);
-                node = pyp.parse();
+                node = pyp.parse(unified);
                 break;
             case "js":
                 final JavaScriptParser jsp = new JavaScriptParser(code);
-                node = jsp.parse();
+                node = jsp.parse(unified);
                 break;
             case "json":
                 final JsonDeserializer deserializer = new JsonDeserializer(code);

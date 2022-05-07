@@ -37,10 +37,11 @@ public class JavaScriptParser {
     }
 
     /**
-     * Parses Java source code to unified syntax tree.
+     * Parses Java source code to [unified] syntax tree.
+     * @param unified Convert into unified syntax tree after parsing
      * @return Root node
      */
-    public Node parse() {
+    public Node parse(final boolean unified) {
         final InputStream input = new ByteArrayInputStream(
             this.source.getBytes(StandardCharsets.UTF_8)
         );
@@ -54,7 +55,11 @@ public class JavaScriptParser {
                 new org.uast.uast.generated.antlr4.JavaScriptParser(tokens);
             final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node draft = converter.convert(parser.program());
-            result = JsAdapter.INSTANCE.convert(draft);
+            if (unified) {
+                result = JsAdapter.INSTANCE.convert(draft);
+            } else {
+                result = draft;
+            }
         } catch (final IOException exception) {
             result = EmptyTree.INSTANCE;
         }
