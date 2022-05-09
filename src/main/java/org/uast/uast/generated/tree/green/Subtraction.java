@@ -16,6 +16,7 @@ import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
+import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
@@ -253,7 +254,12 @@ public final class Subtraction implements BinaryExpression {
             }
             final Subtraction node = new Subtraction();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.left, this.right);
+            node.children = new ListUtils<Node>()
+                .add(
+                    this.left,
+                    this.right
+                )
+                .make();
             node.left = this.left;
             node.right = this.right;
             return node;

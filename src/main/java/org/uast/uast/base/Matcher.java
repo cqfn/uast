@@ -4,6 +4,7 @@
  */
 package org.uast.uast.base;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,5 +20,5 @@ public interface Matcher {
      * @param data Where to save data when matched
      * @return The result of matching, {@code true} if node matches and data was extracted
      */
-    boolean match(Node node, Map<Integer, Node> children, Map<Integer, String> data);
+    boolean match(Node node, Map<Integer, List<Node>> children, Map<Integer, String> data);
 }

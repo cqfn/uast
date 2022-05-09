@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
 import org.uast.uast.base.Node;
@@ -38,7 +39,7 @@ public final class Matcher0 implements Matcher {
 
     @Override
     public boolean match(final Node node,
-        final Map<Integer, Node> children,
+        final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher0.EXPECTED_TYPE)
             && node.getChildCount() == Matcher0.EXPECTED_COUNT;
