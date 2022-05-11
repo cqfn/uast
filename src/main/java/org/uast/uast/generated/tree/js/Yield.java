@@ -16,6 +16,7 @@ import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
+import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 import org.uast.uast.generated.tree.green.Expression;
@@ -200,7 +201,11 @@ public final class Yield implements Node {
             }
             final Yield node = new Yield();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.first);
+            node.children = new ListUtils<Node>()
+                .add(
+                    this.first
+                )
+                .make();
             return node;
         }
     }

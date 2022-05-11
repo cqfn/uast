@@ -16,6 +16,7 @@ import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
+import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 import org.uast.uast.generated.tree.green.BlockStatement;
@@ -26,7 +27,7 @@ import org.uast.uast.generated.tree.green.Expression;
  *
  * @since 1.0
  */
-public final class Synchronized implements Node {
+public final class Synchronized implements Statement {
     /**
      * The type.
      */
@@ -117,12 +118,19 @@ public final class Synchronized implements Node {
             );
 
         /**
+         * The 'Statement' string.
+         */
+        private static final String STATEMENT = "Statement";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.SYNCHRONIZED
+                    TypeImpl.SYNCHRONIZED,
+                    TypeImpl.STATEMENT,
+                    TypeImpl.STATEMENT
                 )
             );
 
@@ -217,7 +225,12 @@ public final class Synchronized implements Node {
             }
             final Synchronized node = new Synchronized();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.first, this.second);
+            node.children = new ListUtils<Node>()
+                .add(
+                    this.first,
+                    this.second
+                )
+                .make();
             return node;
         }
     }

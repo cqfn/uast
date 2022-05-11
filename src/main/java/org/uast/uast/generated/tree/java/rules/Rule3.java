@@ -5,7 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.uast.uast.base.Builder;
@@ -39,7 +39,7 @@ public final class Rule3 implements Converter {
     @Override
     public Node convert(final Node node, final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Map<Integer, Node> children = new TreeMap<>();
+        final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher3.INSTANCE.match(node, children, data);
         if (matched) {
@@ -54,14 +54,12 @@ public final class Rule3 implements Converter {
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, Node> children) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule3.RETURN);
-        final boolean applied = builder.setChildrenList(
-            Arrays.asList(
-                children.get(1)
-            )
-        );
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
         }

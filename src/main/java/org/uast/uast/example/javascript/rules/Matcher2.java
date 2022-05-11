@@ -5,6 +5,7 @@
 
 package org.uast.uast.example.javascript.rules;
 
+import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
 import org.uast.uast.base.Node;
@@ -37,7 +38,7 @@ public final class Matcher2 implements Matcher {
     }
 
     @Override
-    public boolean match(final Node node, final Map<Integer, Node> children,
+    public boolean match(final Node node, final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher2.EXPECTED_TYPE)
             && node.getChildCount() == Matcher2.EXPECTED_COUNT

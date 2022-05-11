@@ -4,6 +4,7 @@
  */
 package org.uast.uast.example.javascript.rules;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.uast.uast.base.Builder;
@@ -37,7 +38,7 @@ public final class Rule0 implements Converter {
     @Override
     public Node convert(final Node node, final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Map<Integer, Node> children = new TreeMap<>();
+        final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher2.INSTANCE.match(node, children, data);
         if (matched) {

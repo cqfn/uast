@@ -16,6 +16,7 @@ import org.uast.uast.base.ChildDescriptor;
 import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
+import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
@@ -221,7 +222,11 @@ public final class Return implements Statement {
             }
             final Return node = new Return();
             node.fragment = this.fragment;
-            node.children = Arrays.asList(this.expression);
+            node.children = new ListUtils<Node>()
+                .add(
+                    this.expression
+                )
+                .make();
             node.expression = this.expression;
             return node;
         }
