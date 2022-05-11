@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
