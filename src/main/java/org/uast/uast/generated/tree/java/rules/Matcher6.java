@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -27,11 +28,6 @@ public final class Matcher6 implements Matcher {
     private static final String EXPECTED_TYPE = "BlockStmt";
 
     /**
-     * Expected number of child nodes.
-     */
-    private static final int EXPECTED_COUNT = 0;
-
-    /**
      * Constructor.
      */
     private Matcher6() {
@@ -41,7 +37,10 @@ public final class Matcher6 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher6.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher6.EXPECTED_COUNT;
+        final boolean result = node.belongsToGroup(Matcher6.EXPECTED_TYPE);
+        if (result) {
+            children.put(1, node.getChildrenList());
+        }
+        return result;
     }
 }

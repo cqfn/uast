@@ -14,13 +14,14 @@ This <- 0;
 java:
 
 Synchronized <- Expression, BlockStatement;
+Statement <- & | Synchronized;
 
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
 BinaryExpr(#1, #2)<"+"> -> Addition(#1, #2);
 BinaryExpr(#1, #2)<"-"> -> Subtraction(#1, #2);
 ReturnStmt(#1) -> Return(#1);
 NameExpr(SimpleName<#1>) -> Variable(Identifier<#1>);
-BlockStmt -> BlockStatement;
+BlockStmt(#1...) -> BlockStatement(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
 
 js:

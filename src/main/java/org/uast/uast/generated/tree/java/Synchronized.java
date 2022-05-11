@@ -27,7 +27,7 @@ import org.uast.uast.generated.tree.green.Expression;
  *
  * @since 1.0
  */
-public final class Synchronized implements Node {
+public final class Synchronized implements Statement {
     /**
      * The type.
      */
@@ -118,12 +118,19 @@ public final class Synchronized implements Node {
             );
 
         /**
+         * The 'Statement' string.
+         */
+        private static final String STATEMENT = "Statement";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.SYNCHRONIZED
+                    TypeImpl.SYNCHRONIZED,
+                    TypeImpl.STATEMENT,
+                    TypeImpl.STATEMENT
                 )
             );
 
