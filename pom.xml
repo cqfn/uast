@@ -49,7 +49,7 @@
             <plugin>
                 <groupId>com.qulice</groupId>
                 <artifactId>qulice-maven-plugin</artifactId>
-                <version>0.19.4</version>
+                <version>0.19.1</version>
                 <configuration>
                     <license>file:${qulice.license}</license>
                     <excludes combine.children="append">
