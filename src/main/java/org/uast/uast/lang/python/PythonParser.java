@@ -13,8 +13,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
-import org.uast.uast.generated.antlr4.Python3Lexer;
-import org.uast.uast.generated.antlr4.Python3Parser;
+import org.uast.uast.generated.antlr4.PythonLexer;
 import org.uast.uast.generated.tree.python.PythonAdapter;
 import org.uast.uast.lang.AntlrToNodeConverter;
 
@@ -50,9 +49,10 @@ public class PythonParser {
         Node result;
         try {
             stream = CharStreams.fromStream(input, StandardCharsets.UTF_8);
-            final Python3Lexer lexer = new Python3Lexer(stream);
+            final PythonLexer lexer = new PythonLexer(stream);
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
-            final Python3Parser parser = new Python3Parser(tokens);
+            final org.uast.uast.generated.antlr4.PythonParser parser =
+                new org.uast.uast.generated.antlr4.PythonParser(tokens);
             final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node draft = converter.convert(parser.file_input());
             if (unified) {
