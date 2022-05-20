@@ -31,8 +31,7 @@ public class AntlrToNodeConverter {
             "stmt", "simple_stmt", "compound_stmt",
             "test", "logical_test", "testlist",
             "def_parameter",
-            "number",
-            "atom"
+            "number"
         )
     );
 
@@ -74,7 +73,12 @@ public class AntlrToNodeConverter {
         final String name = this.parser.getRuleNames()[ctx.getRuleIndex()];
         final Node result;
         if (AntlrToNodeConverter.SKIPPED_NODES.contains(name)) {
-            result = this.convert((RuleContext) ctx.getChild(0));
+            final ParseTree element = ctx.getChild(0);
+            if (element instanceof TerminalNode) {
+                result = convertTerminal((TerminalNode) element);
+            } else {
+                result = this.convert((RuleContext) ctx.getChild(0));
+            }
         } else {
             final DraftNode.Constructor ctor = new DraftNode.Constructor();
             ctor.setName(name);
