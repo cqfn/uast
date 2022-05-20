@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,12 +24,12 @@ public final class Matcher7 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "SynchronizedStmt";
+    private static final String EXPECTED_TYPE = "NameExpr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
@@ -42,12 +41,8 @@ public final class Matcher7 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher7.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher7.EXPECTED_COUNT;
-        if (result) {
-            children.put(1, Collections.singletonList(node.getChild(0)));
-            children.put(2, Collections.singletonList(node.getChild(1)));
-        }
-        return result;
+        return node.belongsToGroup(Matcher7.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher7.EXPECTED_COUNT
+            && Matcher8.INSTANCE.match(node.getChild(0), children, data);
     }
 }

@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,9 @@ public final class Rule5 implements Converter {
     public static final Converter INSTANCE = new Rule5();
 
     /**
-     * The 'BlockStatement' string.
+     * The 'Synchronized' string.
      */
-    private static final String BLOCK_STATEMENT = "BlockStatement";
+    private static final String SYNCHRONIZED = "Synchronized";
 
     /**
      * Constructor.
@@ -41,7 +42,7 @@ public final class Rule5 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher6.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher5.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule5.firstBuilder(factory, children);
         }
@@ -49,7 +50,7 @@ public final class Rule5 implements Converter {
     }
 
     /**
-     * Builds a node with 'BlockStatement' type.
+     * Builds a node with 'Synchronized' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +58,10 @@ public final class Rule5 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule5.BLOCK_STATEMENT);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule5.SYNCHRONIZED);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(1));
+        list.addAll(children.get(2));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

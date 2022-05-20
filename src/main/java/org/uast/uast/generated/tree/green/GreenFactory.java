@@ -38,10 +38,17 @@ public final class GreenFactory extends Factory {
     private static Map<String, Type> init() {
         final List<Type> types = Arrays.asList(
             Addition.TYPE,
-            BlockStatement.TYPE,
+            ExpressionList.TYPE,
+            FunctionCall.TYPE,
             Identifier.TYPE,
             IntegerLiteral.TYPE,
+            Modifier.TYPE,
+            ModifierBlock.TYPE,
+            Name.TYPE,
+            PropertyAccess.TYPE,
             Return.TYPE,
+            StatementBlock.TYPE,
+            StringLiteral.TYPE,
             Subtraction.TYPE,
             This.TYPE,
             Variable.TYPE

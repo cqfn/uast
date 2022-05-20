@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -19,21 +20,21 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Rule4 implements Converter {
+public final class Rule11 implements Converter {
     /**
      * The instance.
      */
-    public static final Converter INSTANCE = new Rule4();
+    public static final Converter INSTANCE = new Rule11();
 
     /**
-     * The 'StatementBlock' string.
+     * The 'Addition' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
      */
-    private Rule4() {
+    private Rule11() {
     }
 
     @Override
@@ -41,15 +42,15 @@ public final class Rule4 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher4.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher13.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule4.firstBuilder(factory, children);
+            result = Rule11.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +58,10 @@ public final class Rule4 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.STATEMENT_BLOCK);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule11.ADDITION);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(1));
+        list.addAll(children.get(2));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

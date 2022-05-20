@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.green;
+package org.uast.uast.generated.tree.java;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,28 +13,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
-import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
-import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'This' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class This implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -42,19 +35,14 @@ public final class Variable implements Expression {
     private Fragment fragment;
 
     /**
-     * List of child nodes.
-     */
-    private List<Node> children;
-
-    /**
      * Constructor.
      */
-    private Variable() {
+    private This() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return This.TYPE;
     }
 
     @Override
@@ -69,47 +57,24 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return 0;
     }
 
     @Override
     public Node getChild(final int index) {
-        return this.children.get(index);
+        throw new IndexOutOfBoundsException();
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Type descriptor of the 'This' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'This' string.
          */
-        private static final String VARIABLE = "Variable";
-
-        /**
-         * The 'Name' string.
-         */
-        private static final String NAME = "Name";
-
-        /**
-         * The list of child types.
-         */
-        private static final List<ChildDescriptor> CHILDREN =
-            Collections.unmodifiableList(
-                Arrays.asList(
-                    new ChildDescriptor(
-                        TypeImpl.NAME,
-                        false
-                    )
-                )
-            );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
+        private static final String THIS = "This";
 
         /**
          * Hierarchy.
@@ -117,8 +82,7 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.THIS
                 )
             );
 
@@ -127,18 +91,18 @@ public final class Variable implements Expression {
          */
         private static final Map<String, String> PROPERTIES = Stream.of(
             new String[][] {
-                {"color", "green"},
-                {"language", "common"},
+                {"color", "red"},
+                {"language", "java"},
             }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.THIS;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return TypeImpl.CHILDREN;
+            return Collections.emptyList();
         }
 
         @Override
@@ -158,7 +122,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'This' node construction.
      *
      * @since 1.0
      */
@@ -167,11 +131,6 @@ public final class Variable implements Expression {
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
-
-        /**
-         * Node 0.
-         */
-        private Name first;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -185,32 +144,18 @@ public final class Variable implements Expression {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
-            final boolean result = mapper.map(mapping, list);
-            if (result) {
-                this.first = (Name) mapping[0];
-            }
-            return result;
+            return list.isEmpty();
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return true;
         }
 
         @Override
-        public Variable createNode() {
-            if (!this.isValid()) {
-                throw new IllegalStateException();
-            }
-            final Variable node = new Variable();
+        public This createNode() {
+            final This node = new This();
             node.fragment = this.fragment;
-            node.children = new ListUtils<Node>()
-                .add(
-                    this.first
-                )
-                .make();
             return node;
         }
     }

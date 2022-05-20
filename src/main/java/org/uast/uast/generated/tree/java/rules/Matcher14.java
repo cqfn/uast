@@ -16,37 +16,36 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher5 implements Matcher {
+public final class Matcher14 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher5();
+    public static final Matcher INSTANCE = new Matcher14();
 
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "SynchronizedStmt";
+    private static final String EXPECTED_TYPE = "EnclosedExpr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
      */
-    private Matcher5() {
+    private Matcher14() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher5.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher5.EXPECTED_COUNT;
+        final boolean result = node.belongsToGroup(Matcher14.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher14.EXPECTED_COUNT;
         if (result) {
-            children.put(1, Collections.singletonList(node.getChild(0)));
-            children.put(2, Collections.singletonList(node.getChild(1)));
+            children.put(2, Collections.singletonList(node.getChild(0)));
         }
         return result;
     }

@@ -23,7 +23,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
-public final class Identifier implements Node {
+public final class Identifier implements Expression {
     /**
      * The type.
      */
@@ -82,12 +82,18 @@ public final class Identifier implements Node {
         private static final String IDENTIFIER = "Identifier";
 
         /**
+         * The 'Expression' string.
+         */
+        private static final String EXPRESSION = "Expression";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.IDENTIFIER
+                    TypeImpl.IDENTIFIER,
+                    TypeImpl.EXPRESSION
                 )
             );
 

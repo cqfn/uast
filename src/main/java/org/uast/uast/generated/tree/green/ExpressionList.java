@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.green;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,28 +14,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
-import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
-import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'ExpressionList' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class ExpressionList implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -44,17 +38,17 @@ public final class Variable implements Expression {
     /**
      * List of child nodes.
      */
-    private List<Node> children;
+    private List<Expression> children;
 
     /**
      * Constructor.
      */
-    private Variable() {
+    private ExpressionList() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return ExpressionList.TYPE;
     }
 
     @Override
@@ -69,7 +63,16 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return this.children.size();
+    }
+
+    /**
+     * Return a child node with 'Expression' type by its index.
+     * @param index Child index
+     * @return A node
+     */
+    public Expression getExpression(final int index) {
+        return this.children.get(index);
     }
 
     @Override
@@ -78,33 +81,15 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Type descriptor of the 'ExpressionList' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'ExpressionList' string.
          */
-        private static final String VARIABLE = "Variable";
-
-        /**
-         * The 'Name' string.
-         */
-        private static final String NAME = "Name";
-
-        /**
-         * The list of child types.
-         */
-        private static final List<ChildDescriptor> CHILDREN =
-            Collections.unmodifiableList(
-                Arrays.asList(
-                    new ChildDescriptor(
-                        TypeImpl.NAME,
-                        false
-                    )
-                )
-            );
+        private static final String EXPRESSION_LIST = "ExpressionList";
 
         /**
          * The 'Expression' string.
@@ -112,13 +97,23 @@ public final class Variable implements Expression {
         private static final String EXPRESSION = "Expression";
 
         /**
+         * The list of child types.
+         */
+        private static final List<ChildDescriptor> CHILDREN =
+            Collections.singletonList(
+                new ChildDescriptor(
+                    TypeImpl.EXPRESSION,
+                    false
+                )
+            );
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.EXPRESSION_LIST
                 )
             );
 
@@ -133,7 +128,7 @@ public final class Variable implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.EXPRESSION_LIST;
         }
 
         @Override
@@ -158,7 +153,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'ExpressionList' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +164,9 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * List of child nodes.
          */
-        private Name first;
+        private List<Expression> children = Collections.emptyList();
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -185,32 +180,32 @@ public final class Variable implements Expression {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
-            final boolean result = mapper.map(mapping, list);
+            boolean result = true;
+            final List<Expression> clarified = new ArrayList<>(list.size());
+            for (final Node node : list) {
+                if (node instanceof Expression) {
+                    clarified.add((Expression) node);
+                } else {
+                    result = false;
+                    break;
+                }
+            }
             if (result) {
-                this.first = (Name) mapping[0];
+                this.children = Collections.unmodifiableList(clarified);
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return true;
         }
 
         @Override
-        public Variable createNode() {
-            if (!this.isValid()) {
-                throw new IllegalStateException();
-            }
-            final Variable node = new Variable();
+        public ExpressionList createNode() {
+            final ExpressionList node = new ExpressionList();
             node.fragment = this.fragment;
-            node.children = new ListUtils<Node>()
-                .add(
-                    this.first
-                )
-                .make();
+            node.children = this.children;
             return node;
         }
     }

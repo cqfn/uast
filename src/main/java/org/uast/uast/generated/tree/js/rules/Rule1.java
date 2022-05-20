@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.java.rules;
+package org.uast.uast.generated.tree.js.rules;
 
 import java.util.List;
 import java.util.Map;
@@ -19,21 +19,21 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Rule4 implements Converter {
+public final class Rule1 implements Converter {
     /**
      * The instance.
      */
-    public static final Converter INSTANCE = new Rule4();
+    public static final Converter INSTANCE = new Rule1();
 
     /**
-     * The 'StatementBlock' string.
+     * The 'StringLiteral' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final String STRING_LITERAL = "StringLiteral";
 
     /**
      * Constructor.
      */
-    private Rule4() {
+    private Rule1() {
     }
 
     @Override
@@ -43,24 +43,22 @@ public final class Rule4 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher4.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule4.firstBuilder(factory, children);
+            result = Rule1.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'StringLiteral' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.STATEMENT_BLOCK);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule1.STRING_LITERAL);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

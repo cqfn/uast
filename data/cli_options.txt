@@ -1,0 +1,15 @@
+--generate dsl/rules.dsl --output D:\Documents\unified-ast\unified-ast\src\main\java --package org.uast.uast.generated.tree --base org.uast.uast.base --version 1.0 -l D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+
+
+--action generate --rules dsl/test.dsl --output D:\Documents\unified-ast\unified-ast\src\main\java --package org.uast.uast.generated.tree --base org.uast.uast.base --version 1.0 -l D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+
+
+--action generate --rules dsl/test.dsl --output D:\Documents\unified-ast\unified-ast\src\main\java --package org.uast.uast.generated.tree --base org.uast.uast.base --version 1.0 -l D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+
+--parse data/code.py  -v data/test/code_py.png
+
+--parse data/code.java  -v data/test/code_java.png
+
+--parse data/code.js  -v data/test/code_js.png
+
+--parse data/classDecl.py  -v data/test/classDecl_py.png

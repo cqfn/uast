@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.green;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,28 +14,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
-import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
-import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'StatementBlock' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class StatementBlock implements Statement {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -44,17 +38,17 @@ public final class Variable implements Expression {
     /**
      * List of child nodes.
      */
-    private List<Node> children;
+    private List<Statement> children;
 
     /**
      * Constructor.
      */
-    private Variable() {
+    private StatementBlock() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return StatementBlock.TYPE;
     }
 
     @Override
@@ -69,7 +63,16 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return this.children.size();
+    }
+
+    /**
+     * Return a child node with 'Statement' type by its index.
+     * @param index Child index
+     * @return A node
+     */
+    public Statement getStatement(final int index) {
+        return this.children.get(index);
     }
 
     @Override
@@ -78,38 +81,31 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Type descriptor of the 'StatementBlock' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'StatementBlock' string.
          */
-        private static final String VARIABLE = "Variable";
+        private static final String STATEMENT_BLOCK = "StatementBlock";
 
         /**
-         * The 'Name' string.
+         * The 'Statement' string.
          */
-        private static final String NAME = "Name";
+        private static final String STATEMENT = "Statement";
 
         /**
          * The list of child types.
          */
         private static final List<ChildDescriptor> CHILDREN =
-            Collections.unmodifiableList(
-                Arrays.asList(
-                    new ChildDescriptor(
-                        TypeImpl.NAME,
-                        false
-                    )
+            Collections.singletonList(
+                new ChildDescriptor(
+                    TypeImpl.STATEMENT,
+                    false
                 )
             );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -117,8 +113,8 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.STATEMENT_BLOCK,
+                    TypeImpl.STATEMENT
                 )
             );
 
@@ -133,7 +129,7 @@ public final class Variable implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.STATEMENT_BLOCK;
         }
 
         @Override
@@ -158,7 +154,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'StatementBlock' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +165,9 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * List of child nodes.
          */
-        private Name first;
+        private List<Statement> children = Collections.emptyList();
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -185,32 +181,32 @@ public final class Variable implements Expression {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
-            final boolean result = mapper.map(mapping, list);
+            boolean result = true;
+            final List<Statement> clarified = new ArrayList<>(list.size());
+            for (final Node node : list) {
+                if (node instanceof Statement) {
+                    clarified.add((Statement) node);
+                } else {
+                    result = false;
+                    break;
+                }
+            }
             if (result) {
-                this.first = (Name) mapping[0];
+                this.children = Collections.unmodifiableList(clarified);
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return true;
         }
 
         @Override
-        public Variable createNode() {
-            if (!this.isValid()) {
-                throw new IllegalStateException();
-            }
-            final Variable node = new Variable();
+        public StatementBlock createNode() {
+            final StatementBlock node = new StatementBlock();
             node.fragment = this.fragment;
-            node.children = new ListUtils<Node>()
-                .add(
-                    this.first
-                )
-                .make();
+            node.children = this.children;
             return node;
         }
     }

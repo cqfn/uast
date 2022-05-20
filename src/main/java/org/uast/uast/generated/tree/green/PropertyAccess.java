@@ -21,11 +21,11 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'PropertyAccess' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class PropertyAccess implements Expression {
     /**
      * The type.
      */
@@ -34,7 +34,7 @@ public final class Variable implements Expression {
     /**
      * The number of children.
      */
-    private static final int CHILD_COUNT = 1;
+    private static final int CHILD_COUNT = 2;
 
     /**
      * The fragment associated with the node.
@@ -47,14 +47,24 @@ public final class Variable implements Expression {
     private List<Node> children;
 
     /**
+     * Child with the 'left' tag.
+     */
+    private Expression left;
+
+    /**
+     * Child with the 'right' tag.
+     */
+    private Expression right;
+
+    /**
      * Constructor.
      */
-    private Variable() {
+    private PropertyAccess() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return PropertyAccess.TYPE;
     }
 
     @Override
@@ -69,7 +79,7 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return PropertyAccess.CHILD_COUNT;
     }
 
     @Override
@@ -78,20 +88,36 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Returns the child with the 'left' tag.
+     * @return The node
+     */
+    public Expression getLeft() {
+        return this.left;
+    }
+
+    /**
+     * Returns the child with the 'right' tag.
+     * @return The node
+     */
+    public Expression getRight() {
+        return this.right;
+    }
+
+    /**
+     * Type descriptor of the 'PropertyAccess' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'PropertyAccess' string.
          */
-        private static final String VARIABLE = "Variable";
+        private static final String PROPERTY_ACCESS = "PropertyAccess";
 
         /**
-         * The 'Name' string.
+         * The 'Expression' string.
          */
-        private static final String NAME = "Name";
+        private static final String EXPRESSION = "Expression";
 
         /**
          * The list of child types.
@@ -100,16 +126,15 @@ public final class Variable implements Expression {
             Collections.unmodifiableList(
                 Arrays.asList(
                     new ChildDescriptor(
-                        TypeImpl.NAME,
+                        TypeImpl.EXPRESSION,
+                        false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.EXPRESSION,
                         false
                     )
                 )
             );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -117,7 +142,7 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
+                    TypeImpl.PROPERTY_ACCESS,
                     TypeImpl.EXPRESSION
                 )
             );
@@ -133,7 +158,7 @@ public final class Variable implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.PROPERTY_ACCESS;
         }
 
         @Override
@@ -158,7 +183,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'PropertyAccess' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +194,14 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * Node with the 'left' tag.
          */
-        private Name first;
+        private Expression left;
+
+        /**
+         * Node with the 'right' tag.
+         */
+        private Expression right;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -183,34 +213,55 @@ public final class Variable implements Expression {
             return str.isEmpty();
         }
 
+        /**
+         * Sets the node with the 'left' tag.
+         * @param node The node
+         */
+        public void setLeft(final Expression node) {
+            this.left = node;
+        }
+
+        /**
+         * Sets the node with the 'right' tag.
+         * @param node The node
+         */
+        public void setRight(final Expression node) {
+            this.right = node;
+        }
+
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
+            final Node[] mapping = new Node[2];
+            final ChildrenMapper mapper = new ChildrenMapper(PropertyAccess.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Name) mapping[0];
+                this.left = (Expression) mapping[0];
+                this.right = (Expression) mapping[1];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return this.left != null
+                && this.right != null;
         }
 
         @Override
-        public Variable createNode() {
+        public PropertyAccess createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }
-            final Variable node = new Variable();
+            final PropertyAccess node = new PropertyAccess();
             node.fragment = this.fragment;
             node.children = new ListUtils<Node>()
                 .add(
-                    this.first
+                    this.left,
+                    this.right
                 )
                 .make();
+            node.left = this.left;
+            node.right = this.right;
             return node;
         }
     }

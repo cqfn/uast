@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.List;
 import org.uast.uast.base.Adapter;
 import org.uast.uast.base.Converter;
+import org.uast.uast.generated.tree.js.rules.Rule0;
+import org.uast.uast.generated.tree.js.rules.Rule1;
+import org.uast.uast.generated.tree.js.rules.Rule2;
 
 /**
  * Adapter that converts syntax trees, prepared by the parser of the Js language.
@@ -35,6 +38,9 @@ public final class JsAdapter extends Adapter {
      */
     private static List<Converter> init() {
         return Arrays.asList(
+            Rule0.INSTANCE,
+            Rule1.INSTANCE,
+            Rule2.INSTANCE
         );
     }
 }

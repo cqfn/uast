@@ -19,21 +19,21 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Rule4 implements Converter {
+public final class Rule7 implements Converter {
     /**
      * The instance.
      */
-    public static final Converter INSTANCE = new Rule4();
+    public static final Converter INSTANCE = new Rule7();
 
     /**
-     * The 'StatementBlock' string.
+     * The 'StringLiteral' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final String STRING_LITERAL = "StringLiteral";
 
     /**
      * Constructor.
      */
-    private Rule4() {
+    private Rule7() {
     }
 
     @Override
@@ -41,26 +41,24 @@ public final class Rule4 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher4.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher10.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule4.firstBuilder(factory, children);
+            result = Rule7.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'StringLiteral' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.STATEMENT_BLOCK);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule7.STRING_LITERAL);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

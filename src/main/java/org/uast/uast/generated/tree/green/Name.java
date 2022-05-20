@@ -21,20 +21,15 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'Name' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class Name implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -47,14 +42,24 @@ public final class Variable implements Expression {
     private List<Node> children;
 
     /**
+     * Child with the 'composition' tag.
+     */
+    private Name composition;
+
+    /**
+     * Child with the 'last' tag.
+     */
+    private Identifier last;
+
+    /**
      * Constructor.
      */
-    private Variable() {
+    private Name() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return Name.TYPE;
     }
 
     @Override
@@ -69,7 +74,7 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return this.children.size();
     }
 
     @Override
@@ -78,20 +83,36 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Returns the child with the 'composition' tag.
+     * @return The node
+     */
+    public Name getComposition() {
+        return this.composition;
+    }
+
+    /**
+     * Returns the child with the 'last' tag.
+     * @return The node
+     */
+    public Identifier getLast() {
+        return this.last;
+    }
+
+    /**
+     * Type descriptor of the 'Name' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
-         */
-        private static final String VARIABLE = "Variable";
-
-        /**
          * The 'Name' string.
          */
         private static final String NAME = "Name";
+
+        /**
+         * The 'Identifier' string.
+         */
+        private static final String IDENTIFIER = "Identifier";
 
         /**
          * The list of child types.
@@ -102,14 +123,13 @@ public final class Variable implements Expression {
                     new ChildDescriptor(
                         TypeImpl.NAME,
                         false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.IDENTIFIER,
+                        false
                     )
                 )
             );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -117,8 +137,7 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.NAME
                 )
             );
 
@@ -133,7 +152,7 @@ public final class Variable implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.NAME;
         }
 
         @Override
@@ -158,7 +177,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'Name' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +188,14 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * Node with the 'composition' tag.
          */
-        private Name first;
+        private Name composition;
+
+        /**
+         * Node with the 'last' tag.
+         */
+        private Identifier last;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -183,34 +207,54 @@ public final class Variable implements Expression {
             return str.isEmpty();
         }
 
+        /**
+         * Sets the node with the 'composition' tag.
+         * @param node The node
+         */
+        public void setComposition(final Name node) {
+            this.composition = node;
+        }
+
+        /**
+         * Sets the node with the 'last' tag.
+         * @param node The node
+         */
+        public void setLast(final Identifier node) {
+            this.last = node;
+        }
+
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
+            final Node[] mapping = new Node[2];
+            final ChildrenMapper mapper = new ChildrenMapper(Name.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Name) mapping[0];
+                this.composition = (Name) mapping[0];
+                this.last = (Identifier) mapping[1];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return this.last != null;
         }
 
         @Override
-        public Variable createNode() {
+        public Name createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }
-            final Variable node = new Variable();
+            final Name node = new Name();
             node.fragment = this.fragment;
             node.children = new ListUtils<Node>()
                 .add(
-                    this.first
+                    this.composition,
+                    this.last
                 )
                 .make();
+            node.composition = this.composition;
+            node.last = this.last;
             return node;
         }
     }

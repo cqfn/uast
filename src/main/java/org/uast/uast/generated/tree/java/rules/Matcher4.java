@@ -24,12 +24,7 @@ public final class Matcher4 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "NameExpr";
-
-    /**
-     * Expected number of child nodes.
-     */
-    private static final int EXPECTED_COUNT = 1;
+    private static final String EXPECTED_TYPE = "BlockStmt";
 
     /**
      * Constructor.
@@ -41,8 +36,10 @@ public final class Matcher4 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher4.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher4.EXPECTED_COUNT
-            && Matcher5.INSTANCE.match(node.getChild(0), children, data);
+        final boolean result = node.belongsToGroup(Matcher4.EXPECTED_TYPE);
+        if (result) {
+            children.put(1, node.getChildrenList());
+        }
+        return result;
     }
 }

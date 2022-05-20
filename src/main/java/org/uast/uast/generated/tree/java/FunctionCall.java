@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.green;
+package org.uast.uast.generated.tree.java;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,22 +19,20 @@ import org.uast.uast.base.Fragment;
 import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
+import org.uast.uast.generated.tree.green.ExpressionList;
+import org.uast.uast.generated.tree.green.Identifier;
+import org.uast.uast.generated.tree.green.Name;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'FunctionCall' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class FunctionCall implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -47,14 +45,29 @@ public final class Variable implements Expression {
     private List<Node> children;
 
     /**
+     * Child with the 'owner' tag.
+     */
+    private Name owner;
+
+    /**
+     * Child with the 'name' tag.
+     */
+    private Identifier name;
+
+    /**
+     * Child with the 'arguments' tag.
+     */
+    private ExpressionList arguments;
+
+    /**
      * Constructor.
      */
-    private Variable() {
+    private FunctionCall() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return FunctionCall.TYPE;
     }
 
     @Override
@@ -69,7 +82,7 @@ public final class Variable implements Expression {
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return this.children.size();
     }
 
     @Override
@@ -78,20 +91,54 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Returns the child with the 'owner' tag.
+     * @return The node
+     */
+    public Name getOwner() {
+        return this.owner;
+    }
+
+    /**
+     * Returns the child with the 'name' tag.
+     * @return The node
+     */
+    public Identifier getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns the child with the 'arguments' tag.
+     * @return The node
+     */
+    public ExpressionList getArguments() {
+        return this.arguments;
+    }
+
+    /**
+     * Type descriptor of the 'FunctionCall' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'FunctionCall' string.
          */
-        private static final String VARIABLE = "Variable";
+        private static final String FUNCTION_CALL = "FunctionCall";
 
         /**
          * The 'Name' string.
          */
         private static final String NAME = "Name";
+
+        /**
+         * The 'Identifier' string.
+         */
+        private static final String IDENTIFIER = "Identifier";
+
+        /**
+         * The 'ExpressionList' string.
+         */
+        private static final String EXPRESSION_LIST = "ExpressionList";
 
         /**
          * The list of child types.
@@ -102,14 +149,17 @@ public final class Variable implements Expression {
                     new ChildDescriptor(
                         TypeImpl.NAME,
                         false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.IDENTIFIER,
+                        false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.EXPRESSION_LIST,
+                        false
                     )
                 )
             );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -117,8 +167,7 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.FUNCTION_CALL
                 )
             );
 
@@ -127,13 +176,13 @@ public final class Variable implements Expression {
          */
         private static final Map<String, String> PROPERTIES = Stream.of(
             new String[][] {
-                {"color", "green"},
-                {"language", "common"},
+                {"color", "red"},
+                {"language", "java"},
             }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.FUNCTION_CALL;
         }
 
         @Override
@@ -158,7 +207,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'FunctionCall' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +218,19 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * Node with the 'owner' tag.
          */
-        private Name first;
+        private Name owner;
+
+        /**
+         * Node with the 'name' tag.
+         */
+        private Identifier name;
+
+        /**
+         * Node with the 'arguments' tag.
+         */
+        private ExpressionList arguments;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -183,34 +242,66 @@ public final class Variable implements Expression {
             return str.isEmpty();
         }
 
+        /**
+         * Sets the node with the 'owner' tag.
+         * @param node The node
+         */
+        public void setOwner(final Name node) {
+            this.owner = node;
+        }
+
+        /**
+         * Sets the node with the 'name' tag.
+         * @param node The node
+         */
+        public void setName(final Identifier node) {
+            this.name = node;
+        }
+
+        /**
+         * Sets the node with the 'arguments' tag.
+         * @param node The node
+         */
+        public void setArguments(final ExpressionList node) {
+            this.arguments = node;
+        }
+
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
+            final Node[] mapping = new Node[3];
+            final ChildrenMapper mapper = new ChildrenMapper(FunctionCall.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Name) mapping[0];
+                this.owner = (Name) mapping[0];
+                this.name = (Identifier) mapping[1];
+                this.arguments = (ExpressionList) mapping[2];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return this.name != null
+                && this.arguments != null;
         }
 
         @Override
-        public Variable createNode() {
+        public FunctionCall createNode() {
             if (!this.isValid()) {
                 throw new IllegalStateException();
             }
-            final Variable node = new Variable();
+            final FunctionCall node = new FunctionCall();
             node.fragment = this.fragment;
             node.children = new ListUtils<Node>()
                 .add(
-                    this.first
+                    this.owner,
+                    this.name,
+                    this.arguments
                 )
                 .make();
+            node.owner = this.owner;
+            node.name = this.name;
+            node.arguments = this.arguments;
             return node;
         }
     }

@@ -13,28 +13,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.uast.uast.base.Builder;
 import org.uast.uast.base.ChildDescriptor;
-import org.uast.uast.base.ChildrenMapper;
 import org.uast.uast.base.EmptyFragment;
 import org.uast.uast.base.Fragment;
-import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'Variable' type.
+ * Node that describes the 'Modifier' type.
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class Modifier implements Node {
     /**
      * The type.
      */
     public static final Type TYPE = new TypeImpl();
-
-    /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 1;
 
     /**
      * The fragment associated with the node.
@@ -42,19 +35,19 @@ public final class Variable implements Expression {
     private Fragment fragment;
 
     /**
-     * List of child nodes.
+     * The data.
      */
-    private List<Node> children;
+    private String data;
 
     /**
      * Constructor.
      */
-    private Variable() {
+    private Modifier() {
     }
 
     @Override
     public Type getType() {
-        return Variable.TYPE;
+        return Modifier.TYPE;
     }
 
     @Override
@@ -64,52 +57,29 @@ public final class Variable implements Expression {
 
     @Override
     public String getData() {
-        return "";
+        return this.data;
     }
 
     @Override
     public int getChildCount() {
-        return Variable.CHILD_COUNT;
+        return 0;
     }
 
     @Override
     public Node getChild(final int index) {
-        return this.children.get(index);
+        throw new IndexOutOfBoundsException();
     }
 
     /**
-     * Type descriptor of the 'Variable' node.
+     * Type descriptor of the 'Modifier' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'Variable' string.
+         * The 'Modifier' string.
          */
-        private static final String VARIABLE = "Variable";
-
-        /**
-         * The 'Name' string.
-         */
-        private static final String NAME = "Name";
-
-        /**
-         * The list of child types.
-         */
-        private static final List<ChildDescriptor> CHILDREN =
-            Collections.unmodifiableList(
-                Arrays.asList(
-                    new ChildDescriptor(
-                        TypeImpl.NAME,
-                        false
-                    )
-                )
-            );
-
-        /**
-         * The 'Expression' string.
-         */
-        private static final String EXPRESSION = "Expression";
+        private static final String MODIFIER = "Modifier";
 
         /**
          * Hierarchy.
@@ -117,8 +87,7 @@ public final class Variable implements Expression {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.VARIABLE,
-                    TypeImpl.EXPRESSION
+                    TypeImpl.MODIFIER
                 )
             );
 
@@ -133,12 +102,12 @@ public final class Variable implements Expression {
 
         @Override
         public String getName() {
-            return TypeImpl.VARIABLE;
+            return TypeImpl.MODIFIER;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return TypeImpl.CHILDREN;
+            return Collections.emptyList();
         }
 
         @Override
@@ -158,7 +127,7 @@ public final class Variable implements Expression {
     }
 
     /**
-     * Class for 'Variable' node construction.
+     * Class for 'Modifier' node construction.
      *
      * @since 1.0
      */
@@ -169,9 +138,14 @@ public final class Variable implements Expression {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * The flag indicating that the builder has been initialized.
          */
-        private Name first;
+        private boolean initialized;
+
+        /**
+         * The data.
+         */
+        private String data;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -179,38 +153,27 @@ public final class Variable implements Expression {
         }
 
         @Override
-        public boolean setData(final String str) {
-            return str.isEmpty();
+        public boolean setData(final String value) {
+            this.data = value;
+            this.initialized = true;
+            return true;
         }
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Variable.TYPE.getChildTypes());
-            final boolean result = mapper.map(mapping, list);
-            if (result) {
-                this.first = (Name) mapping[0];
-            }
-            return result;
+            return list.isEmpty();
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null;
+            return this.initialized;
         }
 
         @Override
-        public Variable createNode() {
-            if (!this.isValid()) {
-                throw new IllegalStateException();
-            }
-            final Variable node = new Variable();
+        public Modifier createNode() {
+            final Modifier node = new Modifier();
             node.fragment = this.fragment;
-            node.children = new ListUtils<Node>()
-                .add(
-                    this.first
-                )
-                .make();
+            node.data = this.data;
             return node;
         }
     }

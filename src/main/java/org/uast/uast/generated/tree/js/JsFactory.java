@@ -13,10 +13,17 @@ import java.util.TreeMap;
 import org.uast.uast.base.Factory;
 import org.uast.uast.base.Type;
 import org.uast.uast.generated.tree.green.Addition;
-import org.uast.uast.generated.tree.green.BlockStatement;
+import org.uast.uast.generated.tree.green.ExpressionList;
+import org.uast.uast.generated.tree.green.FunctionCall;
 import org.uast.uast.generated.tree.green.Identifier;
 import org.uast.uast.generated.tree.green.IntegerLiteral;
+import org.uast.uast.generated.tree.green.Modifier;
+import org.uast.uast.generated.tree.green.ModifierBlock;
+import org.uast.uast.generated.tree.green.Name;
+import org.uast.uast.generated.tree.green.PropertyAccess;
 import org.uast.uast.generated.tree.green.Return;
+import org.uast.uast.generated.tree.green.StatementBlock;
+import org.uast.uast.generated.tree.green.StringLiteral;
 import org.uast.uast.generated.tree.green.Subtraction;
 import org.uast.uast.generated.tree.green.This;
 import org.uast.uast.generated.tree.green.Variable;
@@ -46,10 +53,17 @@ public final class JsFactory extends Factory {
     private static Map<String, Type> init() {
         final List<Type> types = Arrays.asList(
             Addition.TYPE,
-            BlockStatement.TYPE,
+            ExpressionList.TYPE,
+            FunctionCall.TYPE,
             Identifier.TYPE,
             IntegerLiteral.TYPE,
+            Modifier.TYPE,
+            ModifierBlock.TYPE,
+            Name.TYPE,
+            PropertyAccess.TYPE,
             Return.TYPE,
+            StatementBlock.TYPE,
+            StringLiteral.TYPE,
             Subtraction.TYPE,
             This.TYPE,
             Variable.TYPE,

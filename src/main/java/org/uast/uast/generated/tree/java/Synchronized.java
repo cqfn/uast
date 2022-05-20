@@ -19,8 +19,8 @@ import org.uast.uast.base.Fragment;
 import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
-import org.uast.uast.generated.tree.green.BlockStatement;
 import org.uast.uast.generated.tree.green.Expression;
+import org.uast.uast.generated.tree.green.StatementBlock;
 
 /**
  * Node that describes the 'Synchronized' type.
@@ -96,9 +96,9 @@ public final class Synchronized implements Statement {
         private static final String EXPRESSION = "Expression";
 
         /**
-         * The 'BlockStatement' string.
+         * The 'StatementBlock' string.
          */
-        private static final String BLOCK_STATEMENT = "BlockStatement";
+        private static final String STATEMENT_BLOCK = "StatementBlock";
 
         /**
          * The list of child types.
@@ -111,7 +111,7 @@ public final class Synchronized implements Statement {
                         false
                     ),
                     new ChildDescriptor(
-                        TypeImpl.BLOCK_STATEMENT,
+                        TypeImpl.STATEMENT_BLOCK,
                         false
                     )
                 )
@@ -188,7 +188,7 @@ public final class Synchronized implements Statement {
         /**
          * Node 1.
          */
-        private BlockStatement second;
+        private StatementBlock second;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -207,7 +207,7 @@ public final class Synchronized implements Statement {
             final boolean result = mapper.map(mapping, list);
             if (result) {
                 this.first = (Expression) mapping[0];
-                this.second = (BlockStatement) mapping[1];
+                this.second = (StatementBlock) mapping[1];
             }
             return result;
         }
