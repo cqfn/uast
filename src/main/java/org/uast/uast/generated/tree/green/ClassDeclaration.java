@@ -177,6 +177,26 @@ public final class ClassDeclaration implements ProgramItem {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 3;
+
+        /**
+         * The position of the 'first' field.
+         */
+        private static final int FIRST_POS = 0;
+
+        /**
+         * The position of the 'second' field.
+         */
+        private static final int SECOND_POS = 1;
+
+        /**
+         * The position of the 'third' field.
+         */
+        private static final int THIRD_POS = 2;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -208,13 +228,14 @@ public final class ClassDeclaration implements ProgramItem {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[3];
-            final ChildrenMapper mapper = new ChildrenMapper(ClassDeclaration.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(ClassDeclaration.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (ModifierBlock) mapping[0];
-                this.second = (Identifier) mapping[1];
-                this.third = (ClassBody) mapping[2];
+                this.first = (ModifierBlock) mapping[Constructor.FIRST_POS];
+                this.second = (Identifier) mapping[Constructor.SECOND_POS];
+                this.third = (ClassBody) mapping[Constructor.THIRD_POS];
             }
             return result;
         }

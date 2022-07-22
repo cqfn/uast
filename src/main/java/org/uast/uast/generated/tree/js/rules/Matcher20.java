@@ -32,6 +32,11 @@ public final class Matcher20 implements Matcher {
     private static final int EXPECTED_COUNT = 0;
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * Constructor.
      */
     private Matcher20() {
@@ -44,7 +49,7 @@ public final class Matcher20 implements Matcher {
         final boolean result = node.belongsToGroup(Matcher20.EXPECTED_TYPE)
             && node.getChildCount() == Matcher20.EXPECTED_COUNT;
         if (result) {
-            data.put(1, node.getData());
+            data.put(Matcher20.FIRST_HOLE_ID, node.getData());
         }
         return result;
     }

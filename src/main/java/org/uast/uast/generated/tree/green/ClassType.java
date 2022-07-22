@@ -164,6 +164,16 @@ public final class ClassType implements TypeName {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 1;
+
+        /**
+         * The position of the 'first' field.
+         */
+        private static final int FIRST_POS = 0;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -185,11 +195,12 @@ public final class ClassType implements TypeName {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(ClassType.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(ClassType.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Name) mapping[0];
+                this.first = (Name) mapping[Constructor.FIRST_POS];
             }
             return result;
         }

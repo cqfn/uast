@@ -27,6 +27,11 @@ public final class Rule8 implements Converter {
     public static final Converter INSTANCE = new Rule8();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'ExpressionList' string.
      */
     private static final String EXPRESSION_LIST = "ExpressionList";
@@ -65,7 +70,7 @@ public final class Rule8 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule8.FUNCTION_CALL);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(1));
+        list.addAll(children.get(Rule8.FIRST_HOLE_ID));
         list.add(Rule8.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

@@ -27,6 +27,11 @@ public final class Matcher5 implements Matcher {
     private static final String EXPECTED_TYPE = "BlockStmt";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * Constructor.
      */
     private Matcher5() {
@@ -38,7 +43,7 @@ public final class Matcher5 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher5.EXPECTED_TYPE);
         if (result) {
-            children.put(1, node.getChildrenList());
+            children.put(Matcher5.FIRST_HOLE_ID, node.getChildrenList());
         }
         return result;
     }

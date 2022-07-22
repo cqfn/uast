@@ -33,6 +33,26 @@ public final class Matcher19 implements Matcher {
     private static final int EXPECTED_COUNT = 2;
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
+
+    /**
      * Constructor.
      */
     private Matcher19() {
@@ -45,8 +65,14 @@ public final class Matcher19 implements Matcher {
         final boolean result = node.belongsToGroup(Matcher19.EXPECTED_TYPE)
             && node.getChildCount() == Matcher19.EXPECTED_COUNT;
         if (result) {
-            children.put(1, Collections.singletonList(node.getChild(0)));
-            children.put(2, Collections.singletonList(node.getChild(1)));
+            children.put(
+                Matcher19.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher19.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher19.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher19.SECOND_CHILD_ID))
+            );
         }
         return result;
     }

@@ -33,6 +33,16 @@ public final class Matcher13 implements Matcher {
     private static final int EXPECTED_COUNT = 1;
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
      * Constructor.
      */
     private Matcher13() {
@@ -45,7 +55,10 @@ public final class Matcher13 implements Matcher {
         final boolean result = node.belongsToGroup(Matcher13.EXPECTED_TYPE)
             && node.getChildCount() == Matcher13.EXPECTED_COUNT;
         if (result) {
-            children.put(2, Collections.singletonList(node.getChild(0)));
+            children.put(
+                Matcher13.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher13.FIRST_CHILD_ID))
+            );
         }
         return result;
     }

@@ -27,6 +27,16 @@ public final class Rule3 implements Converter {
     public static final Converter INSTANCE = new Rule3();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
      * The 'Addition' string.
      */
     private static final String ADDITION = "Addition";
@@ -60,8 +70,8 @@ public final class Rule3 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule3.ADDITION);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(1));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule3.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule3.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

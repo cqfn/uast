@@ -193,6 +193,21 @@ public final class Declarator implements Node {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 2;
+
+        /**
+         * The position of the 'name' field.
+         */
+        private static final int NAME_POS = 0;
+
+        /**
+         * The position of the 'value' field.
+         */
+        private static final int VALUE_POS = 1;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -235,12 +250,13 @@ public final class Declarator implements Node {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[2];
-            final ChildrenMapper mapper = new ChildrenMapper(Declarator.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Declarator.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.name = (Identifier) mapping[0];
-                this.value = (Expression) mapping[1];
+                this.name = (Identifier) mapping[Constructor.NAME_POS];
+                this.value = (Expression) mapping[Constructor.VALUE_POS];
             }
             return result;
         }

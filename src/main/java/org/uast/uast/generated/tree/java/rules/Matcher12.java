@@ -38,6 +38,16 @@ public final class Matcher12 implements Matcher {
     private static final String EXPECTED_DATA = "+";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
      * Constructor.
      */
     private Matcher12() {
@@ -52,7 +62,10 @@ public final class Matcher12 implements Matcher {
             && Matcher13.INSTANCE.match(node.getChild(1), children, data)
             && Matcher12.EXPECTED_DATA.equals(node.getData());
         if (result) {
-            children.put(1, Collections.singletonList(node.getChild(0)));
+            children.put(
+                Matcher12.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher12.FIRST_CHILD_ID))
+            );
         }
         return result;
     }

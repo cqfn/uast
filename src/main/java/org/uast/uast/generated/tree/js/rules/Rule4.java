@@ -32,6 +32,11 @@ public final class Rule4 implements Converter {
     private static final String NAME = "Name";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
      * The 'ExpressionList' string.
      */
     private static final String EXPRESSION_LIST = "ExpressionList";
@@ -71,7 +76,7 @@ public final class Rule4 implements Converter {
         final Builder builder = factory.createBuilder(Rule4.FUNCTION_CALL);
         final List<Node> list = new LinkedList<>();
         list.add(Rule4.secondBuilder(factory, children));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule4.FIRST_HOLE_ID));
         list.add(Rule4.thirdBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

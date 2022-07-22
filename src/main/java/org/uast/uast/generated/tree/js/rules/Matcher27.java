@@ -33,6 +33,26 @@ public final class Matcher27 implements Matcher {
     private static final int EXPECTED_COUNT = 3;
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 2;
+
+    /**
      * Constructor.
      */
     private Matcher27() {
@@ -46,8 +66,14 @@ public final class Matcher27 implements Matcher {
             && node.getChildCount() == Matcher27.EXPECTED_COUNT
             && Matcher28.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
-            children.put(1, Collections.singletonList(node.getChild(1)));
-            children.put(2, Collections.singletonList(node.getChild(2)));
+            children.put(
+                Matcher27.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher27.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher27.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher27.SECOND_CHILD_ID))
+            );
         }
         return result;
     }

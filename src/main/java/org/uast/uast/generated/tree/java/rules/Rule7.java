@@ -32,6 +32,11 @@ public final class Rule7 implements Converter {
     private static final String NAME = "Name";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
      * Constructor.
      */
     private Rule7() {
@@ -61,7 +66,7 @@ public final class Rule7 implements Converter {
         final Builder builder = factory.createBuilder(Rule7.NAME);
         final List<Node> list = new LinkedList<>();
         list.add(Rule7.secondBuilder(factory, children));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule7.FIRST_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -25,6 +25,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
+@SuppressWarnings("PMD.DataClass")
 public final class FunctionCall implements Statement {
     /**
      * The type.
@@ -222,6 +223,26 @@ public final class FunctionCall implements Statement {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 3;
+
+        /**
+         * The position of the 'owner' field.
+         */
+        private static final int OWNER_POS = 0;
+
+        /**
+         * The position of the 'name' field.
+         */
+        private static final int NAME_POS = 1;
+
+        /**
+         * The position of the 'arguments' field.
+         */
+        private static final int ARGUMENTS_POS = 2;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -277,13 +298,14 @@ public final class FunctionCall implements Statement {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[3];
-            final ChildrenMapper mapper = new ChildrenMapper(FunctionCall.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(FunctionCall.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.owner = (Name) mapping[0];
-                this.name = (Identifier) mapping[1];
-                this.arguments = (ExpressionList) mapping[2];
+                this.owner = (Name) mapping[Constructor.OWNER_POS];
+                this.name = (Identifier) mapping[Constructor.NAME_POS];
+                this.arguments = (ExpressionList) mapping[Constructor.ARGUMENTS_POS];
             }
             return result;
         }

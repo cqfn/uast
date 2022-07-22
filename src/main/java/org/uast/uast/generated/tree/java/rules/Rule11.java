@@ -27,6 +27,16 @@ public final class Rule11 implements Converter {
     public static final Converter INSTANCE = new Rule11();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
      * The 'ExpressionList' string.
      */
     private static final String EXPRESSION_LIST = "ExpressionList";
@@ -65,8 +75,8 @@ public final class Rule11 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule11.FUNCTION_CALL);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(1));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule11.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule11.SECOND_HOLE_ID));
         list.add(Rule11.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

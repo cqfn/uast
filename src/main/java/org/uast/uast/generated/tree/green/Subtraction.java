@@ -189,6 +189,21 @@ public final class Subtraction implements BinaryExpression {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 2;
+
+        /**
+         * The position of the 'left' field.
+         */
+        private static final int LEFT_POS = 0;
+
+        /**
+         * The position of the 'right' field.
+         */
+        private static final int RIGHT_POS = 1;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -231,12 +246,13 @@ public final class Subtraction implements BinaryExpression {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[2];
-            final ChildrenMapper mapper = new ChildrenMapper(Subtraction.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Subtraction.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.left = (Expression) mapping[0];
-                this.right = (Expression) mapping[1];
+                this.left = (Expression) mapping[Constructor.LEFT_POS];
+                this.right = (Expression) mapping[Constructor.RIGHT_POS];
             }
             return result;
         }

@@ -178,6 +178,16 @@ public final class Return implements Statement {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 1;
+
+        /**
+         * The position of the 'expression' field.
+         */
+        private static final int EXPRESSION_POS = 0;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -207,11 +217,12 @@ public final class Return implements Statement {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[1];
-            final ChildrenMapper mapper = new ChildrenMapper(Return.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Return.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.expression = (Expression) mapping[0];
+                this.expression = (Expression) mapping[Constructor.EXPRESSION_POS];
             }
             return result;
         }

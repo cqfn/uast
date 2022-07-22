@@ -182,6 +182,21 @@ public final class Synchronized implements Statement {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 2;
+
+        /**
+         * The position of the 'first' field.
+         */
+        private static final int FIRST_POS = 0;
+
+        /**
+         * The position of the 'second' field.
+         */
+        private static final int SECOND_POS = 1;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -208,12 +223,13 @@ public final class Synchronized implements Statement {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[2];
-            final ChildrenMapper mapper = new ChildrenMapper(Synchronized.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Synchronized.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Expression) mapping[0];
-                this.second = (StatementBlock) mapping[1];
+                this.first = (Expression) mapping[Constructor.FIRST_POS];
+                this.second = (StatementBlock) mapping[Constructor.SECOND_POS];
             }
             return result;
         }

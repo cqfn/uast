@@ -27,6 +27,11 @@ public final class Rule14 implements Converter {
     public static final Converter INSTANCE = new Rule14();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Dimension' string.
      */
     private static final String DIMENSION = "Dimension";
@@ -70,7 +75,7 @@ public final class Rule14 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule14.ARRAY_TYPE);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(1));
+        list.addAll(children.get(Rule14.FIRST_HOLE_ID));
         list.add(Rule14.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

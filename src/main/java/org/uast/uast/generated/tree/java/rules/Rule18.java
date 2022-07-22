@@ -37,6 +37,11 @@ public final class Rule18 implements Converter {
     private static final String MODIFIER_BLOCK = "ModifierBlock";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
      * The 'ClassBody' string.
      */
     private static final String CLASS_BODY = "ClassBody";
@@ -78,7 +83,7 @@ public final class Rule18 implements Converter {
         final Builder builder = factory.createBuilder(Rule18.CLASS_DECLARATIO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule18.secondBuilder(factory, data));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule18.FIRST_HOLE_ID));
         list.add(Rule18.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

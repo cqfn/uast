@@ -201,6 +201,36 @@ public final class FunctionDeclaration implements ClassItem {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 5;
+
+        /**
+         * The position of the 'first' field.
+         */
+        private static final int FIRST_POS = 0;
+
+        /**
+         * The position of the 'second' field.
+         */
+        private static final int SECOND_POS = 1;
+
+        /**
+         * The position of the 'third' field.
+         */
+        private static final int THIRD_POS = 2;
+
+        /**
+         * The position of the 'fourth' field.
+         */
+        private static final int FOURTH_POS = 3;
+
+        /**
+         * The position of the 'fifth' field.
+         */
+        private static final int FIFTH_POS = 4;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -242,15 +272,16 @@ public final class FunctionDeclaration implements ClassItem {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[5];
-            final ChildrenMapper mapper = new ChildrenMapper(FunctionDeclaration.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(FunctionDeclaration.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (ModifierBlock) mapping[0];
-                this.second = (TypeName) mapping[1];
-                this.third = (Identifier) mapping[2];
-                this.fourth = (ParameterBlock) mapping[3];
-                this.fifth = (StatementBlock) mapping[4];
+                this.first = (ModifierBlock) mapping[Constructor.FIRST_POS];
+                this.second = (TypeName) mapping[Constructor.SECOND_POS];
+                this.third = (Identifier) mapping[Constructor.THIRD_POS];
+                this.fourth = (ParameterBlock) mapping[Constructor.FOURTH_POS];
+                this.fifth = (StatementBlock) mapping[Constructor.FIFTH_POS];
             }
             return result;
         }

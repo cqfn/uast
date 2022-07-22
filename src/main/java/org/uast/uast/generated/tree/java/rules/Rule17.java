@@ -37,9 +37,24 @@ public final class Rule17 implements Converter {
     private static final String MODIFIER_BLOCK = "ModifierBlock";
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 5;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 3;
+
+    /**
      * The 'ParameterBlock' string.
      */
     private static final String PARAMETER_BLOCK = "ParameterBlock";
+
+    /**
+     * The number of the third hole.
+     */
+    private static final int THIRD_HOLE_ID = 6;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -78,10 +93,10 @@ public final class Rule17 implements Converter {
         final Builder builder = factory.createBuilder(Rule17.FUNCTION_DECLARA);
         final List<Node> list = new LinkedList<>();
         list.add(Rule17.secondBuilder(factory, data));
-        list.addAll(children.get(5));
-        list.addAll(children.get(3));
+        list.addAll(children.get(Rule17.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule17.SECOND_HOLE_ID));
         list.add(Rule17.fifthBuilder(factory, children));
-        list.addAll(children.get(6));
+        list.addAll(children.get(Rule17.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

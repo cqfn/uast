@@ -183,6 +183,21 @@ public final class Name implements Node {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 2;
+
+        /**
+         * The position of the 'composition' field.
+         */
+        private static final int COMPOSITION_POS = 0;
+
+        /**
+         * The position of the 'last' field.
+         */
+        private static final int LAST_POS = 1;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -225,12 +240,13 @@ public final class Name implements Node {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[2];
-            final ChildrenMapper mapper = new ChildrenMapper(Name.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Name.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.composition = (Name) mapping[0];
-                this.last = (Identifier) mapping[1];
+                this.composition = (Name) mapping[Constructor.COMPOSITION_POS];
+                this.last = (Identifier) mapping[Constructor.LAST_POS];
             }
             return result;
         }
