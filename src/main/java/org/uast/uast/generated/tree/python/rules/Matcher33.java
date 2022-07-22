@@ -43,8 +43,22 @@ public final class Matcher33 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher33.EXPECTED_TYPE)
             && node.getChildCount() == Matcher33.EXPECTED_COUNT
-            && Matcher34.INSTANCE.match(node.getChild(0), children, data)
-            && Matcher35.INSTANCE.match(node.getChild(1), children, data)
-            && Matcher37.INSTANCE.match(node.getChild(2), children, data);
+            && Matcher33.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data or (and) children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher34.INSTANCE.match(node.getChild(0), children, data);
+        flag = flag && Matcher35.INSTANCE.match(node.getChild(1), children, data);
+        flag = flag && Matcher37.INSTANCE.match(node.getChild(2), children, data);
+        return flag;
     }
 }

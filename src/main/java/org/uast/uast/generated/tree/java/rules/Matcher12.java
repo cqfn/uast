@@ -59,8 +59,8 @@ public final class Matcher12 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher12.EXPECTED_TYPE)
             && node.getChildCount() == Matcher12.EXPECTED_COUNT
-            && Matcher13.INSTANCE.match(node.getChild(1), children, data)
-            && Matcher12.EXPECTED_DATA.equals(node.getData());
+            && Matcher12.EXPECTED_DATA.equals(node.getData())
+            && Matcher13.INSTANCE.match(node.getChild(1), children, data);
         if (result) {
             children.put(
                 Matcher12.FIRST_HOLE_ID,
