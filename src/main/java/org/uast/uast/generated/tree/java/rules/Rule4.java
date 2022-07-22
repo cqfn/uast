@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,14 +26,9 @@ public final class Rule4 implements Converter {
     public static final Converter INSTANCE = new Rule4();
 
     /**
-     * The 'Identifier' string.
+     * The 'Return' string.
      */
-    private static final String IDENTIFIER = "Identifier";
-
-    /**
-     * The 'Variable' string.
-     */
-    private static final String VARIABLE = "Variable";
+    private static final String RETURN = "Return";
 
     /**
      * Constructor.
@@ -49,40 +43,24 @@ public final class Rule4 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher4.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule4.firstBuilder(factory, data);
+            result = Rule4.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Variable' type.
+     * Builds a node with 'Return' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule4.secondBuilder(factory, data));
+        final Builder builder = factory.createBuilder(Rule4.RETURN);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Identifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

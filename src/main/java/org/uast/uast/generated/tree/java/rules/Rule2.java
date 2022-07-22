@@ -27,6 +27,16 @@ public final class Rule2 implements Converter {
     public static final Converter INSTANCE = new Rule2();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
      * The 'Subtraction' string.
      */
     private static final String SUBTRACTION = "Subtraction";
@@ -60,8 +70,8 @@ public final class Rule2 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule2.SUBTRACTION);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(1));
-        list.addAll(children.get(2));
+        list.addAll(children.get(Rule2.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule2.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

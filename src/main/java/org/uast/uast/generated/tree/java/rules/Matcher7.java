@@ -25,12 +25,22 @@ public final class Matcher7 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "SynchronizedStmt";
+    private static final String EXPECTED_TYPE = "FieldAccessExpr";
 
     /**
      * Expected number of child nodes.
      */
     private static final int EXPECTED_COUNT = 2;
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -43,10 +53,13 @@ public final class Matcher7 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher7.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher7.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher7.EXPECTED_COUNT
+            && Matcher8.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
-            children.put(1, Collections.singletonList(node.getChild(0)));
-            children.put(2, Collections.singletonList(node.getChild(1)));
+            children.put(
+                Matcher7.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher7.FIRST_CHILD_ID))
+            );
         }
         return result;
     }

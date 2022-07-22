@@ -10,6 +10,16 @@ import java.util.Collections;
 import java.util.List;
 import org.uast.uast.base.Adapter;
 import org.uast.uast.base.Converter;
+import org.uast.uast.generated.tree.js.rules.Rule0;
+import org.uast.uast.generated.tree.js.rules.Rule1;
+import org.uast.uast.generated.tree.js.rules.Rule2;
+import org.uast.uast.generated.tree.js.rules.Rule3;
+import org.uast.uast.generated.tree.js.rules.Rule4;
+import org.uast.uast.generated.tree.js.rules.Rule5;
+import org.uast.uast.generated.tree.js.rules.Rule6;
+import org.uast.uast.generated.tree.js.rules.Rule7;
+import org.uast.uast.generated.tree.js.rules.Rule8;
+import org.uast.uast.generated.tree.js.rules.Rule9;
 
 /**
  * Adapter that converts syntax trees, prepared by the parser of the Js language.
@@ -35,6 +45,16 @@ public final class JsAdapter extends Adapter {
      */
     private static List<Converter> init() {
         return Arrays.asList(
+            Rule0.INSTANCE,
+            Rule1.INSTANCE,
+            Rule2.INSTANCE,
+            Rule3.INSTANCE,
+            Rule4.INSTANCE,
+            Rule5.INSTANCE,
+            Rule6.INSTANCE,
+            Rule7.INSTANCE,
+            Rule8.INSTANCE,
+            Rule9.INSTANCE
         );
     }
 }

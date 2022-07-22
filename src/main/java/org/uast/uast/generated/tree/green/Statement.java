@@ -5,12 +5,10 @@
 
 package org.uast.uast.generated.tree.green;
 
-import org.uast.uast.base.Node;
-
 /**
  * Node that describes the 'Statement' type.
  *
  * @since 1.0
  */
-public interface Statement extends Node {
+public interface Statement extends ProgramItem {
 }

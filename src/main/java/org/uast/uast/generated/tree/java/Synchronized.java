@@ -19,8 +19,8 @@ import org.uast.uast.base.Fragment;
 import org.uast.uast.base.ListUtils;
 import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
-import org.uast.uast.generated.tree.green.BlockStatement;
 import org.uast.uast.generated.tree.green.Expression;
+import org.uast.uast.generated.tree.green.StatementBlock;
 
 /**
  * Node that describes the 'Synchronized' type.
@@ -96,9 +96,9 @@ public final class Synchronized implements Statement {
         private static final String EXPRESSION = "Expression";
 
         /**
-         * The 'BlockStatement' string.
+         * The 'StatementBlock' string.
          */
-        private static final String BLOCK_STATEMENT = "BlockStatement";
+        private static final String STATEMENT_BLOCK = "StatementBlock";
 
         /**
          * The list of child types.
@@ -111,7 +111,7 @@ public final class Synchronized implements Statement {
                         false
                     ),
                     new ChildDescriptor(
-                        TypeImpl.BLOCK_STATEMENT,
+                        TypeImpl.STATEMENT_BLOCK,
                         false
                     )
                 )
@@ -123,6 +123,11 @@ public final class Synchronized implements Statement {
         private static final String STATEMENT = "Statement";
 
         /**
+         * The 'ProgramItem' string.
+         */
+        private static final String PROGRAM_ITEM = "ProgramItem";
+
+        /**
          * Hierarchy.
          */
         private static final List<String> HIERARCHY =
@@ -130,7 +135,8 @@ public final class Synchronized implements Statement {
                 Arrays.asList(
                     TypeImpl.SYNCHRONIZED,
                     TypeImpl.STATEMENT,
-                    TypeImpl.STATEMENT
+                    TypeImpl.STATEMENT,
+                    TypeImpl.PROGRAM_ITEM
                 )
             );
 
@@ -176,6 +182,21 @@ public final class Synchronized implements Statement {
      */
     public static final class Constructor implements Builder {
         /**
+         * The maximum number of nodes.
+         */
+        private static final int MAX_NODE_COUNT = 2;
+
+        /**
+         * The position of the 'first' field.
+         */
+        private static final int FIRST_POS = 0;
+
+        /**
+         * The position of the 'second' field.
+         */
+        private static final int SECOND_POS = 1;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -188,7 +209,7 @@ public final class Synchronized implements Statement {
         /**
          * Node 1.
          */
-        private BlockStatement second;
+        private StatementBlock second;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -202,12 +223,13 @@ public final class Synchronized implements Statement {
 
         @Override
         public boolean setChildrenList(final List<Node> list) {
-            final Node[] mapping = new Node[2];
-            final ChildrenMapper mapper = new ChildrenMapper(Synchronized.TYPE.getChildTypes());
+            final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
+            final ChildrenMapper mapper =
+                new ChildrenMapper(Synchronized.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (Expression) mapping[0];
-                this.second = (BlockStatement) mapping[1];
+                this.first = (Expression) mapping[Constructor.FIRST_POS];
+                this.second = (StatementBlock) mapping[Constructor.SECOND_POS];
             }
             return result;
         }

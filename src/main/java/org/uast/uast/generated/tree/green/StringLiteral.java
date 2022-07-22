@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.green;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +19,11 @@ import org.uast.uast.base.Node;
 import org.uast.uast.base.Type;
 
 /**
- * Node that describes the 'BlockStatement' type.
+ * Node that describes the 'StringLiteral' type.
  *
  * @since 1.0
  */
-public final class BlockStatement implements Statement {
+public final class StringLiteral implements Expression {
     /**
      * The type.
      */
@@ -36,19 +35,19 @@ public final class BlockStatement implements Statement {
     private Fragment fragment;
 
     /**
-     * List of child nodes.
+     * The data.
      */
-    private List<Statement> children;
+    private String data;
 
     /**
      * Constructor.
      */
-    private BlockStatement() {
+    private StringLiteral() {
     }
 
     @Override
     public Type getType() {
-        return BlockStatement.TYPE;
+        return StringLiteral.TYPE;
     }
 
     @Override
@@ -58,54 +57,34 @@ public final class BlockStatement implements Statement {
 
     @Override
     public String getData() {
-        return "";
+        return this.data;
     }
 
     @Override
     public int getChildCount() {
-        return this.children.size();
-    }
-
-    /**
-     * Return a child node with 'Statement' type by its index.
-     * @param index Child index
-     * @return A node
-     */
-    public Statement getStatement(final int index) {
-        return this.children.get(index);
+        return 0;
     }
 
     @Override
     public Node getChild(final int index) {
-        return this.children.get(index);
+        throw new IndexOutOfBoundsException();
     }
 
     /**
-     * Type descriptor of the 'BlockStatement' node.
+     * Type descriptor of the 'StringLiteral' node.
      *
      * @since 1.0
      */
     private static class TypeImpl implements Type {
         /**
-         * The 'BlockStatement' string.
+         * The 'StringLiteral' string.
          */
-        private static final String BLOCK_STATEMENT = "BlockStatement";
+        private static final String STRING_LITERAL = "StringLiteral";
 
         /**
-         * The 'Statement' string.
+         * The 'Expression' string.
          */
-        private static final String STATEMENT = "Statement";
-
-        /**
-         * The list of child types.
-         */
-        private static final List<ChildDescriptor> CHILDREN =
-            Collections.singletonList(
-                new ChildDescriptor(
-                    TypeImpl.STATEMENT,
-                    false
-                )
-            );
+        private static final String EXPRESSION = "Expression";
 
         /**
          * Hierarchy.
@@ -113,8 +92,8 @@ public final class BlockStatement implements Statement {
         private static final List<String> HIERARCHY =
             Collections.unmodifiableList(
                 Arrays.asList(
-                    TypeImpl.BLOCK_STATEMENT,
-                    TypeImpl.STATEMENT
+                    TypeImpl.STRING_LITERAL,
+                    TypeImpl.EXPRESSION
                 )
             );
 
@@ -129,12 +108,12 @@ public final class BlockStatement implements Statement {
 
         @Override
         public String getName() {
-            return TypeImpl.BLOCK_STATEMENT;
+            return TypeImpl.STRING_LITERAL;
         }
 
         @Override
         public List<ChildDescriptor> getChildTypes() {
-            return TypeImpl.CHILDREN;
+            return Collections.emptyList();
         }
 
         @Override
@@ -154,7 +133,7 @@ public final class BlockStatement implements Statement {
     }
 
     /**
-     * Class for 'BlockStatement' node construction.
+     * Class for 'StringLiteral' node construction.
      *
      * @since 1.0
      */
@@ -165,9 +144,14 @@ public final class BlockStatement implements Statement {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * List of child nodes.
+         * The flag indicating that the builder has been initialized.
          */
-        private List<Statement> children = Collections.emptyList();
+        private boolean initialized;
+
+        /**
+         * The data.
+         */
+        private String data;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -175,38 +159,27 @@ public final class BlockStatement implements Statement {
         }
 
         @Override
-        public boolean setData(final String str) {
-            return str.isEmpty();
-        }
-
-        @Override
-        public boolean setChildrenList(final List<Node> list) {
-            boolean result = true;
-            final List<Statement> clarified = new ArrayList<>(list.size());
-            for (final Node node : list) {
-                if (node instanceof Statement) {
-                    clarified.add((Statement) node);
-                } else {
-                    result = false;
-                    break;
-                }
-            }
-            if (result) {
-                this.children = Collections.unmodifiableList(clarified);
-            }
-            return result;
-        }
-
-        @Override
-        public boolean isValid() {
+        public boolean setData(final String value) {
+            this.data = value;
+            this.initialized = true;
             return true;
         }
 
         @Override
-        public BlockStatement createNode() {
-            final BlockStatement node = new BlockStatement();
+        public boolean setChildrenList(final List<Node> list) {
+            return list.isEmpty();
+        }
+
+        @Override
+        public boolean isValid() {
+            return this.initialized;
+        }
+
+        @Override
+        public StringLiteral createNode() {
+            final StringLiteral node = new StringLiteral();
             node.fragment = this.fragment;
-            node.children = this.children;
+            node.data = this.data;
             return node;
         }
     }
