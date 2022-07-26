@@ -59,6 +59,8 @@
                         <exclude>duplicatefinder:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
                         <exclude>findbugs:~src.main.java.org.uast.uast.generated.antlr4.*</exclude>
                         <exclude>dependencies:org.slf4j:slf4j-nop</exclude>
+                        <exclude>checkstyle:/src/test/resources/.*</exclude>
+                        <exclude>pmd:/src/test/resources/.*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
