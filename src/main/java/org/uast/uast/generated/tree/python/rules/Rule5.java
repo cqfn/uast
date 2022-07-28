@@ -27,19 +27,19 @@ public final class Rule5 implements Converter {
     public static final Converter INSTANCE = new Rule5();
 
     /**
-     * The 'Identifier' string.
+     * The number of the first hole.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ExpressionList' string.
+     * The number of the second hole.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'FunctionCall' string.
+     * The 'Addition' string.
      */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -52,62 +52,26 @@ public final class Rule5 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher19.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher17.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule5.firstBuilder(factory, children, data);
+            result = Rule5.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule5.FUNCTION_CALL);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule5.secondBuilder(factory, data));
-        list.add(Rule5.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Identifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule5.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ExpressionList' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule5.EXPRESSION_LIST);
-        final List<Node> list = children.get(2);
+        final Builder builder = factory.createBuilder(Rule5.ADDITION);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule5.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule5.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -8,8 +8,10 @@ package org.uast.uast.lang.java;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
 import com.github.javaparser.ast.type.PrimitiveType;
+import java.util.Locale;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 
@@ -28,7 +30,18 @@ public class JavaRawToNodeConverter {
      */
     public Node convert(final com.github.javaparser.ast.Node node) {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
-        ctor.setName(node.getClass().getSimpleName());
+        if (node instanceof UnaryExpr) {
+            final String operator = ((UnaryExpr) node).getOperator().name();
+            final String[] tokens = operator.split("_");
+            final StringBuilder builder = new StringBuilder();
+            for (final String token : tokens) {
+                builder.append(token.substring(0, 1).toUpperCase(Locale.ROOT))
+                    .append(token.substring(1).toLowerCase(Locale.ROOT));
+            }
+            ctor.setName(builder.toString());
+        } else {
+            ctor.setName(node.getClass().getSimpleName());
+        }
         ctor.setData(getData(node));
         for (final com.github.javaparser.ast.Node child : node.getChildNodes()) {
             final Node converted = this.convert(child);

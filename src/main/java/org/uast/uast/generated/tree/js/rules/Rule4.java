@@ -27,24 +27,19 @@ public final class Rule4 implements Converter {
     public static final Converter INSTANCE = new Rule4();
 
     /**
-     * The 'Name' string.
-     */
-    private static final String NAME = "Name";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ExpressionList' string.
+     * The number of the second hole.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'FunctionCall' string.
+     * The 'Subtraction' string.
      */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String SUBTRACTION = "Subtraction";
 
     /**
      * Constructor.
@@ -65,7 +60,7 @@ public final class Rule4 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'Subtraction' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,47 +68,10 @@ public final class Rule4 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule4.SUBTRACTION);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule4.secondBuilder(factory, children));
         list.addAll(children.get(Rule4.FIRST_HOLE_ID));
-        list.add(Rule4.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ExpressionList' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.EXPRESSION_LIST);
-        final List<Node> list = children.get(3);
+        list.addAll(children.get(Rule4.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

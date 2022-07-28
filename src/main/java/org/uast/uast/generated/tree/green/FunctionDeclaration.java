@@ -25,6 +25,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
+@SuppressWarnings("PMD.DataClass")
 public final class FunctionDeclaration implements ClassItem {
     /**
      * The type.
@@ -40,6 +41,31 @@ public final class FunctionDeclaration implements ClassItem {
      * List of child nodes.
      */
     private List<Node> children;
+
+    /**
+     * Child with the 'modifiers' tag.
+     */
+    private ModifierBlock modifiers;
+
+    /**
+     * Child with the 'typename' tag.
+     */
+    private TypeName typename;
+
+    /**
+     * Child with the 'name' tag.
+     */
+    private Identifier name;
+
+    /**
+     * Child with the 'parameters' tag.
+     */
+    private ParameterBlock parameters;
+
+    /**
+     * Child with the 'body' tag.
+     */
+    private StatementBlock body;
 
     /**
      * Constructor.
@@ -70,6 +96,46 @@ public final class FunctionDeclaration implements ClassItem {
     @Override
     public Node getChild(final int index) {
         return this.children.get(index);
+    }
+
+    /**
+     * Returns the child with the 'modifiers' tag.
+     * @return The node
+     */
+    public ModifierBlock getModifiers() {
+        return this.modifiers;
+    }
+
+    /**
+     * Returns the child with the 'typename' tag.
+     * @return The node
+     */
+    public TypeName getTypename() {
+        return this.typename;
+    }
+
+    /**
+     * Returns the child with the 'name' tag.
+     * @return The node
+     */
+    public Identifier getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns the child with the 'parameters' tag.
+     * @return The node
+     */
+    public ParameterBlock getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Returns the child with the 'body' tag.
+     * @return The node
+     */
+    public StatementBlock getBody() {
+        return this.body;
     }
 
     /**
@@ -206,29 +272,29 @@ public final class FunctionDeclaration implements ClassItem {
         private static final int MAX_NODE_COUNT = 5;
 
         /**
-         * The position of the 'first' field.
+         * The position of the 'modifiers' field.
          */
-        private static final int FIRST_POS = 0;
+        private static final int MODIFIERS_POS = 0;
 
         /**
-         * The position of the 'second' field.
+         * The position of the 'typename' field.
          */
-        private static final int SECOND_POS = 1;
+        private static final int TYPENAME_POS = 1;
 
         /**
-         * The position of the 'third' field.
+         * The position of the 'name' field.
          */
-        private static final int THIRD_POS = 2;
+        private static final int NAME_POS = 2;
 
         /**
-         * The position of the 'fourth' field.
+         * The position of the 'parameters' field.
          */
-        private static final int FOURTH_POS = 3;
+        private static final int PARAMETERS_POS = 3;
 
         /**
-         * The position of the 'fifth' field.
+         * The position of the 'body' field.
          */
-        private static final int FIFTH_POS = 4;
+        private static final int BODY_POS = 4;
 
         /**
          * The fragment associated with the node.
@@ -236,29 +302,29 @@ public final class FunctionDeclaration implements ClassItem {
         private Fragment fragment = EmptyFragment.INSTANCE;
 
         /**
-         * Node 0.
+         * Node with the 'modifiers' tag.
          */
-        private ModifierBlock first;
+        private ModifierBlock modifiers;
 
         /**
-         * Node 1.
+         * Node with the 'typename' tag.
          */
-        private TypeName second;
+        private TypeName typename;
 
         /**
-         * Node 2.
+         * Node with the 'name' tag.
          */
-        private Identifier third;
+        private Identifier name;
 
         /**
-         * Node 3.
+         * Node with the 'parameters' tag.
          */
-        private ParameterBlock fourth;
+        private ParameterBlock parameters;
 
         /**
-         * Node 4.
+         * Node with the 'body' tag.
          */
-        private StatementBlock fifth;
+        private StatementBlock body;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -270,6 +336,46 @@ public final class FunctionDeclaration implements ClassItem {
             return str.isEmpty();
         }
 
+        /**
+         * Sets the node with the 'modifiers' tag.
+         * @param node The node
+         */
+        public void setModifiers(final ModifierBlock node) {
+            this.modifiers = node;
+        }
+
+        /**
+         * Sets the node with the 'typename' tag.
+         * @param node The node
+         */
+        public void setTypename(final TypeName node) {
+            this.typename = node;
+        }
+
+        /**
+         * Sets the node with the 'name' tag.
+         * @param node The node
+         */
+        public void setName(final Identifier node) {
+            this.name = node;
+        }
+
+        /**
+         * Sets the node with the 'parameters' tag.
+         * @param node The node
+         */
+        public void setParameters(final ParameterBlock node) {
+            this.parameters = node;
+        }
+
+        /**
+         * Sets the node with the 'body' tag.
+         * @param node The node
+         */
+        public void setBody(final StatementBlock node) {
+            this.body = node;
+        }
+
         @Override
         public boolean setChildrenList(final List<Node> list) {
             final Node[] mapping = new Node[Constructor.MAX_NODE_COUNT];
@@ -277,20 +383,20 @@ public final class FunctionDeclaration implements ClassItem {
                 new ChildrenMapper(FunctionDeclaration.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (ModifierBlock) mapping[Constructor.FIRST_POS];
-                this.second = (TypeName) mapping[Constructor.SECOND_POS];
-                this.third = (Identifier) mapping[Constructor.THIRD_POS];
-                this.fourth = (ParameterBlock) mapping[Constructor.FOURTH_POS];
-                this.fifth = (StatementBlock) mapping[Constructor.FIFTH_POS];
+                this.modifiers = (ModifierBlock) mapping[Constructor.MODIFIERS_POS];
+                this.typename = (TypeName) mapping[Constructor.TYPENAME_POS];
+                this.name = (Identifier) mapping[Constructor.NAME_POS];
+                this.parameters = (ParameterBlock) mapping[Constructor.PARAMETERS_POS];
+                this.body = (StatementBlock) mapping[Constructor.BODY_POS];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.third != null
-                && this.fourth != null
-                && this.fifth != null;
+            return this.name != null
+                && this.parameters != null
+                && this.body != null;
         }
 
         @Override
@@ -302,13 +408,18 @@ public final class FunctionDeclaration implements ClassItem {
             node.fragment = this.fragment;
             node.children = new ListUtils<Node>()
                 .add(
-                    this.first,
-                    this.second,
-                    this.third,
-                    this.fourth,
-                    this.fifth
+                    this.modifiers,
+                    this.typename,
+                    this.name,
+                    this.parameters,
+                    this.body
                 )
                 .make();
+            node.modifiers = this.modifiers;
+            node.typename = this.typename;
+            node.name = this.name;
+            node.parameters = this.parameters;
+            node.body = this.body;
             return node;
         }
     }
