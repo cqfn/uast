@@ -27,19 +27,14 @@ public final class Rule4 implements Converter {
     public static final Converter INSTANCE = new Rule4();
 
     /**
-     * The 'Identifier' string.
+     * The 'IntegerLiteral' string.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final String INTEGER_LITERAL = "IntegerLiteral";
 
     /**
-     * The 'ExpressionList' string.
+     * The 'Negative' string.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
-
-    /**
-     * The 'FunctionCallExpression' string.
-     */
-    private static final String FUNCTION_CALL_EX = "FunctionCallExpression";
+    private static final String NEGATIVE = "Negative";
 
     /**
      * Constructor.
@@ -52,28 +47,24 @@ public final class Rule4 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher10.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher12.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule4.firstBuilder(factory, children, data);
+            result = Rule4.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionCallExpression' type.
+     * Builds a node with 'Negative' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.FUNCTION_CALL_EX);
+        final Builder builder = factory.createBuilder(Rule4.NEGATIVE);
         final List<Node> list = new LinkedList<>();
         list.add(Rule4.secondBuilder(factory, data));
-        list.add(Rule4.thirdBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -82,34 +73,16 @@ public final class Rule4 implements Converter {
     }
 
     /**
-     * Builds a node with 'Identifier' type.
+     * Builds a node with 'IntegerLiteral' type.
      * @param factory The node factory
      * @param data The data
      * @return A node
      */
     private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.IDENTIFIER);
+        final Builder builder = factory.createBuilder(Rule4.INTEGER_LITERAL);
         final boolean set = builder.setData(data.get(1));
         if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ExpressionList' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.EXPRESSION_LIST);
-        final List<Node> list = children.get(2);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

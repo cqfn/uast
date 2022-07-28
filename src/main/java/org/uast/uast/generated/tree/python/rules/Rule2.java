@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule2 implements Converter {
     public static final Converter INSTANCE = new Rule2();
 
     /**
-     * The 'IntegerLiteral' string.
+     * The 'Identifier' string.
      */
-    private static final String INTEGER_LITERAL = "IntegerLiteral";
+    private static final String IDENTIFIER = "Identifier";
+
+    /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
 
     /**
      * Constructor.
@@ -49,14 +60,50 @@ public final class Rule2 implements Converter {
     }
 
     /**
-     * Builds a node with 'IntegerLiteral' type.
+     * Builds a node with 'Variable' type.
      * @param factory The node factory
      * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule2.INTEGER_LITERAL);
+        final Builder builder = factory.createBuilder(Rule2.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule2.secondBuilder(factory, data));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule2.NAME);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule2.thirdBuilder(factory, data));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Identifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule2.IDENTIFIER);
         final boolean set = builder.setData(data.get(1));
         if (set && builder.isValid()) {
             result = builder.createNode();

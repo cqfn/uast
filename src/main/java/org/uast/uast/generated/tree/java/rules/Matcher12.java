@@ -25,22 +25,17 @@ public final class Matcher12 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "BinaryExpr";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
-
-    /**
-     * Expected data.
-     */
-    private static final String EXPECTED_DATA = "+";
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * The index of the first child.
@@ -58,9 +53,7 @@ public final class Matcher12 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher12.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher12.EXPECTED_COUNT
-            && Matcher12.EXPECTED_DATA.equals(node.getData())
-            && Matcher13.INSTANCE.match(node.getChild(1), children, data);
+            && node.getChildCount() == Matcher12.EXPECTED_COUNT;
         if (result) {
             children.put(
                 Matcher12.FIRST_HOLE_ID,

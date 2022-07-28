@@ -21,6 +21,7 @@ import org.uast.uast.generated.tree.green.Declarator;
 import org.uast.uast.generated.tree.green.DeclaratorList;
 import org.uast.uast.generated.tree.green.Dimension;
 import org.uast.uast.generated.tree.green.DimensionList;
+import org.uast.uast.generated.tree.green.Division;
 import org.uast.uast.generated.tree.green.ExpressionList;
 import org.uast.uast.generated.tree.green.FunctionCall;
 import org.uast.uast.generated.tree.green.FunctionCallExpression;
@@ -29,9 +30,17 @@ import org.uast.uast.generated.tree.green.Identifier;
 import org.uast.uast.generated.tree.green.IntegerLiteral;
 import org.uast.uast.generated.tree.green.Modifier;
 import org.uast.uast.generated.tree.green.ModifierBlock;
+import org.uast.uast.generated.tree.green.Modulus;
+import org.uast.uast.generated.tree.green.Multiplication;
 import org.uast.uast.generated.tree.green.Name;
+import org.uast.uast.generated.tree.green.Negative;
 import org.uast.uast.generated.tree.green.Parameter;
 import org.uast.uast.generated.tree.green.ParameterBlock;
+import org.uast.uast.generated.tree.green.Positive;
+import org.uast.uast.generated.tree.green.PostDecrement;
+import org.uast.uast.generated.tree.green.PostIncrement;
+import org.uast.uast.generated.tree.green.PreDecrement;
+import org.uast.uast.generated.tree.green.PreIncrement;
 import org.uast.uast.generated.tree.green.PrimitiveType;
 import org.uast.uast.generated.tree.green.Program;
 import org.uast.uast.generated.tree.green.PropertyAccess;
@@ -77,6 +86,7 @@ public final class PythonFactory extends Factory {
             DeclaratorList.TYPE,
             Dimension.TYPE,
             DimensionList.TYPE,
+            Division.TYPE,
             ExpressionList.TYPE,
             FunctionCall.TYPE,
             FunctionCallExpression.TYPE,
@@ -85,9 +95,17 @@ public final class PythonFactory extends Factory {
             IntegerLiteral.TYPE,
             Modifier.TYPE,
             ModifierBlock.TYPE,
+            Modulus.TYPE,
+            Multiplication.TYPE,
             Name.TYPE,
+            Negative.TYPE,
             Parameter.TYPE,
             ParameterBlock.TYPE,
+            Positive.TYPE,
+            PostDecrement.TYPE,
+            PostIncrement.TYPE,
+            PreDecrement.TYPE,
+            PreIncrement.TYPE,
             PrimitiveType.TYPE,
             Program.TYPE,
             PropertyAccess.TYPE,

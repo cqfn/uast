@@ -32,9 +32,14 @@ public final class Rule13 implements Converter {
     private static final String NAME = "Name";
 
     /**
-     * The 'ClassType' string.
+     * The 'Variable' string.
      */
-    private static final String CLASS_TYPE = "ClassType";
+    private static final String VARIABLE = "Variable";
+
+    /**
+     * The 'PreDecrement' string.
+     */
+    private static final String PRE_DECREMENT = "PreDecrement";
 
     /**
      * Constructor.
@@ -47,7 +52,7 @@ public final class Rule13 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher17.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher24.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule13.firstBuilder(factory, children);
         }
@@ -55,7 +60,7 @@ public final class Rule13 implements Converter {
     }
 
     /**
-     * Builds a node with 'ClassType' type.
+     * Builds a node with 'PreDecrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -63,9 +68,28 @@ public final class Rule13 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule13.CLASS_TYPE);
+        final Builder builder = factory.createBuilder(Rule13.PRE_DECREMENT);
         final List<Node> list = new LinkedList<>();
         list.add(Rule13.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule13.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule13.thirdBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -79,7 +103,7 @@ public final class Rule13 implements Converter {
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory,
+    private static Node thirdBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule13.NAME);

@@ -23,8 +23,30 @@ import org.uast.uast.generated.tree.java.rules.Rule17;
 import org.uast.uast.generated.tree.java.rules.Rule18;
 import org.uast.uast.generated.tree.java.rules.Rule19;
 import org.uast.uast.generated.tree.java.rules.Rule2;
+import org.uast.uast.generated.tree.java.rules.Rule20;
+import org.uast.uast.generated.tree.java.rules.Rule21;
+import org.uast.uast.generated.tree.java.rules.Rule22;
+import org.uast.uast.generated.tree.java.rules.Rule23;
+import org.uast.uast.generated.tree.java.rules.Rule24;
+import org.uast.uast.generated.tree.java.rules.Rule25;
+import org.uast.uast.generated.tree.java.rules.Rule26;
+import org.uast.uast.generated.tree.java.rules.Rule27;
+import org.uast.uast.generated.tree.java.rules.Rule28;
+import org.uast.uast.generated.tree.java.rules.Rule29;
 import org.uast.uast.generated.tree.java.rules.Rule3;
+import org.uast.uast.generated.tree.java.rules.Rule30;
+import org.uast.uast.generated.tree.java.rules.Rule31;
+import org.uast.uast.generated.tree.java.rules.Rule32;
+import org.uast.uast.generated.tree.java.rules.Rule33;
+import org.uast.uast.generated.tree.java.rules.Rule34;
+import org.uast.uast.generated.tree.java.rules.Rule35;
+import org.uast.uast.generated.tree.java.rules.Rule36;
+import org.uast.uast.generated.tree.java.rules.Rule37;
+import org.uast.uast.generated.tree.java.rules.Rule38;
+import org.uast.uast.generated.tree.java.rules.Rule39;
 import org.uast.uast.generated.tree.java.rules.Rule4;
+import org.uast.uast.generated.tree.java.rules.Rule40;
+import org.uast.uast.generated.tree.java.rules.Rule41;
 import org.uast.uast.generated.tree.java.rules.Rule5;
 import org.uast.uast.generated.tree.java.rules.Rule6;
 import org.uast.uast.generated.tree.java.rules.Rule7;
@@ -74,7 +96,29 @@ public final class JavaAdapter extends Adapter {
             Rule16.INSTANCE,
             Rule17.INSTANCE,
             Rule18.INSTANCE,
-            Rule19.INSTANCE
+            Rule19.INSTANCE,
+            Rule20.INSTANCE,
+            Rule21.INSTANCE,
+            Rule22.INSTANCE,
+            Rule23.INSTANCE,
+            Rule24.INSTANCE,
+            Rule25.INSTANCE,
+            Rule26.INSTANCE,
+            Rule27.INSTANCE,
+            Rule28.INSTANCE,
+            Rule29.INSTANCE,
+            Rule30.INSTANCE,
+            Rule31.INSTANCE,
+            Rule32.INSTANCE,
+            Rule33.INSTANCE,
+            Rule34.INSTANCE,
+            Rule35.INSTANCE,
+            Rule36.INSTANCE,
+            Rule37.INSTANCE,
+            Rule38.INSTANCE,
+            Rule39.INSTANCE,
+            Rule40.INSTANCE,
+            Rule41.INSTANCE
         );
     }
 }

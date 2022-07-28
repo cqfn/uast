@@ -25,7 +25,7 @@ public final class Matcher18 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "argument";
+    private static final String EXPECTED_TYPE = "singleExpression";
 
     /**
      * Expected number of child nodes.
@@ -35,7 +35,7 @@ public final class Matcher18 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * The index of the first child.

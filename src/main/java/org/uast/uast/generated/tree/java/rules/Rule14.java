@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,24 +26,9 @@ public final class Rule14 implements Converter {
     public static final Converter INSTANCE = new Rule14();
 
     /**
-     * The number of the first hole.
+     * The 'PreDecrement' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The 'Dimension' string.
-     */
-    private static final String DIMENSION = "Dimension";
-
-    /**
-     * The 'DimensionList' string.
-     */
-    private static final String DIMENSION_LIST = "DimensionList";
-
-    /**
-     * The 'ArrayType' string.
-     */
-    private static final String ARRAY_TYPE = "ArrayType";
+    private static final String PRE_DECREMENT = "PreDecrement";
 
     /**
      * Constructor.
@@ -57,7 +41,7 @@ public final class Rule14 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher18.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher26.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule14.firstBuilder(factory, children);
         }
@@ -65,7 +49,7 @@ public final class Rule14 implements Converter {
     }
 
     /**
-     * Builds a node with 'ArrayType' type.
+     * Builds a node with 'PreDecrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,43 +57,10 @@ public final class Rule14 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule14.ARRAY_TYPE);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule14.FIRST_HOLE_ID));
-        list.add(Rule14.secondBuilder(factory));
+        final Builder builder = factory.createBuilder(Rule14.PRE_DECREMENT);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'DimensionList' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule14.DIMENSION_LIST);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule14.thirdBuilder(factory));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Dimension' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule14.DIMENSION);
-        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

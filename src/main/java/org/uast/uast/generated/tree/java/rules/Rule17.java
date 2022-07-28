@@ -27,39 +27,19 @@ public final class Rule17 implements Converter {
     public static final Converter INSTANCE = new Rule17();
 
     /**
-     * The 'Modifier' string.
+     * The 'Name' string.
      */
-    private static final String MODIFIER = "Modifier";
+    private static final String NAME = "Name";
 
     /**
-     * The 'ModifierBlock' string.
+     * The 'Variable' string.
      */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
+    private static final String VARIABLE = "Variable";
 
     /**
-     * The number of the first hole.
+     * The 'PostDecrement' string.
      */
-    private static final int FIRST_HOLE_ID = 5;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 3;
-
-    /**
-     * The 'ParameterBlock' string.
-     */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 6;
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String POST_DECREMENT = "PostDecrement";
 
     /**
      * Constructor.
@@ -72,31 +52,25 @@ public final class Rule17 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher21.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher30.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule17.firstBuilder(factory, children, data);
+            result = Rule17.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'PostDecrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule17.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule17.POST_DECREMENT);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule17.secondBuilder(factory, data));
-        list.addAll(children.get(Rule17.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule17.SECOND_HOLE_ID));
-        list.add(Rule17.fifthBuilder(factory, children));
-        list.addAll(children.get(Rule17.THIRD_HOLE_ID));
+        list.add(Rule17.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,67 +79,35 @@ public final class Rule17 implements Converter {
     }
 
     /**
-     * Builds a node with 'ModifierBlock' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule17.MODIFIER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule17.thirdBuilder(factory, data));
-        list.add(Rule17.fourthBuilder(factory, data));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule17.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule17.MODIFIER);
-        final boolean set = builder.setData(data.get(2));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ParameterBlock' type.
+     * Builds a node with 'Variable' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fifthBuilder(final Factory factory,
+    private static Node secondBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule17.PARAMETER_BLOCK);
-        final List<Node> list = children.get(4);
+        final Builder builder = factory.createBuilder(Rule17.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule17.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule17.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

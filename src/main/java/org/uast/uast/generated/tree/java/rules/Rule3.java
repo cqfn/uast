@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule3 implements Converter {
     public static final Converter INSTANCE = new Rule3();
 
     /**
-     * The 'Identifier' string.
+     * The number of the first hole.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'Subtraction' string.
+     */
+    private static final String SUBTRACTION = "Subtraction";
 
     /**
      * Constructor.
@@ -41,24 +52,28 @@ public final class Rule3 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher3.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher5.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule3.firstBuilder(factory, data);
+            result = Rule3.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Identifier' type.
+     * Builds a node with 'Subtraction' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule3.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule3.SUBTRACTION);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule3.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule3.SECOND_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

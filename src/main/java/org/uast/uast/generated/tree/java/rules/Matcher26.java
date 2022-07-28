@@ -25,7 +25,7 @@ public final class Matcher26 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "CompilationUnit";
+    private static final String EXPECTED_TYPE = "PrefixDecrement";
 
     /**
      * Expected number of child nodes.

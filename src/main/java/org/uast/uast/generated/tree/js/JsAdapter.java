@@ -12,7 +12,27 @@ import org.uast.uast.base.Adapter;
 import org.uast.uast.base.Converter;
 import org.uast.uast.generated.tree.js.rules.Rule0;
 import org.uast.uast.generated.tree.js.rules.Rule1;
+import org.uast.uast.generated.tree.js.rules.Rule10;
+import org.uast.uast.generated.tree.js.rules.Rule11;
+import org.uast.uast.generated.tree.js.rules.Rule12;
+import org.uast.uast.generated.tree.js.rules.Rule13;
+import org.uast.uast.generated.tree.js.rules.Rule14;
+import org.uast.uast.generated.tree.js.rules.Rule15;
+import org.uast.uast.generated.tree.js.rules.Rule16;
+import org.uast.uast.generated.tree.js.rules.Rule17;
+import org.uast.uast.generated.tree.js.rules.Rule18;
+import org.uast.uast.generated.tree.js.rules.Rule19;
 import org.uast.uast.generated.tree.js.rules.Rule2;
+import org.uast.uast.generated.tree.js.rules.Rule20;
+import org.uast.uast.generated.tree.js.rules.Rule21;
+import org.uast.uast.generated.tree.js.rules.Rule22;
+import org.uast.uast.generated.tree.js.rules.Rule23;
+import org.uast.uast.generated.tree.js.rules.Rule24;
+import org.uast.uast.generated.tree.js.rules.Rule25;
+import org.uast.uast.generated.tree.js.rules.Rule26;
+import org.uast.uast.generated.tree.js.rules.Rule27;
+import org.uast.uast.generated.tree.js.rules.Rule28;
+import org.uast.uast.generated.tree.js.rules.Rule29;
 import org.uast.uast.generated.tree.js.rules.Rule3;
 import org.uast.uast.generated.tree.js.rules.Rule4;
 import org.uast.uast.generated.tree.js.rules.Rule5;
@@ -54,7 +74,27 @@ public final class JsAdapter extends Adapter {
             Rule6.INSTANCE,
             Rule7.INSTANCE,
             Rule8.INSTANCE,
-            Rule9.INSTANCE
+            Rule9.INSTANCE,
+            Rule10.INSTANCE,
+            Rule11.INSTANCE,
+            Rule12.INSTANCE,
+            Rule13.INSTANCE,
+            Rule14.INSTANCE,
+            Rule15.INSTANCE,
+            Rule16.INSTANCE,
+            Rule17.INSTANCE,
+            Rule18.INSTANCE,
+            Rule19.INSTANCE,
+            Rule20.INSTANCE,
+            Rule21.INSTANCE,
+            Rule22.INSTANCE,
+            Rule23.INSTANCE,
+            Rule24.INSTANCE,
+            Rule25.INSTANCE,
+            Rule26.INSTANCE,
+            Rule27.INSTANCE,
+            Rule28.INSTANCE,
+            Rule29.INSTANCE
         );
     }
 }
