@@ -25,7 +25,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
-public final class VariableDeclaration implements ClassItem {
+public final class VariableDeclaration implements Statement {
     /**
      * The type.
      */
@@ -110,7 +110,7 @@ public final class VariableDeclaration implements ClassItem {
                     ),
                     new ChildDescriptor(
                         TypeImpl.TYPE_NAME,
-                        false
+                        true
                     ),
                     new ChildDescriptor(
                         TypeImpl.DECLARATOR_LIST,
@@ -120,9 +120,9 @@ public final class VariableDeclaration implements ClassItem {
             );
 
         /**
-         * The 'ClassItem' string.
+         * The 'Statement' string.
          */
-        private static final String CLASS_ITEM = "ClassItem";
+        private static final String STATEMENT = "Statement";
 
         /**
          * The 'ProgramItem' string.
@@ -136,7 +136,7 @@ public final class VariableDeclaration implements ClassItem {
             Collections.unmodifiableList(
                 Arrays.asList(
                     TypeImpl.VARIABLE_DECLARA,
-                    TypeImpl.CLASS_ITEM,
+                    TypeImpl.STATEMENT,
                     TypeImpl.PROGRAM_ITEM
                 )
             );
@@ -248,8 +248,7 @@ public final class VariableDeclaration implements ClassItem {
 
         @Override
         public boolean isValid() {
-            return this.second != null
-                && this.third != null;
+            return this.third != null;
         }
 
         @Override

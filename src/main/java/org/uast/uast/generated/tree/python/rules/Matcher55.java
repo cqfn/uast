@@ -24,17 +24,12 @@ public final class Matcher55 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "literal";
+    private static final String EXPECTED_TYPE = "comparison";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * Constructor.
@@ -46,11 +41,24 @@ public final class Matcher55 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher55.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher55.EXPECTED_COUNT;
-        if (result) {
-            data.put(Matcher55.FIRST_HOLE_ID, node.getData());
-        }
-        return result;
+        return node.belongsToGroup(Matcher55.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher55.EXPECTED_COUNT
+            && Matcher55.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data and children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher56.INSTANCE.match(node.getChild(0), children, data);
+        flag = flag && Matcher57.INSTANCE.match(node.getChild(1), children, data);
+        flag = flag && Matcher58.INSTANCE.match(node.getChild(2), children, data);
+        return flag;
     }
 }

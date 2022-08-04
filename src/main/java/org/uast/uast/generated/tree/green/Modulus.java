@@ -25,7 +25,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
-public final class Modulus implements BinaryExpression {
+public final class Modulus implements ArithmeticExpression {
     /**
      * The type.
      */
@@ -131,6 +131,11 @@ public final class Modulus implements BinaryExpression {
             );
 
         /**
+         * The 'ArithmeticExpression' string.
+         */
+        private static final String ARITHMETIC_EXPRE = "ArithmeticExpression";
+
+        /**
          * The 'BinaryExpression' string.
          */
         private static final String BINARY_EXPRESSIO = "BinaryExpression";
@@ -142,6 +147,7 @@ public final class Modulus implements BinaryExpression {
             Collections.unmodifiableList(
                 Arrays.asList(
                     TypeImpl.MODULUS,
+                    TypeImpl.ARITHMETIC_EXPRE,
                     TypeImpl.BINARY_EXPRESSIO,
                     TypeImpl.EXPRESSION
                 )

@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,24 @@ public final class Rule34 implements Converter {
     public static final Converter INSTANCE = new Rule34();
 
     /**
-     * The 'StatementBlock' string.
+     * The number of the first hole.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
+     * The 'LessThanOrEqualTo' string.
+     */
+    private static final String LESS_THAN_OR_EQU = "LessThanOrEqualTo";
 
     /**
      * Constructor.
@@ -41,7 +57,7 @@ public final class Rule34 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher53.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher67.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule34.firstBuilder(factory, children);
         }
@@ -49,7 +65,7 @@ public final class Rule34 implements Converter {
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'LessThanOrEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +73,47 @@ public final class Rule34 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule34.STATEMENT_BLOCK);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule34.LESS_THAN_OR_EQU);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule34.FIRST_HOLE_ID));
+        list.add(Rule34.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule34.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule34.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule34.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -32,19 +32,14 @@ public final class Rule13 implements Converter {
     private static final String NAME = "Name";
 
     /**
-     * The number of the first hole.
+     * The 'Variable' string.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final String VARIABLE = "Variable";
 
     /**
-     * The 'ExpressionList' string.
+     * The 'IsEqualTo' string.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
-
-    /**
-     * The 'FunctionCall' string.
-     */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String IS_EQUAL_TO = "IsEqualTo";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule13 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher41.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher39.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule13.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule13 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'IsEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,10 +68,28 @@ public final class Rule13 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule13.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule13.IS_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule13.secondBuilder(factory, children));
-        list.addAll(children.get(Rule13.FIRST_HOLE_ID));
+        list.add(Rule13.fourthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule13.VARIABLE);
+        final List<Node> list = new LinkedList<>();
         list.add(Rule13.thirdBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -91,7 +104,7 @@ public final class Rule13 implements Converter {
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory,
+    private static Node thirdBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule13.NAME);
@@ -104,16 +117,35 @@ public final class Rule13 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExpressionList' type.
+     * Builds a node with 'Variable' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node thirdBuilder(final Factory factory,
+    private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule13.EXPRESSION_LIST);
-        final List<Node> list = children.get(3);
+        final Builder builder = factory.createBuilder(Rule13.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule13.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule13.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

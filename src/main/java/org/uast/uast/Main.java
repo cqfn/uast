@@ -82,6 +82,15 @@ public final class Main {
     private boolean raw;
 
     /**
+     * The ANTLR option.
+     */
+    @Parameter(
+        names = "--antlr",
+        description = "Do not simplify ANTLR tree"
+    )
+    private boolean antlr;
+
+    /**
      * The help option.
      */
     @Parameter(names = "--help", help = true)
@@ -134,7 +143,8 @@ public final class Main {
                 lang = this.language;
             }
         }
-        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang, !this.raw);
+        final Node node = new SourceCodeParser(this.source.getPath())
+            .parse(lang, !this.raw, this.antlr);
         if (!this.image.isEmpty()) {
             final AstVisualizer visualizer = new AstVisualizer(node);
             visualizer.visualize(new File(this.image));

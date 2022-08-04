@@ -24,16 +24,23 @@ import org.uast.uast.lang.AntlrToNodeConverter;
  */
 public class JavaScriptParser {
     /**
+     * Retain the initial syntax ANTLR tree.
+     */
+    private final boolean initial;
+
+    /**
      * The source code.
      */
     private final String source;
 
     /**
      * Constructor.
-     * @param source Source string.
+     * @param source Source string
+     * @param initial If {@code true}, retain the initial ANTLR syntax tree
      */
-    public JavaScriptParser(final String source) {
+    public JavaScriptParser(final String source, final boolean initial) {
         this.source = source;
+        this.initial = initial;
     }
 
     /**
@@ -53,7 +60,7 @@ public class JavaScriptParser {
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final org.uast.uast.generated.antlr4.JavaScriptParser parser =
                 new org.uast.uast.generated.antlr4.JavaScriptParser(tokens);
-            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser, this.initial);
             final Node draft = converter.convert(parser.program());
             if (unified) {
                 result = JsAdapter.INSTANCE.convert(draft);

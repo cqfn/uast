@@ -24,16 +24,23 @@ import org.uast.uast.lang.AntlrToNodeConverter;
  */
 public class PythonParser {
     /**
+     * Retain the initial ANTLR tree.
+     */
+    private final boolean initial;
+
+    /**
      * The source code.
      */
     private final String source;
 
     /**
      * Constructor.
-     * @param source Source string.
+     * @param source Source string
+     * @param initial If {@code true}, retain the initial ANTLR syntax tree
      */
-    public PythonParser(final String source) {
+    public PythonParser(final String source, final boolean initial) {
         this.source = source;
+        this.initial = initial;
     }
 
     /**
@@ -53,7 +60,7 @@ public class PythonParser {
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final org.uast.uast.generated.antlr4.PythonParser parser =
                 new org.uast.uast.generated.antlr4.PythonParser(tokens);
-            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser, this.initial);
             final Node draft = converter.convert(parser.file_input());
             if (unified) {
                 result = PythonAdapter.INSTANCE.convert(draft);

@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -30,17 +29,7 @@ public final class Matcher51 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 0;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * Constructor.
@@ -52,14 +41,24 @@ public final class Matcher51 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher51.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher51.EXPECTED_COUNT;
-        if (result) {
-            children.put(
-                Matcher51.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher51.FIRST_CHILD_ID))
-            );
-        }
-        return result;
+        return node.belongsToGroup(Matcher51.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher51.EXPECTED_COUNT
+            && Matcher51.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data and children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher52.INSTANCE.match(node.getChild(0), children, data);
+        flag = flag && Matcher53.INSTANCE.match(node.getChild(1), children, data);
+        flag = flag && Matcher54.INSTANCE.match(node.getChild(2), children, data);
+        return flag;
     }
 }

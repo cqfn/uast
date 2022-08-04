@@ -27,14 +27,19 @@ public final class Rule35 implements Converter {
     public static final Converter INSTANCE = new Rule35();
 
     /**
-     * The 'Name' string.
+     * The number of the first hole.
      */
-    private static final String NAME = "Name";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ClassType' string.
+     * The number of the second hole.
      */
-    private static final String CLASS_TYPE = "ClassType";
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'BitwiseAnd' string.
+     */
+    private static final String BITWISE_AND = "BitwiseAnd";
 
     /**
      * Constructor.
@@ -47,7 +52,7 @@ public final class Rule35 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher55.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher69.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule35.firstBuilder(factory, children);
         }
@@ -55,7 +60,7 @@ public final class Rule35 implements Converter {
     }
 
     /**
-     * Builds a node with 'ClassType' type.
+     * Builds a node with 'BitwiseAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -63,27 +68,10 @@ public final class Rule35 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule35.CLASS_TYPE);
+        final Builder builder = factory.createBuilder(Rule35.BITWISE_AND);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule35.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule35.NAME);
-        final List<Node> list = children.get(1);
+        list.addAll(children.get(Rule35.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule35.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

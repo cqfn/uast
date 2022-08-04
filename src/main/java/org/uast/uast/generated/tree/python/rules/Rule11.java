@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule11 implements Converter {
     public static final Converter INSTANCE = new Rule11();
 
     /**
-     * The 'Positive' string.
+     * The number of the first hole.
      */
-    private static final String POSITIVE = "Positive";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'IsEqualTo' string.
+     */
+    private static final String IS_EQUAL_TO = "IsEqualTo";
 
     /**
      * Constructor.
@@ -49,7 +60,7 @@ public final class Rule11 implements Converter {
     }
 
     /**
-     * Builds a node with 'Positive' type.
+     * Builds a node with 'IsEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +68,10 @@ public final class Rule11 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule11.POSITIVE);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule11.IS_EQUAL_TO);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule11.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule11.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

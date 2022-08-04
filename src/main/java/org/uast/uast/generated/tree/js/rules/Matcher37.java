@@ -43,6 +43,16 @@ public final class Matcher37 implements Matcher {
     private static final int FIRST_CHILD_ID = 0;
 
     /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 2;
+
+    /**
      * Constructor.
      */
     private Matcher37() {
@@ -54,12 +64,15 @@ public final class Matcher37 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher37.EXPECTED_TYPE)
             && node.getChildCount() == Matcher37.EXPECTED_COUNT
-            && Matcher38.INSTANCE.match(node.getChild(1), children, data)
-            && Matcher39.INSTANCE.match(node.getChild(2), children, data);
+            && Matcher38.INSTANCE.match(node.getChild(1), children, data);
         if (result) {
             children.put(
                 Matcher37.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher37.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher37.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher37.SECOND_CHILD_ID))
             );
         }
         return result;

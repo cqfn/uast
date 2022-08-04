@@ -25,7 +25,7 @@ public final class Matcher76 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "file_input";
+    private static final String EXPECTED_TYPE = "comparison";
 
     /**
      * Expected number of child nodes.

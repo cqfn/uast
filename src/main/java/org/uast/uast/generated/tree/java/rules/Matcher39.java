@@ -25,7 +25,7 @@ public final class Matcher39 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ReturnStmt";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.

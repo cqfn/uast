@@ -78,11 +78,11 @@ public class UnificationTest {
                 node = jap.parse(true);
                 break;
             case "py":
-                final PythonParser pyp = new PythonParser(code);
+                final PythonParser pyp = new PythonParser(code, false);
                 node = pyp.parse(true);
                 break;
             case "js":
-                final JavaScriptParser jsp = new JavaScriptParser(code);
+                final JavaScriptParser jsp = new JavaScriptParser(code, false);
                 node = jsp.parse(true);
                 break;
             default:

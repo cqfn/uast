@@ -24,12 +24,17 @@ public final class Matcher30 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "PostfixDecrement";
+    private static final String EXPECTED_TYPE = "BinaryExpr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 2;
+
+    /**
+     * Expected data.
+     */
+    private static final String EXPECTED_DATA = "!=";
 
     /**
      * Constructor.
@@ -43,6 +48,22 @@ public final class Matcher30 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher30.EXPECTED_TYPE)
             && node.getChildCount() == Matcher30.EXPECTED_COUNT
-            && Matcher31.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher30.EXPECTED_DATA.equals(node.getData())
+            && Matcher30.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data and children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher31.INSTANCE.match(node.getChild(0), children, data);
+        flag = flag && Matcher32.INSTANCE.match(node.getChild(1), children, data);
+        return flag;
     }
 }

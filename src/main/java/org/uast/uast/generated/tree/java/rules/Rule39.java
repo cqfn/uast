@@ -27,39 +27,19 @@ public final class Rule39 implements Converter {
     public static final Converter INSTANCE = new Rule39();
 
     /**
-     * The 'Modifier' string.
-     */
-    private static final String MODIFIER = "Modifier";
-
-    /**
-     * The 'ModifierBlock' string.
-     */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 5;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The number of the second hole.
      */
-    private static final int SECOND_HOLE_ID = 3;
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'ParameterBlock' string.
+     * The 'BitwiseOr' string.
      */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 6;
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String BITWISE_OR = "BitwiseOr";
 
     /**
      * Constructor.
@@ -72,100 +52,26 @@ public final class Rule39 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher59.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher77.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule39.firstBuilder(factory, children, data);
+            result = Rule39.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'BitwiseOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule39.FUNCTION_DECLARA);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule39.secondBuilder(factory, data));
-        list.addAll(children.get(Rule39.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule39.SECOND_HOLE_ID));
-        list.add(Rule39.fifthBuilder(factory, children));
-        list.addAll(children.get(Rule39.THIRD_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ModifierBlock' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule39.MODIFIER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule39.thirdBuilder(factory, data));
-        list.add(Rule39.fourthBuilder(factory, data));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule39.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule39.MODIFIER);
-        final boolean set = builder.setData(data.get(2));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ParameterBlock' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule39.PARAMETER_BLOCK);
-        final List<Node> list = children.get(4);
+        final Builder builder = factory.createBuilder(Rule39.BITWISE_OR);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule39.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule39.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

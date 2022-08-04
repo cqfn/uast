@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,32 +24,17 @@ public final class Matcher81 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "functionDeclaration";
+    private static final String EXPECTED_TYPE = "literal";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 0;
 
     /**
-     * The number of the first hole.
+     * Expected data.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 2;
+    private static final String EXPECTED_DATA = "<";
 
     /**
      * Constructor.
@@ -62,19 +46,8 @@ public final class Matcher81 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher81.EXPECTED_TYPE)
+        return node.belongsToGroup(Matcher81.EXPECTED_TYPE)
             && node.getChildCount() == Matcher81.EXPECTED_COUNT
-            && Matcher82.INSTANCE.match(node.getChild(0), children, data);
-        if (result) {
-            children.put(
-                Matcher81.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher81.FIRST_CHILD_ID))
-            );
-            children.put(
-                Matcher81.SECOND_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher81.SECOND_CHILD_ID))
-            );
-        }
-        return result;
+            && Matcher81.EXPECTED_DATA.equals(node.getData());
     }
 }

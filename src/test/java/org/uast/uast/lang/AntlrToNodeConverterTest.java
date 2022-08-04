@@ -39,7 +39,7 @@ public class AntlrToNodeConverterTest {
             final JavaScriptLexer lexer = new JavaScriptLexer(stream);
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final JavaScriptParser parser = new JavaScriptParser(tokens);
-            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser, false);
             final Node node = converter.convert(parser.program());
             Assertions.assertEquals(node.getType().getName(), "program");
         } catch (final IOException exception) {

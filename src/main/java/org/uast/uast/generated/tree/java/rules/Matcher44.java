@@ -25,12 +25,12 @@ public final class Matcher44 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "FieldAccessExpr";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * The number of the first hole.
@@ -40,7 +40,7 @@ public final class Matcher44 implements Matcher {
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 1;
+    private static final int FIRST_CHILD_ID = 0;
 
     /**
      * Constructor.
@@ -53,8 +53,7 @@ public final class Matcher44 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher44.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher44.EXPECTED_COUNT
-            && Matcher45.INSTANCE.match(node.getChild(0), children, data);
+            && node.getChildCount() == Matcher44.EXPECTED_COUNT;
         if (result) {
             children.put(
                 Matcher44.FIRST_HOLE_ID,
