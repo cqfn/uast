@@ -27,19 +27,19 @@ public final class Rule15 implements Converter {
     public static final Converter INSTANCE = new Rule15();
 
     /**
-     * The 'Identifier' string.
+     * The number of the first hole.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ExpressionList' string.
+     * The number of the second hole.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'FunctionCall' string.
+     * The 'GreaterThanOrEqualTo' string.
      */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String GREATER_THAN_OR = "GreaterThanOrEqualTo";
 
     /**
      * Constructor.
@@ -52,57 +52,28 @@ public final class Rule15 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher52.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher47.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule15.firstBuilder(factory, data);
+            result = Rule15.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'GreaterThanOrEqualTo' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule15.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule15.GREATER_THAN_OR);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule15.secondBuilder(factory, data));
-        list.add(Rule15.thirdBuilder(factory));
+        list.addAll(children.get(Rule15.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule15.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Identifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule15.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ExpressionList' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule15.EXPRESSION_LIST);
-        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

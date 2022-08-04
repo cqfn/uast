@@ -27,6 +27,11 @@ public final class Rule19 implements Converter {
     public static final Converter INSTANCE = new Rule19();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule19 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Positive' string.
+     * The 'NotEqualTo' string.
      */
-    private static final String POSITIVE = "Positive";
+    private static final String NOT_EQUAL_TO = "NotEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule19 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher62.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher58.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule19.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule19 implements Converter {
     }
 
     /**
-     * Builds a node with 'Positive' type.
+     * Builds a node with 'NotEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,8 +73,9 @@ public final class Rule19 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule19.POSITIVE);
+        final Builder builder = factory.createBuilder(Rule19.NOT_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule19.FIRST_HOLE_ID));
         list.add(Rule19.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -107,7 +113,7 @@ public final class Rule19 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule19.NAME);
-        final List<Node> list = children.get(1);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

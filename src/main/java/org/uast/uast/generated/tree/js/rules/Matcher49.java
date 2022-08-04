@@ -30,7 +30,7 @@ public final class Matcher49 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * The number of the first hole.
@@ -43,6 +43,16 @@ public final class Matcher49 implements Matcher {
     private static final int FIRST_CHILD_ID = 0;
 
     /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 2;
+
+    /**
      * Constructor.
      */
     private Matcher49() {
@@ -53,11 +63,16 @@ public final class Matcher49 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher49.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher49.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher49.EXPECTED_COUNT
+            && Matcher50.INSTANCE.match(node.getChild(1), children, data);
         if (result) {
             children.put(
                 Matcher49.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher49.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher49.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher49.SECOND_CHILD_ID))
             );
         }
         return result;

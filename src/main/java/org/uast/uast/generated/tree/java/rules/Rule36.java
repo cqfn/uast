@@ -27,24 +27,19 @@ public final class Rule36 implements Converter {
     public static final Converter INSTANCE = new Rule36();
 
     /**
-     * The number of the first hole.
+     * The 'Name' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String NAME = "Name";
 
     /**
-     * The 'Dimension' string.
+     * The 'Variable' string.
      */
-    private static final String DIMENSION = "Dimension";
+    private static final String VARIABLE = "Variable";
 
     /**
-     * The 'DimensionList' string.
+     * The 'BitwiseAnd' string.
      */
-    private static final String DIMENSION_LIST = "DimensionList";
-
-    /**
-     * The 'ArrayType' string.
-     */
-    private static final String ARRAY_TYPE = "ArrayType";
+    private static final String BITWISE_AND = "BitwiseAnd";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule36 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher56.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher70.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule36.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule36 implements Converter {
     }
 
     /**
-     * Builds a node with 'ArrayType' type.
+     * Builds a node with 'BitwiseAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,10 +68,10 @@ public final class Rule36 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule36.ARRAY_TYPE);
+        final Builder builder = factory.createBuilder(Rule36.BITWISE_AND);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule36.FIRST_HOLE_ID));
-        list.add(Rule36.secondBuilder(factory));
+        list.add(Rule36.secondBuilder(factory, children));
+        list.add(Rule36.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -85,15 +80,17 @@ public final class Rule36 implements Converter {
     }
 
     /**
-     * Builds a node with 'DimensionList' type.
+     * Builds a node with 'Variable' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory) {
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule36.DIMENSION_LIST);
+        final Builder builder = factory.createBuilder(Rule36.VARIABLE);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule36.thirdBuilder(factory));
+        list.add(Rule36.thirdBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -102,14 +99,55 @@ public final class Rule36 implements Converter {
     }
 
     /**
-     * Builds a node with 'Dimension' type.
+     * Builds a node with 'Name' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node thirdBuilder(final Factory factory) {
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule36.DIMENSION);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule36.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule36.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule36.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule36.NAME);
+        final List<Node> list = children.get(2);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

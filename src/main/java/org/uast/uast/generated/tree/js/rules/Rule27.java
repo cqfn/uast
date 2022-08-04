@@ -32,14 +32,19 @@ public final class Rule27 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The number of the second hole.
+     * The 'Name' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
+    private static final String NAME = "Name";
 
     /**
-     * The 'Program' string.
+     * The 'Variable' string.
      */
-    private static final String PROGRAM = "Program";
+    private static final String VARIABLE = "Variable";
+
+    /**
+     * The 'LessThan' string.
+     */
+    private static final String LESS_THAN = "LessThan";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule27 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher88.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher82.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule27.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule27 implements Converter {
     }
 
     /**
-     * Builds a node with 'Program' type.
+     * Builds a node with 'LessThan' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,47 @@ public final class Rule27 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule27.PROGRAM);
+        final Builder builder = factory.createBuilder(Rule27.LESS_THAN);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule27.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule27.SECOND_HOLE_ID));
+        list.add(Rule27.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule27.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule27.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule27.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -25,7 +25,7 @@ import org.uast.uast.base.Type;
  *
  * @since 1.0
  */
-public final class Variable implements Expression {
+public final class Variable implements AssignableExpression {
     /**
      * The type.
      */
@@ -107,6 +107,11 @@ public final class Variable implements Expression {
             );
 
         /**
+         * The 'AssignableExpression' string.
+         */
+        private static final String ASSIGNABLE_EXPRE = "AssignableExpression";
+
+        /**
          * The 'Expression' string.
          */
         private static final String EXPRESSION = "Expression";
@@ -118,6 +123,7 @@ public final class Variable implements Expression {
             Collections.unmodifiableList(
                 Arrays.asList(
                     TypeImpl.VARIABLE,
+                    TypeImpl.ASSIGNABLE_EXPRE,
                     TypeImpl.EXPRESSION
                 )
             );

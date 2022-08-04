@@ -37,9 +37,9 @@ public final class Rule31 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Addition' string.
+     * The 'LessThanOrEqualTo' string.
      */
-    private static final String ADDITION = "Addition";
+    private static final String LESS_THAN_OR_EQU = "LessThanOrEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule31 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher48.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher61.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule31.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule31 implements Converter {
     }
 
     /**
-     * Builds a node with 'Addition' type.
+     * Builds a node with 'LessThanOrEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule31 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule31.ADDITION);
+        final Builder builder = factory.createBuilder(Rule31.LESS_THAN_OR_EQU);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule31.FIRST_HOLE_ID));
         list.addAll(children.get(Rule31.SECOND_HOLE_ID));

@@ -29,7 +29,7 @@ public final class Matcher39 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * Constructor.
@@ -43,6 +43,22 @@ public final class Matcher39 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher39.EXPECTED_TYPE)
             && node.getChildCount() == Matcher39.EXPECTED_COUNT
-            && Matcher40.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher39.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data and children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher40.INSTANCE.match(node.getChild(0), children, data);
+        flag = flag && Matcher41.INSTANCE.match(node.getChild(1), children, data);
+        flag = flag && Matcher42.INSTANCE.match(node.getChild(2), children, data);
+        return flag;
     }
 }

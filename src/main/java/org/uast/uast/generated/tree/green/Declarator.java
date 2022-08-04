@@ -32,11 +32,6 @@ public final class Declarator implements Node {
     public static final Type TYPE = new TypeImpl();
 
     /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 2;
-
-    /**
      * The fragment associated with the node.
      */
     private Fragment fragment;
@@ -79,7 +74,7 @@ public final class Declarator implements Node {
 
     @Override
     public int getChildCount() {
-        return Declarator.CHILD_COUNT;
+        return this.children.size();
     }
 
     @Override
@@ -136,7 +131,7 @@ public final class Declarator implements Node {
                     ),
                     new ChildDescriptor(
                         TypeImpl.EXPRESSION,
-                        false
+                        true
                     )
                 )
             );
@@ -263,8 +258,7 @@ public final class Declarator implements Node {
 
         @Override
         public boolean isValid() {
-            return this.name != null
-                && this.value != null;
+            return this.name != null;
         }
 
         @Override

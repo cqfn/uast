@@ -7,12 +7,47 @@ PrimitiveType <- $String$, $#$, $#$;
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
+Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
+ FunctionCallExpression | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression;
+FunctionCallExpression <- [owner@Name], name@Identifier, arguments@ExpressionList;
+ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
+BinaryExpression <-  ArithmeticExpression | RelationalExpression;
+RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
+Statement <- Return | StatementBlock | FunctionCall | Assignment | VariableDeclaration;
+TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
 UnaryExpression <- PreIncrement | PreDecrement | PostIncrement | PostDecrement | Positive | Negative;
+BitwiseExpression <- BitwiseComplement | LeftShift | RightShift | UnsignedRightShift | BitwiseAnd | BitwiseOr | ExclusiveOr;
+LogicalExpression <- LogicalAnd | LogicalOr | LogicalNot;
+Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | MultiplicationAssignment | DivisionAssignment
+    | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
+    | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
+AssignableExpression <- Variable | 0;
+
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
 Multiplication <- left@Expression, right@Expression;
 Division <- left@Expression, right@Expression;
 Modulus <-  left@Expression, right@Expression;
+
+IsEqualTo <- left@Expression, right@Expression;
+NotEqualTo <- left@Expression, right@Expression;
+GreaterThan <- left@Expression, right@Expression;
+LessThan <- left@Expression, right@Expression;
+GreaterThanOrEqualTo <- left@Expression, right@Expression;
+LessThanOrEqualTo <- left@Expression, right@Expression;
+
+BitwiseComplement <- Expression;
+BitwiseAnd <- left@Expression, right@Expression;
+BitwiseOr <- left@Expression, right@Expression;
+ExclusiveOr <- left@Expression, right@Expression;
+LeftShift <- left@Expression, right@Expression;
+RightShift <- left@Expression, right@Expression;
+UnsignedRightShift <- left@Expression, right@Expression;
+
+LogicalAnd <- left@Expression, right@Expression;
+LogicalOr <- left@Expression, right@Expression;
+LogicalNot <- Expression;
+
 PreIncrement <- Expression;
 PreDecrement <- Expression;
 PostIncrement <- Expression;
@@ -20,11 +55,19 @@ PostDecrement <- Expression;
 Positive <- Expression;
 Negative <- Expression;
 
-Expression <- BinaryExpression | IntegerLiteral | Variable | This | StringLiteral | Identifier | PropertyAccess | FunctionCallExpression | UnaryExpression;
-FunctionCallExpression <- [owner@Name], name@Identifier, arguments@ExpressionList;
-BinaryExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
-Statement <- Return | StatementBlock | FunctionCall;
-TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
+SimpleAssignment <- left@AssignableExpression, right@Expression;
+AdditionAssignment <- left@AssignableExpression, right@Expression;
+SubtractionAssignment <- left@AssignableExpression, right@Expression;
+MultiplicationAssignment <- left@AssignableExpression, right@Expression;
+DivisionAssignment <- left@AssignableExpression, right@Expression;
+ModulusAssignment <- left@AssignableExpression, right@Expression;
+BitwiseAndAssignment <- left@AssignableExpression, right@Expression;
+BitwiseOrAssignment <- left@AssignableExpression, right@Expression;
+ExclusiveOrAssignment <- left@AssignableExpression, right@Expression;
+UnsignedRightShiftAssignment <- left@AssignableExpression, right@Expression;
+RightShiftAssignment <- left@AssignableExpression, right@Expression;
+LeftShiftAssignment <- left@AssignableExpression, right@Expression;
+
 ClassType <- Name;
 ArrayType <- TypeName, DimensionList;
 DimensionList <- {Dimension};
@@ -44,10 +87,11 @@ FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Iden
 ParameterBlock <- {Parameter};
 ClassDeclaration <- [ModifierBlock], Identifier, ClassBody;
 ClassBody <- {ClassItem};
-ClassItem <- FunctionDeclaration | VariableDeclaration;
-VariableDeclaration <- [ModifierBlock], TypeName, DeclaratorList;
+ClassItem <- FunctionDeclaration | FieldDeclaration;
+FieldDeclaration <- [ModifierBlock], [TypeName], DeclaratorList;
+VariableDeclaration <- [ModifierBlock], [TypeName], DeclaratorList;
 DeclaratorList <- {Declarator};
-Declarator <- name@Identifier, value@Expression;
+Declarator <- name@Identifier, [value@Expression];
 
 java:
 
@@ -65,6 +109,97 @@ BinaryExpr(#1, #2)<"/"> -> Division(#1, #2);
 BinaryExpr(Name(#1), Name(#2))<"/"> -> Division(Variable(Name(#1)), Variable(Name(#2)));
 BinaryExpr(#1, #2)<"%"> -> Modulus(#1, #2);
 BinaryExpr(Name(#1), Name(#2))<"%"> -> Modulus(Variable(Name(#1)), Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"=="> -> IsEqualTo(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"=="> -> IsEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"=="> -> IsEqualTo(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"=="> -> IsEqualTo(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"!="> -> NotEqualTo(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"!="> -> NotEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"!="> -> NotEqualTo(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"!="> -> NotEqualTo(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<">"> -> GreaterThan(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<">"> -> GreaterThan(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<">"> -> GreaterThan(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<">"> -> GreaterThan(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"<"> -> LessThan(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"<"> -> LessThan(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"<"> -> LessThan(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"<"> -> LessThan(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<">="> -> GreaterThanOrEqualTo(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<">="> -> GreaterThanOrEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<">="> -> GreaterThanOrEqualTo(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<">="> -> GreaterThanOrEqualTo(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"<="> -> LessThanOrEqualTo(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"<="> -> LessThanOrEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"<="> -> LessThanOrEqualTo(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"<="> -> LessThanOrEqualTo(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"&"> -> BitwiseAnd(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"&"> -> BitwiseAnd(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"&"> -> BitwiseAnd(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"&"> -> BitwiseAnd(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"|"> -> BitwiseOr(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"|"> -> BitwiseOr(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"|"> -> BitwiseOr(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"|"> -> BitwiseOr(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"^"> -> ExclusiveOr(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"^"> -> ExclusiveOr(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"^"> -> ExclusiveOr(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"^"> -> ExclusiveOr(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"<<"> -> LeftShift(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"<<"> -> LeftShift(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"<<"> -> LeftShift(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"<<"> -> LeftShift(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<">>"> -> RightShift(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<">>"> -> RightShift(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<">>"> -> RightShift(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<">>"> -> RightShift(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<">>>"> -> UnsignedRightShift(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<">>>"> -> UnsignedRightShift(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<">>>"> -> UnsignedRightShift(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<">>>"> -> UnsignedRightShift(#1, Variable(Name(#2)));
+
+BitwiseComplement(Name(#1)) -> BitwiseComplement(Variable(Name(#1)));
+BitwiseComplement(#1) -> BitwiseComplement(#1);
+
+BinaryExpr(#1, #2)<"&&"> -> LogicalAnd(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"&&"> -> LogicalAnd(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"&&"> -> LogicalAnd(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"&&"> -> LogicalAnd(#1, Variable(Name(#2)));
+
+BinaryExpr(#1, #2)<"||"> -> LogicalOr(#1, #2);
+BinaryExpr(Name(#1), Name(#2))<"||"> -> LogicalOr(Variable(Name(#1)), Variable(Name(#2)));
+BinaryExpr(Name(#1), #2)<"||"> -> LogicalOr(Variable(Name(#1)), #2);
+BinaryExpr(#1, Name(#2))<"||"> -> LogicalOr(#1, Variable(Name(#2)));
+
+AssignExpr(#1, #2)<"="> -> SimpleAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"+="> -> AdditionAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"-="> -> SubtractionAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"*="> -> MultiplicationAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"/="> -> DivisionAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"%="> -> ModulusAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"&="> -> BitwiseAndAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"|="> -> BitwiseOrAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"^="> -> ExclusiveOrAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<">>="> -> RightShiftAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<">>>="> -> UnsignedRightShiftAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"<<="> -> LeftShiftAssignment(Variable(#1), #2);
+
+
+LogicalComplement(Name(#1)) -> LogicalNot(Variable(Name(#1)));
+LogicalComplement(#1) -> LogicalNot(#1);
+
 PrefixIncrement(Name(#1)) -> PreIncrement(Variable(Name(#1)));
 PrefixIncrement(#1) -> PreIncrement(#1);
 PrefixDecrement(Name(#1)) -> PreDecrement(Variable(Name(#1)));
@@ -77,6 +212,12 @@ Minus(Name(#1)) -> Negative(Variable(Name(#1)));
 Plus(Name(#1)) -> Positive(Variable(Name(#1)));
 Minus(#1) -> Negative(#1);
 Plus(#1) -> Positive(#1);
+
+PrimitiveType<#1> -> PrimitiveType<#1>;
+
+VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
+
+ExpressionStmt(#1) -> #1;
 ReturnStmt(#1) -> Return(#1);
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
@@ -115,6 +256,83 @@ singleExpression(#1, literal<"/">, #2) -> Division(#1, #2);
 singleExpression(singleExpression(#1), literal<"/">, singleExpression(#2)) -> Division(Variable(Name(#1)), Variable(Name(#2)));
 singleExpression(#1, literal<"%">, #2) -> Modulus(#1, #2);
 singleExpression(singleExpression(#1), literal<"%">, singleExpression(#2)) -> Modulus(Variable(Name(#1)), Variable(Name(#2)));
+
+singleExpression(#1, literal<"==">, #2) -> IsEqualTo(#1, #2);
+singleExpression(singleExpression(#1), literal<"==">, singleExpression(#2)) -> IsEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"==">, #2) -> IsEqualTo(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"==">, singleExpression(#2)) -> IsEqualTo(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"!=">, #2) -> NotEqualTo(#1, #2);
+singleExpression(singleExpression(#1), literal<"!=">, singleExpression(#2)) -> NotEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"!=">, #2) -> NotEqualTo(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"!=">, singleExpression(#2)) -> NotEqualTo(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<">">, #2) -> GreaterThan(#1, #2);
+singleExpression(singleExpression(#1), literal<">">, singleExpression(#2)) -> GreaterThan(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<">">, #2) -> GreaterThan(Variable(Name(#1)), #2);
+singleExpression(#1, literal<">">, singleExpression(#2)) -> GreaterThan(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"<">, #2) -> LessThan(#1, #2);
+singleExpression(singleExpression(#1), literal<"<">, singleExpression(#2)) -> LessThan(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"<">, #2) -> LessThan(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"<">, singleExpression(#2)) -> LessThan(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<">=">, #2) -> GreaterThanOrEqualTo(#1, #2);
+singleExpression(singleExpression(#1), literal<">=">, singleExpression(#2)) -> GreaterThanOrEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<">=">, #2) -> GreaterThanOrEqualTo(Variable(Name(#1)), #2);
+singleExpression(#1, literal<">=">, singleExpression(#2)) -> GreaterThanOrEqualTo(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"<=">, #2) -> LessThanOrEqualTo(#1, #2);
+singleExpression(singleExpression(#1), literal<"<=">, singleExpression(#2)) -> LessThanOrEqualTo(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"<=">, #2) -> LessThanOrEqualTo(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"<=">, singleExpression(#2)) -> LessThanOrEqualTo(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"&">, #2) -> BitwiseAnd(#1, #2);
+singleExpression(singleExpression(#1), literal<"&">, singleExpression(#2)) -> BitwiseAnd(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"&">, #2) -> BitwiseAnd(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"&">, singleExpression(#2)) -> BitwiseAnd(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"|">, #2) -> BitwiseOr(#1, #2);
+singleExpression(singleExpression(#1), literal<"|">, singleExpression(#2)) -> BitwiseOr(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"|">, #2) -> BitwiseOr(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"|">, singleExpression(#2)) -> BitwiseOr(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"^">, #2) -> ExclusiveOr(#1, #2);
+singleExpression(singleExpression(#1), literal<"^">, singleExpression(#2)) -> ExclusiveOr(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"^">, #2) -> ExclusiveOr(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"^">, singleExpression(#2)) -> ExclusiveOr(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"<<">, #2) -> LeftShift(#1, #2);
+singleExpression(singleExpression(#1), literal<"<<">, singleExpression(#2)) -> LeftShift(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"<<">, #2) -> LeftShift(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"<<">, singleExpression(#2)) -> LeftShift(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<">>">, #2) -> RightShift(#1, #2);
+singleExpression(singleExpression(#1), literal<">>">, singleExpression(#2)) -> RightShift(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<">>">, #2) -> RightShift(Variable(Name(#1)), #2);
+singleExpression(#1, literal<">>">, singleExpression(#2)) -> RightShift(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<">>>">, #2) -> UnsignedRightShift(#1, #2);
+singleExpression(singleExpression(#1), literal<">>>">, singleExpression(#2)) -> UnsignedRightShift(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<">>>">, #2) -> UnsignedRightShift(Variable(Name(#1)), #2);
+singleExpression(#1, literal<">>>">, singleExpression(#2)) -> UnsignedRightShift(#1, Variable(Name(#2)));
+
+singleExpression(literal<"~">, #1) ->  BitwiseComplement(#1);
+singleExpression(literal<"~">, singleExpression(#1)) ->  BitwiseComplement(Variable(Name(#1)));
+
+singleExpression(#1, literal<"&&">, #2) -> LogicalAnd(#1, #2);
+singleExpression(singleExpression(#1), literal<"&&">, singleExpression(#2)) -> LogicalAnd(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"&&">, #2) -> LogicalAnd(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"&&">, singleExpression(#2)) -> LogicalAnd(#1, Variable(Name(#2)));
+
+singleExpression(#1, literal<"||">, #2) -> LogicalOr(#1, #2);
+singleExpression(singleExpression(#1), literal<"||">, singleExpression(#2)) -> LogicalOr(Variable(Name(#1)), Variable(Name(#2)));
+singleExpression(singleExpression(#1), literal<"||">, #2) -> LogicalOr(Variable(Name(#1)), #2);
+singleExpression(#1, literal<"||">, singleExpression(#2)) -> LogicalOr(#1, Variable(Name(#2)));
+
+singleExpression(literal<"!">, #1) -> LogicalNot(#1);
+singleExpression(literal<"!">, singleExpression(#1)) -> LogicalNot(Variable(Name(#1)));
+
 singleExpression(#1, literal<"+">, singleExpression(expressionSequence(#2))) -> Addition(#1, #2);
 singleExpression(singleExpression(singleExpression(#1), identifierName(#2)), arguments(argument(#3))) ->
   FunctionCall(Name(#1), #2, ExpressionList(#3));
@@ -128,6 +346,27 @@ singleExpression(literal<"-">, #1) ->  Negative(#1);
 singleExpression(literal<"+">, #1) ->  Positive(#1);
 identifier(literal<#1>) -> Identifier<#1>;
 
+singleExpression(singleExpression(#1), literal<"=">, #2) -> SimpleAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"+=">), #2) -> AdditionAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"-=">), #2) -> SubtractionAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"*=">), #2) -> MultiplicationAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"/=">), #2) -> DivisionAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"%=">), #2) -> ModulusAssignment(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"&=">), #2) -> BitwiseAnd(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"|=">), #2) -> BitwiseOr(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"^=">), #2) -> ExclusiveOr(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<">>=">), #2) -> RightShift(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<">>>=">), #2) -> UnsignedRightShift(Variable(Name(#1)), #2);
+singleExpression(singleExpression(#1), assignmentOperator(literal<"<<=">), #2) -> LeftShift(Variable(Name(#1)), #2);
+
+variableDeclaration(assignable(#1), literal<"=">, #2) -> Declarator(#1, #2);
+variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDeclaration(DeclaratorList(#1));
+variableDeclarationList(varModifier(literal<"var">), #1...) -> VariableDeclaration(DeclaratorList(#1));
+
+sourceElement(statement(variableStatement(#1))) -> #1;
+sourceElement(statement(expressionStatement(expressionSequence(#1)))) -> #1;
+
+functionBody(sourceElements(#1...)) -> StatementBlock(#1);
 functionBody(sourceElements(sourceElement(statement(expressionStatement(expressionSequence(#1)))))) ->
   StatementBlock(#1);
 functionBody(sourceElements(sourceElement(statement(#1)))) ->
@@ -157,22 +396,71 @@ expr(#1, literal<"-">, #2) -> Subtraction(#1, #2);
 expr(#1, literal<"*">, #2) -> Multiplication(#1, #2);
 expr(#1, literal<"/">, #2) -> Division(#1, #2);
 expr(#1, literal<"%">, #2) -> Modulus(#1, #2);
+
+comparison(comparison(#1), literal<"==">, comparison(#2)) -> IsEqualTo(#1, #2);
+comparison(comparison(#1), literal<"!=">, comparison(#2)) -> NotEqualTo(#1, #2);
+comparison(comparison(#1), literal<">">, comparison(#2)) -> GreaterThan(#1, #2);
+comparison(comparison(#1), literal<"<">, comparison(#2)) -> LessThan(#1, #2);
+comparison(comparison(#1), literal<">=">, comparison(#2)) -> GreaterThanOrEqualTo(#1, #2);
+comparison(comparison(#1), literal<"<=">, comparison(#2)) -> LessThanOrEqualTo(#1, #2);
+
+comparison(comparison(#1), literal<"&">, comparison(#2)) -> BitwiseAnd(#1, #2);
+comparison(comparison(#1), literal<"|">, comparison(#2)) -> BitwiseOr(#1, #2);
+comparison(comparison(#1), literal<"^">, comparison(#2)) -> ExclusiveOr(#1, #2);
+
+expr(#1, literal<">>">, #2) -> RightShift(#1, #2);
+expr(#1, literal<"<<">, #2) -> LeftShift(#1, #2);
+
+comparison(comparison(#1), literal<"<<">, comparison(#2)) -> LeftShift(#1, #2);
+comparison(comparison(#1), literal<">>">, comparison(#2)) -> RightShift(#1, #2);
+expr(literal<"~">, #1) -> BitwiseComplement(#1);
+
 expr(literal<"+">, #1) -> Positive(#1);
 expr(literal<"-">, #1) -> Negative(#1);
+
+logical_test(comparison(#1)) -> #1;
+logical_test(#1) -> #1;
+logical_test(literal<"not">, #1) -> LogicalNot(#1);
+
+logical_test(#1, literal<"and">, #2) -> LogicalAnd(#1, #2);
+logical_test(#1, literal<"or">, #2) -> LogicalOr(#1, #2);
+
 expr(atom(name(literal<#1>)), trailer(arguments(arglist(argument(comparison(#2)))))) ->
   FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+expr(atom(name(literal<#1>)), trailer(arguments(arglist(argument(#2))))) ->
+  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
 expr(atom(literal<#1>), trailer(arguments(arglist(argument(comparison(#2)))))) ->
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
+expr(atom(literal<#1>), trailer(arguments(arglist(argument(#2))))) ->
   FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(name(literal<#1>)), trailer(arguments())) ->
   FunctionCall(Identifier<#1>, ExpressionList());
 
 small_stmt(literal<"return">, comparison(#1)) -> Return(#1);
+small_stmt(literal<"return">, #1) -> Return(#1);
+
+small_stmt(#1, assign_part(literal<"=">, #2)) -> SimpleAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"+=">, #2)) -> AdditionAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"-=">, #2)) -> SubtractionAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"*=">, #2)) -> MultiplicationAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"/=">, #2)) -> DivisionAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"%=">, #2)) -> ModulusAssignment(#1, #2);
+small_stmt(#1, assign_part(literal<"&=">, #2)) -> BitwiseAnd(#1, #2);
+small_stmt(#1, assign_part(literal<"|=">, #2)) -> BitwiseOr(#1, #2);
+small_stmt(#1, assign_part(literal<"^=">, #2)) -> ExclusiveOr(#1, #2);
+small_stmt(#1, assign_part(literal<">>=">, #2)) -> RightShift(#1, #2);
+small_stmt(#1, assign_part(literal<"<<=">, #2)) -> LeftShift(#1, #2);
 
 funcdef(literal<"def">, name(literal<#1>), suite(small_stmt(comparison(#2)))) ->
   FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
+funcdef(literal<"def">, name(literal<#1>), suite(small_stmt(#2))) ->
+  FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
 funcdef(literal<"def">, name(literal<#1>), suite(#2)) ->
+  FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
+funcdef(literal<"def">, name(literal<#1>), suite(#2...)) ->
   FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
 
 file_input(#1, small_stmt(comparison(#2))) -> Program(#1, #2);
+file_input(#1, small_stmt(#2)) -> Program(#1, #2);
 
 file_input(#1) -> Program(#1);

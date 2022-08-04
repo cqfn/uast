@@ -37,9 +37,14 @@ public final class Rule13 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'PreDecrement' string.
+     * The number of the first hole.
      */
-    private static final String PRE_DECREMENT = "PreDecrement";
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The 'IsEqualTo' string.
+     */
+    private static final String IS_EQUAL_TO = "IsEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule13 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher24.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher25.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule13.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule13 implements Converter {
     }
 
     /**
-     * Builds a node with 'PreDecrement' type.
+     * Builds a node with 'IsEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +73,10 @@ public final class Rule13 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule13.PRE_DECREMENT);
+        final Builder builder = factory.createBuilder(Rule13.IS_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule13.secondBuilder(factory, children));
+        list.addAll(children.get(Rule13.FIRST_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

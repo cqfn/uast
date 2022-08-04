@@ -25,7 +25,7 @@ public final class Matcher72 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "suite";
+    private static final String EXPECTED_TYPE = "comparison";
 
     /**
      * Expected number of child nodes.
@@ -35,7 +35,7 @@ public final class Matcher72 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.

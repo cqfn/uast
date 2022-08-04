@@ -25,7 +25,7 @@ public final class Matcher23 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "PrefixIncrement";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.
