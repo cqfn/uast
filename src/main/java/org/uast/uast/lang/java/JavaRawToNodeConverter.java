@@ -6,6 +6,7 @@
 package org.uast.uast.lang.java;
 
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
@@ -42,7 +43,12 @@ public class JavaRawToNodeConverter {
         } else {
             ctor.setName(node.getClass().getSimpleName());
         }
-        ctor.setData(getData(node));
+        if (node instanceof AssignExpr) {
+            final String operator = ((AssignExpr) node).getOperator().asString();
+            ctor.setData(operator);
+        } else {
+            ctor.setData(getData(node));
+        }
         for (final com.github.javaparser.ast.Node child : node.getChildNodes()) {
             final Node converted = this.convert(child);
             ctor.addChild(converted);
