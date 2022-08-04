@@ -8,10 +8,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 
@@ -29,7 +31,7 @@ public class AntlrToNodeConverter {
         Arrays.asList(
             "single_input", "eval_input",
             "stmt", "simple_stmt", "compound_stmt",
-            "test", "logical_test", "testlist", "testlist_star_expr",
+            "test", "testlist", "testlist_star_expr",
             "def_parameter",
             "number"
         )
@@ -47,9 +49,19 @@ public class AntlrToNodeConverter {
      */
     private static final Set<String> SKIPPED_TERMINALS = new HashSet<>(
         Arrays.asList(
-            ")", "(", "{", "}", ":", ";", "=", ",", ".", "<EOF>"
+            ")", "(", "{", "}", ":", ";", ",", ".", "<EOF>"
         )
     );
+
+    /**
+     * The 'literal' string.
+     */
+    private static final String LITERAL = "literal";
+
+    /**
+     * Retain the initial syntax ANTLR tree.
+     */
+    private final boolean initial;
 
     /**
      * ANTLR language parser.
@@ -59,9 +71,26 @@ public class AntlrToNodeConverter {
     /**
      * Constructor.
      * @param parser ANTLR parser of the processed language
+     * @param initial If {@code true}, retain the initial ANTLR syntax tree
      */
-    public AntlrToNodeConverter(final Parser parser) {
+    public AntlrToNodeConverter(final Parser parser, final boolean initial) {
         this.parser = parser;
+        this.initial = initial;
+    }
+
+    /**
+     * Converter from ANTLR context to {@link Node}.
+     * @param ctx Current context
+     * @return A node
+     */
+    public Node convert(final RuleContext ctx) {
+        final Node node;
+        if (this.initial) {
+            node = this.convertInitial(ctx);
+        } else {
+            node = this.convertSimplified(ctx);
+        }
+        return node;
     }
 
     /**
@@ -69,7 +98,35 @@ public class AntlrToNodeConverter {
      * @param ctx Current context
      * @return A node
      */
-    public Node convert(final RuleContext ctx) {
+    private Node convertInitial(final RuleContext ctx) {
+        final DraftNode.Constructor ctor = new DraftNode.Constructor();
+        final String name = this.parser.getRuleNames()[ctx.getRuleIndex()];
+        ctor.setName(name);
+        final String data = ctx.getText();
+        ctor.setData(data);
+        for (int idx = 0; idx < ctx.getChildCount(); idx += 1) {
+            final ParseTree element = ctx.getChild(idx);
+            if (!(element instanceof RuleContext)) {
+                if (((TerminalNodeImpl) element).getSymbol() instanceof CommonToken) {
+                    final DraftNode.Constructor literal = new DraftNode.Constructor();
+                    literal.setName(AntlrToNodeConverter.LITERAL);
+                    literal.setData(element.getText());
+                    ctor.addChild(literal.createNode());
+                }
+                continue;
+            }
+            final Node child = this.convertInitial((RuleContext) element);
+            ctor.addChild(child);
+        }
+        return ctor.createNode();
+    }
+
+    /**
+     * Recursive converter from ANTLR context to {@link Node}.
+     * @param ctx Current context
+     * @return A node
+     */
+    private Node convertSimplified(final RuleContext ctx) {
         final String name = this.parser.getRuleNames()[ctx.getRuleIndex()];
         final Node result;
         if (AntlrToNodeConverter.SKIPPED_NODES.contains(name)) {
@@ -77,7 +134,7 @@ public class AntlrToNodeConverter {
             if (element instanceof TerminalNode) {
                 result = convertTerminal((TerminalNode) element);
             } else {
-                result = this.convert((RuleContext) ctx.getChild(0));
+                result = this.convertSimplified((RuleContext) ctx.getChild(0));
             }
         } else {
             final DraftNode.Constructor ctor = new DraftNode.Constructor();
@@ -102,7 +159,7 @@ public class AntlrToNodeConverter {
                 this.parser.getRuleNames()[((RuleContext) element).getRuleIndex()]
             )
         ) {
-            final Node child = this.convert((RuleContext) element);
+            final Node child = this.convertSimplified((RuleContext) element);
             ctor.addChild(child);
         }
         if (element instanceof TerminalNode) {
@@ -122,7 +179,7 @@ public class AntlrToNodeConverter {
      */
     private static Node convertTerminal(final TerminalNode terminal) {
         final DraftNode.Constructor ctor = new DraftNode.Constructor();
-        ctor.setName("literal");
+        ctor.setName(AntlrToNodeConverter.LITERAL);
         final String data = terminal.getText();
         ctor.setData(data);
         return ctor.createNode();
