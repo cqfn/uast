@@ -57,9 +57,9 @@ public final class Rule53 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher188.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher184.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule53.firstBuilder(factory, children, data);
+            result = Rule53.firstBuilder(factory, data);
         }
         return result;
     }
@@ -67,19 +67,16 @@ public final class Rule53 implements Converter {
     /**
      * Builds a node with 'FunctionDeclaration' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule53.FUNCTION_DECLARA);
         final List<Node> list = new LinkedList<>();
         list.add(Rule53.secondBuilder(factory, data));
         list.add(Rule53.thirdBuilder(factory));
-        list.add(Rule53.fourthBuilder(factory, children));
+        list.add(Rule53.fourthBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -120,16 +117,12 @@ public final class Rule53 implements Converter {
     /**
      * Builds a node with 'StatementBlock' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node fourthBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule53.STATEMENT_BLOCK);
-        final List<Node> list = children.get(2);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

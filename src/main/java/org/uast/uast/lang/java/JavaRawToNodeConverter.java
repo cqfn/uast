@@ -6,13 +6,16 @@
 package org.uast.uast.lang.java;
 
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithIdentifier;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.PrimitiveType;
 import java.util.Locale;
+import java.util.Optional;
 import org.uast.uast.base.DraftNode;
 import org.uast.uast.base.Node;
 
@@ -40,6 +43,8 @@ public class JavaRawToNodeConverter {
                     .append(token.substring(1).toLowerCase(Locale.ROOT));
             }
             ctor.setName(builder.toString());
+        } else if (node instanceof ClassOrInterfaceType) {
+            this.processClassOrInterfaceType(node, ctor);
         } else {
             ctor.setName(node.getClass().getSimpleName());
         }
@@ -47,7 +52,7 @@ public class JavaRawToNodeConverter {
             final String operator = ((AssignExpr) node).getOperator().asString();
             ctor.setData(operator);
         } else {
-            ctor.setData(getData(node));
+            ctor.setData(JavaParserNodeDataExtractor.getData(node));
         }
         for (final com.github.javaparser.ast.Node child : node.getChildNodes()) {
             final Node converted = this.convert(child);
@@ -57,28 +62,56 @@ public class JavaRawToNodeConverter {
     }
 
     /**
-     * Gets data from a JavaParser node.
+     * Distinguishes names for class and interface nodes and sets them.
      *
      * @param node The JavaParser node
-     * @return A data from the node or an empty string if there is no data to return
+     * @param ctor The node constructor
      */
-    private static String getData(final com.github.javaparser.ast.Node node) {
-        String data = "";
-        if (node instanceof Modifier) {
-            data = ((Modifier) node).getKeyword().asString();
+    private static void processClassOrInterfaceType(
+        final com.github.javaparser.ast.Node node,
+        final DraftNode.Constructor ctor) {
+        final Optional<com.github.javaparser.ast.Node> parent = node.getParentNode();
+        if (parent.isPresent() && parent.get() instanceof ClassOrInterfaceDeclaration) {
+            if (((ClassOrInterfaceDeclaration) parent.get()).getExtendedTypes().contains(node)) {
+                ctor.setName("ClassType");
+            } else {
+                ctor.setName("InterfaceType");
+            }
+        } else {
+            ctor.setName(node.getClass().getSimpleName());
         }
-        if (node instanceof NodeWithIdentifier) {
-            data = ((NodeWithIdentifier<?>) node).getIdentifier();
+    }
+
+    /**
+     * Extracts data from a node of JavaParser.
+     *
+     * @since 1.0
+     */
+    private static class JavaParserNodeDataExtractor {
+        /**
+         * Gets data from a JavaParser node.
+         *
+         * @param node The JavaParser node
+         * @return A data from the node or an empty string if there is no data to return
+         */
+        private static String getData(final com.github.javaparser.ast.Node node) {
+            String data = "";
+            if (node instanceof Modifier) {
+                data = ((Modifier) node).getKeyword().asString();
+            }
+            if (node instanceof NodeWithIdentifier) {
+                data = ((NodeWithIdentifier<?>) node).getIdentifier();
+            }
+            if (node instanceof PrimitiveType) {
+                data = ((PrimitiveType) node).getType().asString();
+            }
+            if (node instanceof LiteralStringValueExpr) {
+                data = ((LiteralStringValueExpr) node).getValue();
+            }
+            if (node instanceof BinaryExpr) {
+                data = ((BinaryExpr) node).getOperator().asString();
+            }
+            return data;
         }
-        if (node instanceof PrimitiveType) {
-            data = ((PrimitiveType) node).getType().asString();
-        }
-        if (node instanceof LiteralStringValueExpr) {
-            data = ((LiteralStringValueExpr) node).getValue();
-        }
-        if (node instanceof BinaryExpr) {
-            data = ((BinaryExpr) node).getOperator().asString();
-        }
-        return data;
     }
 }

@@ -32,14 +32,14 @@ public final class Rule104 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ExpressionList' string.
+     * The 'ClassBody' string.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
+    private static final String CLASS_BODY = "ClassBody";
 
     /**
-     * The 'FunctionCall' string.
+     * The 'ClassDeclaration' string.
      */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String CLASS_DECLARATIO = "ClassDeclaration";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule104 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher327.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher331.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule104.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule104 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'ClassDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule104 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule104.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule104.CLASS_DECLARATIO);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule104.FIRST_HOLE_ID));
         list.add(Rule104.secondBuilder(factory));
@@ -80,13 +80,13 @@ public final class Rule104 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExpressionList' type.
+     * Builds a node with 'ClassBody' type.
      * @param factory The node factory
      * @return A node
      */
     private static Node secondBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule104.EXPRESSION_LIST);
+        final Builder builder = factory.createBuilder(Rule104.CLASS_BODY);
         if (builder.isValid()) {
             result = builder.createNode();
         }

@@ -31,7 +31,16 @@ import org.uast.uast.generated.tree.java.rules.Rule113;
 import org.uast.uast.generated.tree.java.rules.Rule114;
 import org.uast.uast.generated.tree.java.rules.Rule115;
 import org.uast.uast.generated.tree.java.rules.Rule116;
+import org.uast.uast.generated.tree.java.rules.Rule117;
+import org.uast.uast.generated.tree.java.rules.Rule118;
+import org.uast.uast.generated.tree.java.rules.Rule119;
 import org.uast.uast.generated.tree.java.rules.Rule12;
+import org.uast.uast.generated.tree.java.rules.Rule120;
+import org.uast.uast.generated.tree.java.rules.Rule121;
+import org.uast.uast.generated.tree.java.rules.Rule122;
+import org.uast.uast.generated.tree.java.rules.Rule123;
+import org.uast.uast.generated.tree.java.rules.Rule124;
+import org.uast.uast.generated.tree.java.rules.Rule125;
 import org.uast.uast.generated.tree.java.rules.Rule13;
 import org.uast.uast.generated.tree.java.rules.Rule14;
 import org.uast.uast.generated.tree.java.rules.Rule15;
@@ -269,7 +278,16 @@ public final class JavaAdapter extends Adapter {
             Rule113.INSTANCE,
             Rule114.INSTANCE,
             Rule115.INSTANCE,
-            Rule116.INSTANCE
+            Rule116.INSTANCE,
+            Rule117.INSTANCE,
+            Rule118.INSTANCE,
+            Rule119.INSTANCE,
+            Rule120.INSTANCE,
+            Rule121.INSTANCE,
+            Rule122.INSTANCE,
+            Rule123.INSTANCE,
+            Rule124.INSTANCE,
+            Rule125.INSTANCE
         );
     }
 }

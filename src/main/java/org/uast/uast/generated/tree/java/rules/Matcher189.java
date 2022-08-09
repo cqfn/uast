@@ -25,7 +25,7 @@ public final class Matcher189 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ClassOrInterfaceType";
+    private static final String EXPECTED_TYPE = "ClassType";
 
     /**
      * Expected number of child nodes.

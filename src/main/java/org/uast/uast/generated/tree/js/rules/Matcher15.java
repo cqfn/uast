@@ -32,6 +32,21 @@ public final class Matcher15 implements Matcher {
     private static final int EXPECTED_COUNT = 3;
 
     /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
+
+    /**
+     * The index of the third child.
+     */
+    private static final int THIRD_CHILD_ID = 2;
+
+    /**
      * Constructor.
      */
     private Matcher15() {
@@ -56,9 +71,15 @@ public final class Matcher15 implements Matcher {
     private static boolean matchChildren(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        boolean flag = Matcher16.INSTANCE.match(node.getChild(0), children, data);
-        flag = flag && Matcher17.INSTANCE.match(node.getChild(1), children, data);
-        flag = flag && Matcher18.INSTANCE.match(node.getChild(2), children, data);
+        boolean flag = Matcher16.INSTANCE.match(
+            node.getChild(Matcher15.FIRST_CHILD_ID), children, data
+        );
+        flag = flag && Matcher17.INSTANCE.match(
+            node.getChild(Matcher15.SECOND_CHILD_ID), children, data
+        );
+        flag = flag && Matcher18.INSTANCE.match(
+            node.getChild(Matcher15.THIRD_CHILD_ID), children, data
+        );
         return flag;
     }
 }

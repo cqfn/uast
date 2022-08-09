@@ -26,9 +26,9 @@ public final class Rule102 implements Converter {
     public static final Converter INSTANCE = new Rule102();
 
     /**
-     * The 'StatementBlock' string.
+     * The 'Program' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final String PROGRAM = "Program";
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public final class Rule102 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher321.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher324.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule102.firstBuilder(factory, children);
         }
@@ -49,7 +49,7 @@ public final class Rule102 implements Converter {
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'Program' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,7 +57,7 @@ public final class Rule102 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule102.STATEMENT_BLOCK);
+        final Builder builder = factory.createBuilder(Rule102.PROGRAM);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

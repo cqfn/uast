@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule100 implements Converter {
     public static final Converter INSTANCE = new Rule100();
 
     /**
-     * The 'StatementBlock' string.
+     * The number of the first hole.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The 'ExpressionList' string.
+     */
+    private static final String EXPRESSION_LIST = "ExpressionList";
+
+    /**
+     * The 'FunctionCall' string.
+     */
+    private static final String FUNCTION_CALL = "FunctionCall";
 
     /**
      * Constructor.
@@ -49,7 +60,7 @@ public final class Rule100 implements Converter {
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'FunctionCall' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,10 +68,26 @@ public final class Rule100 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule100.STATEMENT_BLOCK);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule100.FUNCTION_CALL);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule100.FIRST_HOLE_ID));
+        list.add(Rule100.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ExpressionList' type.
+     * @param factory The node factory
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule100.EXPRESSION_LIST);
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

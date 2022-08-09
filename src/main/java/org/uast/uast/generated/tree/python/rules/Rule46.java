@@ -37,9 +37,9 @@ public final class Rule46 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'BitwiseOr' string.
+     * The 'BitwiseAnd' string.
      */
-    private static final String BITWISE_OR = "BitwiseOr";
+    private static final String BITWISE_AND = "BitwiseAnd";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule46 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher158.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher156.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule46.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule46 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseOr' type.
+     * Builds a node with 'BitwiseAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule46 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule46.BITWISE_OR);
+        final Builder builder = factory.createBuilder(Rule46.BITWISE_AND);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule46.FIRST_HOLE_ID));
         list.addAll(children.get(Rule46.SECOND_HOLE_ID));

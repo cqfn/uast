@@ -32,6 +32,7 @@ import org.uast.uast.generated.tree.green.DivisionAssignment;
 import org.uast.uast.generated.tree.green.ExclusiveOr;
 import org.uast.uast.generated.tree.green.ExclusiveOrAssignment;
 import org.uast.uast.generated.tree.green.ExpressionList;
+import org.uast.uast.generated.tree.green.ExtendsBlock;
 import org.uast.uast.generated.tree.green.FieldDeclaration;
 import org.uast.uast.generated.tree.green.FunctionCall;
 import org.uast.uast.generated.tree.green.FunctionCallExpression;
@@ -39,6 +40,7 @@ import org.uast.uast.generated.tree.green.FunctionDeclaration;
 import org.uast.uast.generated.tree.green.GreaterThan;
 import org.uast.uast.generated.tree.green.GreaterThanOrEqualTo;
 import org.uast.uast.generated.tree.green.Identifier;
+import org.uast.uast.generated.tree.green.ImplementsBlock;
 import org.uast.uast.generated.tree.green.IntegerLiteral;
 import org.uast.uast.generated.tree.green.IsEqualTo;
 import org.uast.uast.generated.tree.green.LeftShift;
@@ -126,6 +128,7 @@ public final class JsFactory extends Factory {
             ExclusiveOr.TYPE,
             ExclusiveOrAssignment.TYPE,
             ExpressionList.TYPE,
+            ExtendsBlock.TYPE,
             FieldDeclaration.TYPE,
             FunctionCall.TYPE,
             FunctionCallExpression.TYPE,
@@ -133,6 +136,7 @@ public final class JsFactory extends Factory {
             GreaterThan.TYPE,
             GreaterThanOrEqualTo.TYPE,
             Identifier.TYPE,
+            ImplementsBlock.TYPE,
             IntegerLiteral.TYPE,
             IsEqualTo.TYPE,
             LeftShift.TYPE,
@@ -160,6 +164,7 @@ public final class JsFactory extends Factory {
             PreIncrement.TYPE,
             PrimitiveType.TYPE,
             Program.TYPE,
+            Property.TYPE,
             PropertyAccess.TYPE,
             Return.TYPE,
             RightShift.TYPE,

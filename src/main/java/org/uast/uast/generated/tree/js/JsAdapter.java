@@ -21,7 +21,14 @@ import org.uast.uast.generated.tree.js.rules.Rule104;
 import org.uast.uast.generated.tree.js.rules.Rule105;
 import org.uast.uast.generated.tree.js.rules.Rule106;
 import org.uast.uast.generated.tree.js.rules.Rule107;
+import org.uast.uast.generated.tree.js.rules.Rule108;
+import org.uast.uast.generated.tree.js.rules.Rule109;
 import org.uast.uast.generated.tree.js.rules.Rule11;
+import org.uast.uast.generated.tree.js.rules.Rule110;
+import org.uast.uast.generated.tree.js.rules.Rule111;
+import org.uast.uast.generated.tree.js.rules.Rule112;
+import org.uast.uast.generated.tree.js.rules.Rule113;
+import org.uast.uast.generated.tree.js.rules.Rule114;
 import org.uast.uast.generated.tree.js.rules.Rule12;
 import org.uast.uast.generated.tree.js.rules.Rule13;
 import org.uast.uast.generated.tree.js.rules.Rule14;
@@ -251,7 +258,14 @@ public final class JsAdapter extends Adapter {
             Rule104.INSTANCE,
             Rule105.INSTANCE,
             Rule106.INSTANCE,
-            Rule107.INSTANCE
+            Rule107.INSTANCE,
+            Rule108.INSTANCE,
+            Rule109.INSTANCE,
+            Rule110.INSTANCE,
+            Rule111.INSTANCE,
+            Rule112.INSTANCE,
+            Rule113.INSTANCE,
+            Rule114.INSTANCE
         );
     }
 }

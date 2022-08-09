@@ -37,6 +37,16 @@ public final class Matcher38 implements Matcher {
     private static final String EXPECTED_DATA = ">";
 
     /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
+
+    /**
      * Constructor.
      */
     private Matcher38() {
@@ -62,8 +72,12 @@ public final class Matcher38 implements Matcher {
     private static boolean matchChildren(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        boolean flag = Matcher39.INSTANCE.match(node.getChild(0), children, data);
-        flag = flag && Matcher40.INSTANCE.match(node.getChild(1), children, data);
+        boolean flag = Matcher39.INSTANCE.match(
+            node.getChild(Matcher38.FIRST_CHILD_ID), children, data
+        );
+        flag = flag && Matcher40.INSTANCE.match(
+            node.getChild(Matcher38.SECOND_CHILD_ID), children, data
+        );
         return flag;
     }
 }

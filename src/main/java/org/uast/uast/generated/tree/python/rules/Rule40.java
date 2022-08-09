@@ -37,9 +37,9 @@ public final class Rule40 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'AdditionAssignment' string.
+     * The 'SimpleAssignment' string.
      */
-    private static final String ADDITION_ASSIGNM = "AdditionAssignment";
+    private static final String SIMPLE_ASSIGNMEN = "SimpleAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule40 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher140.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher138.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule40.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule40 implements Converter {
     }
 
     /**
-     * Builds a node with 'AdditionAssignment' type.
+     * Builds a node with 'SimpleAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule40 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule40.ADDITION_ASSIGNM);
+        final Builder builder = factory.createBuilder(Rule40.SIMPLE_ASSIGNMEN);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule40.FIRST_HOLE_ID));
         list.addAll(children.get(Rule40.SECOND_HOLE_ID));

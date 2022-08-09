@@ -24,7 +24,7 @@ public final class Matcher322 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "sourceElements";
+    private static final String EXPECTED_TYPE = "sourceElement";
 
     /**
      * Expected number of child nodes.

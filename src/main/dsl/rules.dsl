@@ -85,7 +85,9 @@ FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
 Parameter <- TypeName, Identifier;
 FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 ParameterBlock <- {Parameter};
-ClassDeclaration <- [ModifierBlock], Identifier, ClassBody;
+ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
+ExtendsBlock <- {ClassType};
+ImplementsBlock <- {ClassType};
 ClassBody <- {ClassItem};
 ClassItem <- FunctionDeclaration | FieldDeclaration;
 FieldDeclaration <- [ModifierBlock], [TypeName], DeclaratorList;
@@ -230,18 +232,46 @@ EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
 MethodCallExpr(#1, #2, #3) -> FunctionCall(#1, #2, ExpressionList(#3));
 BlockStmt(ExpressionStmt(#1)) -> StatementBlock(#1);
+ClassType(#1) -> ClassType(Name(#1));
 ClassOrInterfaceType(#1) -> ClassType(Name(#1));
 ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 Parameter(#1, #2) -> Parameter(#1, #2);
 VoidType -> VoidType;
 MethodDeclaration(Modifier<#1>, Modifier<#2>, #3, #4, #5, #6) ->
   FunctionDeclaration(ModifierBlock(Modifier<#1>, Modifier<#2>), #5, #3, ParameterBlock(#4), #6);
+
+CompilationUnit(#1) -> Program(#1);
+
+// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
+
 ClassOrInterfaceDeclaration(Modifier<#1>, #2, #3) ->
   ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody(#3));
-CompilationUnit(#1) -> Program(#1);
+
+ClassOrInterfaceDeclaration(Modifier<#1>, #2) ->
+  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody);
+
+ClassOrInterfaceDeclaration(#2) -> ClassDeclaration(#2, ClassBody);
+
+ClassOrInterfaceDeclaration(Modifier<#1>, #2, InterfaceType(#3)) ->
+  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ImplementsBlock(ClassType(Name(#3))), ClassBody);
+
+ClassOrInterfaceDeclaration(Modifier<#1>, #2, ClassType(#3)) ->
+  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ExtendsBlock(ClassType(#3)), ClassBody);
+
+FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2)));
+FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
+
+// Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+MethodDeclaration(Modifier<#1>, Modifier<#2>, #3, #4, #5, #6) ->
+  FunctionDeclaration(ModifierBlock(Modifier<#1>, Modifier<#2>), #5, #3, ParameterBlock(#4), #6);
+
+MethodDeclaration(Modifier<#1>, #2, #3, #4) ->
+  FunctionDeclaration(ModifierBlock(Modifier<#1>), #3, #2, ParameterBlock, #4);
 
 js:
 
+ClassItem <- & | Property;
+Property <- name@Identifier, value@Expression;
 Yield <- Expression;
 
 singleExpression(literal(numericLiteral(literal<#1>))) -> IntegerLiteral<#1>;
@@ -366,6 +396,28 @@ variableDeclarationList(varModifier(literal<"var">), #1...) -> VariableDeclarati
 sourceElement(statement(variableStatement(#1))) -> #1;
 sourceElement(statement(expressionStatement(expressionSequence(#1)))) -> #1;
 
+expressionStatement(expressionSequence(singleExpression(singleExpression(#1), arguments))) ->
+  FunctionCall(#1, ExpressionList());
+
+program(sourceElements(sourceElement(statement(#1)), sourceElement(statement(#2)))) -> Program(#1, #2);
+program(sourceElements(sourceElement(statement(#1)))) -> Program(#1);
+
+returnStatement(literal<"return">, expressionSequence(#1)) -> Return(#1);
+
+// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
+
+classDeclaration(literal<"class">, #1, classTail) -> ClassDeclaration(#1, ClassBody);
+classDeclaration(literal<"class">, #1, classTail(literal<"extends">, singleExpression(#2)))
+    -> ClassDeclaration(#1, ExtendsBlock(ClassType(Name(#2))), ClassBody);
+classDeclaration(literal<"class">, #1, classTail(#2, classElement(emptyStatement_)))
+    -> ClassDeclaration(#1, ClassBody(#2));
+classDeclaration(literal<"class">, #1, classTail(#2...)) -> ClassDeclaration(#1, ClassBody(#2));
+
+classElement(propertyName(identifierName(#1)), literal<"=">, #2) -> Property(#1, #2);
+classElement(#1) -> #1;
+
+// Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+
 functionBody(sourceElements(#1...)) -> StatementBlock(#1);
 functionBody(sourceElements(sourceElement(statement(expressionStatement(expressionSequence(#1)))))) ->
   StatementBlock(#1);
@@ -374,13 +426,9 @@ functionBody(sourceElements(sourceElement(statement(#1)))) ->
 functionDeclaration(literal<"function">, #1, #2) ->
   FunctionDeclaration(#1, ParameterBlock, #2);
 
-expressionStatement(expressionSequence(singleExpression(singleExpression(#1), arguments))) ->
-  FunctionCall(#1, ExpressionList());
+methodDefinition(propertyName(identifierName(#1)), functionBody) -> FunctionDeclaration(#1, ParameterBlock, StatementBlock);
 
-program(sourceElements(sourceElement(statement(#1)), sourceElement(statement(#2)))) -> Program(#1, #2);
-program(sourceElements(sourceElement(statement(#1)))) -> Program(#1);
 
-returnStatement(literal<"return">, expressionSequence(#1)) -> Return(#1);
 
 python:
 
@@ -436,6 +484,8 @@ expr(atom(literal<#1>), trailer(arguments(arglist(argument(#2))))) ->
 expr(atom(name(literal<#1>)), trailer(arguments())) ->
   FunctionCall(Identifier<#1>, ExpressionList());
 
+testlist_star_expr(#1) -> #1;
+
 small_stmt(literal<"return">, comparison(#1)) -> Return(#1);
 small_stmt(literal<"return">, #1) -> Return(#1);
 
@@ -455,6 +505,8 @@ funcdef(literal<"def">, name(literal<#1>), suite(small_stmt(comparison(#2)))) ->
   FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
 funcdef(literal<"def">, name(literal<#1>), suite(small_stmt(#2))) ->
   FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
+funcdef(literal<"def">, name(literal<#1>), suite(small_stmt(literal<"pass">))) ->
+    FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock);
 funcdef(literal<"def">, name(literal<#1>), suite(#2)) ->
   FunctionDeclaration(Identifier<#1>, ParameterBlock, StatementBlock(#2));
 funcdef(literal<"def">, name(literal<#1>), suite(#2...)) ->
@@ -464,3 +516,20 @@ file_input(#1, small_stmt(comparison(#2))) -> Program(#1, #2);
 file_input(#1, small_stmt(#2)) -> Program(#1, #2);
 
 file_input(#1) -> Program(#1);
+
+// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
+
+classdef(literal<"class">, name(literal<#1>), suite(small_stmt(literal<"pass">)))
+    -> ClassDeclaration(Identifier<#1>, ClassBody);
+
+classdef(literal<"class">, name(literal<#1>), arglist(argument(Variable(#2))), suite(small_stmt(literal<"pass">)))
+    -> ClassDeclaration(Identifier<#1>, ExtendsBlock(ClassType(#2)), ClassBody);
+
+classdef(literal<"class">, name(literal<#1>), suite(#2...))
+    -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+classdef(literal<"class">, name(literal<#1>), #2...)
+    -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+
+small_stmt(Variable(Name(#1))) -> FieldDeclaration(DeclaratorList(Declarator(#1)));
+
+suite(SimpleAssignment(Variable(Name(#1)), #2)) -> FieldDeclaration(DeclaratorList(Declarator(#1, #2)));

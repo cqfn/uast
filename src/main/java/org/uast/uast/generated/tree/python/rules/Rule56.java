@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,6 +27,16 @@ public final class Rule56 implements Converter {
     public static final Converter INSTANCE = new Rule56();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
      * The 'Program' string.
      */
     private static final String PROGRAM = "Program";
@@ -41,7 +52,7 @@ public final class Rule56 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher198.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher201.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule56.firstBuilder(factory, children);
         }
@@ -58,7 +69,9 @@ public final class Rule56 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule56.PROGRAM);
-        final List<Node> list = children.get(1);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule56.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule56.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

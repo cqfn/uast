@@ -37,9 +37,9 @@ public final class Rule45 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'BitwiseAnd' string.
+     * The 'ModulusAssignment' string.
      */
-    private static final String BITWISE_AND = "BitwiseAnd";
+    private static final String MODULUS_ASSIGNME = "ModulusAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule45 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher155.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher153.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule45.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule45 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseAnd' type.
+     * Builds a node with 'ModulusAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule45 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule45.BITWISE_AND);
+        final Builder builder = factory.createBuilder(Rule45.MODULUS_ASSIGNME);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule45.FIRST_HOLE_ID));
         list.addAll(children.get(Rule45.SECOND_HOLE_ID));

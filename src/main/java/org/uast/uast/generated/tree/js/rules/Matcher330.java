@@ -25,7 +25,7 @@ public final class Matcher330 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "singleExpression";
+    private static final String EXPECTED_TYPE = "expressionSequence";
 
     /**
      * Expected number of child nodes.

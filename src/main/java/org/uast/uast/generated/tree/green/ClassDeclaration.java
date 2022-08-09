@@ -94,6 +94,16 @@ public final class ClassDeclaration implements ProgramItem {
         private static final String IDENTIFIER = "Identifier";
 
         /**
+         * The 'ExtendsBlock' string.
+         */
+        private static final String EXTENDS_BLOCK = "ExtendsBlock";
+
+        /**
+         * The 'ImplementsBlock' string.
+         */
+        private static final String IMPLEMENTS_BLOCK = "ImplementsBlock";
+
+        /**
          * The 'ClassBody' string.
          */
         private static final String CLASS_BODY = "ClassBody";
@@ -111,6 +121,14 @@ public final class ClassDeclaration implements ProgramItem {
                     new ChildDescriptor(
                         TypeImpl.IDENTIFIER,
                         false
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.EXTENDS_BLOCK,
+                        true
+                    ),
+                    new ChildDescriptor(
+                        TypeImpl.IMPLEMENTS_BLOCK,
+                        true
                     ),
                     new ChildDescriptor(
                         TypeImpl.CLASS_BODY,
@@ -179,7 +197,7 @@ public final class ClassDeclaration implements ProgramItem {
         /**
          * The maximum number of nodes.
          */
-        private static final int MAX_NODE_COUNT = 3;
+        private static final int MAX_NODE_COUNT = 5;
 
         /**
          * The position of the 'first' field.
@@ -195,6 +213,16 @@ public final class ClassDeclaration implements ProgramItem {
          * The position of the 'third' field.
          */
         private static final int THIRD_POS = 2;
+
+        /**
+         * The position of the 'fourth' field.
+         */
+        private static final int FOURTH_POS = 3;
+
+        /**
+         * The position of the 'fifth' field.
+         */
+        private static final int FIFTH_POS = 4;
 
         /**
          * The fragment associated with the node.
@@ -214,7 +242,17 @@ public final class ClassDeclaration implements ProgramItem {
         /**
          * Node 2.
          */
-        private ClassBody third;
+        private ExtendsBlock third;
+
+        /**
+         * Node 3.
+         */
+        private ImplementsBlock fourth;
+
+        /**
+         * Node 4.
+         */
+        private ClassBody fifth;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -235,7 +273,9 @@ public final class ClassDeclaration implements ProgramItem {
             if (result) {
                 this.first = (ModifierBlock) mapping[Constructor.FIRST_POS];
                 this.second = (Identifier) mapping[Constructor.SECOND_POS];
-                this.third = (ClassBody) mapping[Constructor.THIRD_POS];
+                this.third = (ExtendsBlock) mapping[Constructor.THIRD_POS];
+                this.fourth = (ImplementsBlock) mapping[Constructor.FOURTH_POS];
+                this.fifth = (ClassBody) mapping[Constructor.FIFTH_POS];
             }
             return result;
         }
@@ -243,7 +283,7 @@ public final class ClassDeclaration implements ProgramItem {
         @Override
         public boolean isValid() {
             return this.second != null
-                && this.third != null;
+                && this.fifth != null;
         }
 
         @Override
@@ -257,7 +297,9 @@ public final class ClassDeclaration implements ProgramItem {
                 .add(
                     this.first,
                     this.second,
-                    this.third
+                    this.third,
+                    this.fourth,
+                    this.fifth
                 )
                 .make();
             return node;

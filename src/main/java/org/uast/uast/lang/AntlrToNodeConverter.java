@@ -5,7 +5,6 @@
 package org.uast.uast.lang;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import org.antlr.v4.runtime.CommonToken;
@@ -31,7 +30,7 @@ public class AntlrToNodeConverter {
         Arrays.asList(
             "single_input", "eval_input",
             "stmt", "simple_stmt", "compound_stmt",
-            "test", "testlist", "testlist_star_expr",
+            "test", "testlist",
             "def_parameter",
             "number"
         )
@@ -41,7 +40,9 @@ public class AntlrToNodeConverter {
      * Names of nodes to be ignored.
      */
     private static final Set<String> IGNORED_NODES = new HashSet<>(
-        Collections.singletonList("eos")
+        Arrays.asList(
+            "eos", "emptyStatement_"
+        )
     );
 
     /**
@@ -141,9 +142,27 @@ public class AntlrToNodeConverter {
             ctor.setName(name);
             for (int idx = 0; idx < ctx.getChildCount(); idx += 1) {
                 final ParseTree element = ctx.getChild(idx);
-                this.processParseTree(element, ctor);
+                if (!this.hasEmptyNode(element)) {
+                    this.processParseTree(element, ctor);
+                }
             }
             result = ctor.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Checks if {@link ParseTree} element contains a node
+     * that represents an empty entity.
+     * @param element A {@link ParseTree} element
+     * @return The result, {@code true} if elements contains an empty node
+     */
+    private boolean hasEmptyNode(final ParseTree element) {
+        boolean result = false;
+        if (!(element instanceof TerminalNode) && element.getChild(0) instanceof RuleContext) {
+            final String name = this.parser
+                .getRuleNames()[((RuleContext) element.getChild(0)).getRuleIndex()];
+            result = AntlrToNodeConverter.IGNORED_NODES.contains(name);
         }
         return result;
     }

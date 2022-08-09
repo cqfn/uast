@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -24,12 +25,22 @@ public final class Matcher183 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "funcdef";
+    private static final String EXPECTED_TYPE = "small_stmt";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 1;
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
 
     /**
      * Constructor.
@@ -41,24 +52,14 @@ public final class Matcher183 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher183.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher183.EXPECTED_COUNT
-            && Matcher183.matchChildren(node, children, data);
-    }
-
-    /**
-     * Checks if the children matches some structure, and extracts the data and children if so.
-     * @param node The node
-     * @param children Where to save children when matched
-     * @param data Where to save data when matched
-     * @return The result of matching, {@code true} if node matches and data was extracted
-     */
-    private static boolean matchChildren(final Node node,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        boolean flag = Matcher184.INSTANCE.match(node.getChild(0), children, data);
-        flag = flag && Matcher185.INSTANCE.match(node.getChild(1), children, data);
-        flag = flag && Matcher187.INSTANCE.match(node.getChild(2), children, data);
-        return flag;
+        final boolean result = node.belongsToGroup(Matcher183.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher183.EXPECTED_COUNT;
+        if (result) {
+            children.put(
+                Matcher183.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher183.FIRST_CHILD_ID))
+            );
+        }
+        return result;
     }
 }
