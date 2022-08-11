@@ -11,12 +11,17 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.converters.FileConverter;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
 import org.uast.uast.handlers.json.JsonSerializer;
 import org.uast.uast.handlers.visualizer.AstVisualizer;
 import org.uast.uast.lang.SourceCodeParser;
 import org.uast.uast.utils.cli.ImagePathValidator;
+import org.uast.uast.utils.cli.JarPathValidator;
 import org.uast.uast.utils.cli.JsonPathValidator;
 import org.uast.uast.utils.cli.LanguageConverter;
 
@@ -73,6 +78,17 @@ public final class Main {
     private String json;
 
     /**
+     * The jar file with algorithms to process ASTs.
+     */
+    @Parameter(
+        names = { "--processing", "-pr" },
+        validateWith = JarPathValidator.class,
+        arity = 1,
+        description = "The name (possibly path) of the jar file with extension"
+    )
+    private String proc;
+
+    /**
      * The raw option.
      */
     @Parameter(
@@ -104,6 +120,7 @@ public final class Main {
         this.language = "";
         this.image = "";
         this.json = "";
+        this.proc = "";
     }
 
     /**
@@ -152,6 +169,25 @@ public final class Main {
         if (!this.json.isEmpty()) {
             final JsonSerializer serializer = new JsonSerializer(node);
             serializer.serializeToFile(this.json);
+        }
+        if (!this.proc.isEmpty()) {
+            final URLClassLoader loader = URLClassLoader.newInstance(
+                new URL[] {new File(this.proc).toURI().toURL()},
+                this.getClass().getClassLoader()
+            );
+            Object result = null;
+            try {
+                final Class clazz = Class.forName("org.uast.processor.Processor", true, loader);
+                final Method method = clazz.getDeclaredMethod("process", String.class);
+                final Object instance = clazz.newInstance();
+                result = method.invoke(instance, "node with data");
+            } catch (final ClassNotFoundException
+                    | NoSuchMethodException | InstantiationException | IllegalAccessException
+                    | InvocationTargetException exception) {
+                throw new ParameterException(
+                    "Cannot find the required method in a jar file"
+                );
+            }
         }
     }
 }
