@@ -27,19 +27,24 @@ public final class Rule10 implements Converter {
     public static final Converter INSTANCE = new Rule10();
 
     /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The number of the second hole.
+     * The 'Subtraction' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Modulus' string.
-     */
-    private static final String MODULUS = "Modulus";
+    private static final String SUBTRACTION = "Subtraction";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule10 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher31.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher29.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule10.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule10 implements Converter {
     }
 
     /**
-     * Builds a node with 'Modulus' type.
+     * Builds a node with 'Subtraction' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,47 @@ public final class Rule10 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule10.MODULUS);
+        final Builder builder = factory.createBuilder(Rule10.SUBTRACTION);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule10.secondBuilder(factory, children));
         list.addAll(children.get(Rule10.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule10.SECOND_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule10.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule10.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule10.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

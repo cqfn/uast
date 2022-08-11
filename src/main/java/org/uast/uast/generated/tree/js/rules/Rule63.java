@@ -27,6 +27,11 @@ public final class Rule63 implements Converter {
     public static final Converter INSTANCE = new Rule63();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule63 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalAnd' string.
+     * The 'LeftShift' string.
      */
-    private static final String LOGICAL_AND = "LogicalAnd";
+    private static final String LEFT_SHIFT = "LeftShift";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule63 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalAnd' type.
+     * Builds a node with 'LeftShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule63 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule63.LOGICAL_AND);
+        final Builder builder = factory.createBuilder(Rule63.LEFT_SHIFT);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule63.FIRST_HOLE_ID));
         list.add(Rule63.secondBuilder(factory, children));
-        list.add(Rule63.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,43 +110,6 @@ public final class Rule63 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule63.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule63.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule63.fifthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule63.NAME);

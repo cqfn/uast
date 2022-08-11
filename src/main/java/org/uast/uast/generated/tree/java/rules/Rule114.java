@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,14 @@ public final class Rule114 implements Converter {
     public static final Converter INSTANCE = new Rule114();
 
     /**
-     * The 'VoidType' string.
+     * The 'Name' string.
      */
-    private static final String VOID_TYPE = "VoidType";
+    private static final String NAME = "Name";
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * Constructor.
@@ -41,22 +47,46 @@ public final class Rule114 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher193.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher201.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule114.firstBuilder(factory);
+            result = Rule114.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'VoidType' type.
+     * Builds a node with 'Name' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule114.VOID_TYPE);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule114.NAME);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule114.secondBuilder(factory, children));
+        list.addAll(children.get(Rule114.FIRST_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule114.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

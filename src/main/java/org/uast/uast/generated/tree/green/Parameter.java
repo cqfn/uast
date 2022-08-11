@@ -32,11 +32,6 @@ public final class Parameter implements Node {
     public static final Type TYPE = new TypeImpl();
 
     /**
-     * The number of children.
-     */
-    private static final int CHILD_COUNT = 2;
-
-    /**
      * The fragment associated with the node.
      */
     private Fragment fragment;
@@ -69,7 +64,7 @@ public final class Parameter implements Node {
 
     @Override
     public int getChildCount() {
-        return Parameter.CHILD_COUNT;
+        return this.children.size();
     }
 
     @Override
@@ -89,6 +84,11 @@ public final class Parameter implements Node {
         private static final String PARAMETER = "Parameter";
 
         /**
+         * The 'ModifierBlock' string.
+         */
+        private static final String MODIFIER_BLOCK = "ModifierBlock";
+
+        /**
          * The 'TypeName' string.
          */
         private static final String TYPE_NAME = "TypeName";
@@ -105,8 +105,12 @@ public final class Parameter implements Node {
             Collections.unmodifiableList(
                 Arrays.asList(
                     new ChildDescriptor(
+                        TypeImpl.MODIFIER_BLOCK,
+                        true
+                    ),
+                    new ChildDescriptor(
                         TypeImpl.TYPE_NAME,
-                        false
+                        true
                     ),
                     new ChildDescriptor(
                         TypeImpl.IDENTIFIER,
@@ -169,7 +173,7 @@ public final class Parameter implements Node {
         /**
          * The maximum number of nodes.
          */
-        private static final int MAX_NODE_COUNT = 2;
+        private static final int MAX_NODE_COUNT = 3;
 
         /**
          * The position of the 'first' field.
@@ -182,6 +186,11 @@ public final class Parameter implements Node {
         private static final int SECOND_POS = 1;
 
         /**
+         * The position of the 'third' field.
+         */
+        private static final int THIRD_POS = 2;
+
+        /**
          * The fragment associated with the node.
          */
         private Fragment fragment = EmptyFragment.INSTANCE;
@@ -189,12 +198,17 @@ public final class Parameter implements Node {
         /**
          * Node 0.
          */
-        private TypeName first;
+        private ModifierBlock first;
 
         /**
          * Node 1.
          */
-        private Identifier second;
+        private TypeName second;
+
+        /**
+         * Node 2.
+         */
+        private Identifier third;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -213,16 +227,16 @@ public final class Parameter implements Node {
                 new ChildrenMapper(Parameter.TYPE.getChildTypes());
             final boolean result = mapper.map(mapping, list);
             if (result) {
-                this.first = (TypeName) mapping[Constructor.FIRST_POS];
-                this.second = (Identifier) mapping[Constructor.SECOND_POS];
+                this.first = (ModifierBlock) mapping[Constructor.FIRST_POS];
+                this.second = (TypeName) mapping[Constructor.SECOND_POS];
+                this.third = (Identifier) mapping[Constructor.THIRD_POS];
             }
             return result;
         }
 
         @Override
         public boolean isValid() {
-            return this.first != null
-                && this.second != null;
+            return this.third != null;
         }
 
         @Override
@@ -235,7 +249,8 @@ public final class Parameter implements Node {
             node.children = new ListUtils<Node>()
                 .add(
                     this.first,
-                    this.second
+                    this.second,
+                    this.third
                 )
                 .make();
             return node;

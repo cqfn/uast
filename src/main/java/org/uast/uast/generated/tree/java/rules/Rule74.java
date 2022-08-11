@@ -27,19 +27,24 @@ public final class Rule74 implements Converter {
     public static final Converter INSTANCE = new Rule74();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
      * The 'Variable' string.
      */
     private static final String VARIABLE = "Variable";
 
     /**
-     * The number of the first hole.
+     * The 'LogicalAnd' string.
      */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The 'ModulusAssignment' string.
-     */
-    private static final String MODULUS_ASSIGNME = "ModulusAssignment";
+    private static final String LOGICAL_AND = "LogicalAnd";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule74 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher141.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher146.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule74.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule74 implements Converter {
     }
 
     /**
-     * Builds a node with 'ModulusAssignment' type.
+     * Builds a node with 'LogicalAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule74 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule74.MODULUS_ASSIGNME);
+        final Builder builder = factory.createBuilder(Rule74.LOGICAL_AND);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule74.secondBuilder(factory, children));
         list.addAll(children.get(Rule74.FIRST_HOLE_ID));
+        list.add(Rule74.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -89,7 +94,26 @@ public final class Rule74 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule74.VARIABLE);
-        final List<Node> list = children.get(1);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule74.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule74.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

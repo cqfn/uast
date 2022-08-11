@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule113 implements Converter {
     public static final Converter INSTANCE = new Rule113();
 
     /**
-     * The number of the first hole.
+     * The 'Name' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Parameter' string.
-     */
-    private static final String PARAMETER = "Parameter";
+    private static final String NAME = "Name";
 
     /**
      * Constructor.
@@ -52,7 +41,7 @@ public final class Rule113 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher192.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher200.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule113.firstBuilder(factory, children);
         }
@@ -60,7 +49,7 @@ public final class Rule113 implements Converter {
     }
 
     /**
-     * Builds a node with 'Parameter' type.
+     * Builds a node with 'Name' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +57,8 @@ public final class Rule113 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule113.PARAMETER);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule113.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule113.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule113.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

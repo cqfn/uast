@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule2 implements Converter {
     public static final Converter INSTANCE = new Rule2();
 
     /**
-     * The number of the first hole.
+     * The 'IntegerLiteral' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Addition' string.
-     */
-    private static final String ADDITION = "Addition";
+    private static final String INTEGER_LITERAL = "IntegerLiteral";
 
     /**
      * Constructor.
@@ -52,28 +41,24 @@ public final class Rule2 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher7.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher4.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule2.firstBuilder(factory, children);
+            result = Rule2.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Addition' type.
+     * Builds a node with 'IntegerLiteral' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule2.ADDITION);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule2.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule2.SECOND_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule2.INTEGER_LITERAL);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

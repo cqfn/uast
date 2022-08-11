@@ -27,24 +27,19 @@ public final class Rule55 implements Converter {
     public static final Converter INSTANCE = new Rule55();
 
     /**
-     * The 'Identifier' string.
+     * The number of the first hole.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ParameterBlock' string.
+     * The number of the second hole.
      */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'StatementBlock' string.
+     * The 'LeftShift' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String LEFT_SHIFT = "LeftShift";
 
     /**
      * Constructor.
@@ -57,77 +52,26 @@ public final class Rule55 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher196.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher187.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule55.firstBuilder(factory, children, data);
+            result = Rule55.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'LeftShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule55.FUNCTION_DECLARA);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule55.secondBuilder(factory, data));
-        list.add(Rule55.thirdBuilder(factory));
-        list.add(Rule55.fourthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Identifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule55.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ParameterBlock' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule55.PARAMETER_BLOCK);
-        if (builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'StatementBlock' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule55.STATEMENT_BLOCK);
-        final List<Node> list = children.get(2);
+        final Builder builder = factory.createBuilder(Rule55.LEFT_SHIFT);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule55.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule55.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

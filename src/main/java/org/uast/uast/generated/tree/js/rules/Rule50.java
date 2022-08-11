@@ -42,9 +42,9 @@ public final class Rule50 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'LeftShift' string.
+     * The 'BitwiseAnd' string.
      */
-    private static final String LEFT_SHIFT = "LeftShift";
+    private static final String BITWISE_AND = "BitwiseAnd";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule50 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher151.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher149.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule50.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule50 implements Converter {
     }
 
     /**
-     * Builds a node with 'LeftShift' type.
+     * Builds a node with 'BitwiseAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule50 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule50.LEFT_SHIFT);
+        final Builder builder = factory.createBuilder(Rule50.BITWISE_AND);
         final List<Node> list = new LinkedList<>();
         list.add(Rule50.secondBuilder(factory, children));
         list.addAll(children.get(Rule50.FIRST_HOLE_ID));

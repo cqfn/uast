@@ -37,9 +37,9 @@ public final class Rule79 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Positive' string.
+     * The 'LogicalOr' string.
      */
-    private static final String POSITIVE = "Positive";
+    private static final String LOGICAL_OR = "LogicalOr";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule79 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher240.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher234.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule79.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule79 implements Converter {
     }
 
     /**
-     * Builds a node with 'Positive' type.
+     * Builds a node with 'LogicalOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +68,10 @@ public final class Rule79 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule79.POSITIVE);
+        final Builder builder = factory.createBuilder(Rule79.LOGICAL_OR);
         final List<Node> list = new LinkedList<>();
         list.add(Rule79.secondBuilder(factory, children));
+        list.add(Rule79.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -108,6 +109,43 @@ public final class Rule79 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule79.NAME);
         final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule79.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule79.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule79.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

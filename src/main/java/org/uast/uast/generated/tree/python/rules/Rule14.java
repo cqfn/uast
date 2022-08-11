@@ -37,9 +37,9 @@ public final class Rule14 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'LessThan' string.
+     * The 'GreaterThan' string.
      */
-    private static final String LESS_THAN = "LessThan";
+    private static final String GREATER_THAN = "GreaterThan";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule14 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher43.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher42.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule14.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule14 implements Converter {
     }
 
     /**
-     * Builds a node with 'LessThan' type.
+     * Builds a node with 'GreaterThan' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule14 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule14.LESS_THAN);
+        final Builder builder = factory.createBuilder(Rule14.GREATER_THAN);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule14.FIRST_HOLE_ID));
         list.addAll(children.get(Rule14.SECOND_HOLE_ID));

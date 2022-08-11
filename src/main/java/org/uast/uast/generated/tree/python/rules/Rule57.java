@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule57 implements Converter {
     public static final Converter INSTANCE = new Rule57();
 
     /**
-     * The number of the first hole.
+     * The 'ParameterBlock' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Program' string.
-     */
-    private static final String PROGRAM = "Program";
+    private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
      * Constructor.
@@ -52,7 +41,7 @@ public final class Rule57 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher204.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher193.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule57.firstBuilder(factory, children);
         }
@@ -60,7 +49,7 @@ public final class Rule57 implements Converter {
     }
 
     /**
-     * Builds a node with 'Program' type.
+     * Builds a node with 'ParameterBlock' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +57,8 @@ public final class Rule57 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule57.PROGRAM);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule57.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule57.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule57.PARAMETER_BLOCK);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

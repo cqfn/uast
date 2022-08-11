@@ -24,12 +24,17 @@ public final class Matcher183 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "singleExpression";
+    private static final String EXPECTED_TYPE = "literal";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 0;
+
+    /**
+     * Expected data.
+     */
+    private static final String EXPECTED_DATA = "<<";
 
     /**
      * Constructor.
@@ -43,7 +48,6 @@ public final class Matcher183 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher183.EXPECTED_TYPE)
             && node.getChildCount() == Matcher183.EXPECTED_COUNT
-            && Matcher184.INSTANCE.match(node.getChild(0), children, data)
-            && Matcher185.INSTANCE.match(node.getChild(1), children, data);
+            && Matcher183.EXPECTED_DATA.equals(node.getData());
     }
 }

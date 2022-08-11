@@ -27,19 +27,24 @@ public final class Rule100 implements Converter {
     public static final Converter INSTANCE = new Rule100();
 
     /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'ExpressionList' string.
+     * The 'SimpleAssignment' string.
      */
-    private static final String EXPRESSION_LIST = "ExpressionList";
-
-    /**
-     * The 'FunctionCall' string.
-     */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String SIMPLE_ASSIGNMEN = "SimpleAssignment";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule100 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher313.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher296.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule100.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule100 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'SimpleAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule100 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule100.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule100.SIMPLE_ASSIGNMEN);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule100.secondBuilder(factory, children));
         list.addAll(children.get(Rule100.FIRST_HOLE_ID));
-        list.add(Rule100.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -80,14 +85,37 @@ public final class Rule100 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExpressionList' type.
+     * Builds a node with 'Variable' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory) {
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule100.EXPRESSION_LIST);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule100.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule100.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule100.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

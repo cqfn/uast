@@ -42,9 +42,9 @@ public final class Rule35 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LessThanOrEqualTo' string.
+     * The 'GreaterThan' string.
      */
-    private static final String LESS_THAN_OR_EQU = "LessThanOrEqualTo";
+    private static final String GREATER_THAN = "GreaterThan";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule35 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher106.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher104.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule35.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule35 implements Converter {
     }
 
     /**
-     * Builds a node with 'LessThanOrEqualTo' type.
+     * Builds a node with 'GreaterThan' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule35 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule35.LESS_THAN_OR_EQU);
+        final Builder builder = factory.createBuilder(Rule35.GREATER_THAN);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule35.FIRST_HOLE_ID));
         list.add(Rule35.secondBuilder(factory, children));

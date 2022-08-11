@@ -29,8 +29,33 @@ import org.uast.uast.generated.tree.js.rules.Rule111;
 import org.uast.uast.generated.tree.js.rules.Rule112;
 import org.uast.uast.generated.tree.js.rules.Rule113;
 import org.uast.uast.generated.tree.js.rules.Rule114;
+import org.uast.uast.generated.tree.js.rules.Rule115;
+import org.uast.uast.generated.tree.js.rules.Rule116;
+import org.uast.uast.generated.tree.js.rules.Rule117;
+import org.uast.uast.generated.tree.js.rules.Rule118;
+import org.uast.uast.generated.tree.js.rules.Rule119;
 import org.uast.uast.generated.tree.js.rules.Rule12;
+import org.uast.uast.generated.tree.js.rules.Rule120;
+import org.uast.uast.generated.tree.js.rules.Rule121;
+import org.uast.uast.generated.tree.js.rules.Rule122;
+import org.uast.uast.generated.tree.js.rules.Rule123;
+import org.uast.uast.generated.tree.js.rules.Rule124;
+import org.uast.uast.generated.tree.js.rules.Rule125;
+import org.uast.uast.generated.tree.js.rules.Rule126;
+import org.uast.uast.generated.tree.js.rules.Rule127;
+import org.uast.uast.generated.tree.js.rules.Rule128;
+import org.uast.uast.generated.tree.js.rules.Rule129;
 import org.uast.uast.generated.tree.js.rules.Rule13;
+import org.uast.uast.generated.tree.js.rules.Rule130;
+import org.uast.uast.generated.tree.js.rules.Rule131;
+import org.uast.uast.generated.tree.js.rules.Rule132;
+import org.uast.uast.generated.tree.js.rules.Rule133;
+import org.uast.uast.generated.tree.js.rules.Rule134;
+import org.uast.uast.generated.tree.js.rules.Rule135;
+import org.uast.uast.generated.tree.js.rules.Rule136;
+import org.uast.uast.generated.tree.js.rules.Rule137;
+import org.uast.uast.generated.tree.js.rules.Rule138;
+import org.uast.uast.generated.tree.js.rules.Rule139;
 import org.uast.uast.generated.tree.js.rules.Rule14;
 import org.uast.uast.generated.tree.js.rules.Rule15;
 import org.uast.uast.generated.tree.js.rules.Rule16;
@@ -265,7 +290,32 @@ public final class JsAdapter extends Adapter {
             Rule111.INSTANCE,
             Rule112.INSTANCE,
             Rule113.INSTANCE,
-            Rule114.INSTANCE
+            Rule114.INSTANCE,
+            Rule115.INSTANCE,
+            Rule116.INSTANCE,
+            Rule117.INSTANCE,
+            Rule118.INSTANCE,
+            Rule119.INSTANCE,
+            Rule120.INSTANCE,
+            Rule121.INSTANCE,
+            Rule122.INSTANCE,
+            Rule123.INSTANCE,
+            Rule124.INSTANCE,
+            Rule125.INSTANCE,
+            Rule126.INSTANCE,
+            Rule127.INSTANCE,
+            Rule128.INSTANCE,
+            Rule129.INSTANCE,
+            Rule130.INSTANCE,
+            Rule131.INSTANCE,
+            Rule132.INSTANCE,
+            Rule133.INSTANCE,
+            Rule134.INSTANCE,
+            Rule135.INSTANCE,
+            Rule136.INSTANCE,
+            Rule137.INSTANCE,
+            Rule138.INSTANCE,
+            Rule139.INSTANCE
         );
     }
 }

@@ -24,17 +24,27 @@ public final class Matcher194 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "literal";
+    private static final String EXPECTED_TYPE = "funcdef";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
-     * The number of the first hole.
+     * The index of the first child.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
+
+    /**
+     * The index of the third child.
+     */
+    private static final int THIRD_CHILD_ID = 2;
 
     /**
      * Constructor.
@@ -46,11 +56,30 @@ public final class Matcher194 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher194.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher194.EXPECTED_COUNT;
-        if (result) {
-            data.put(Matcher194.FIRST_HOLE_ID, node.getData());
-        }
-        return result;
+        return node.belongsToGroup(Matcher194.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher194.EXPECTED_COUNT
+            && Matcher194.matchChildren(node, children, data);
+    }
+
+    /**
+     * Checks if the children matches some structure, and extracts the data and children if so.
+     * @param node The node
+     * @param children Where to save children when matched
+     * @param data Where to save data when matched
+     * @return The result of matching, {@code true} if node matches and data was extracted
+     */
+    private static boolean matchChildren(final Node node,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        boolean flag = Matcher195.INSTANCE.match(
+            node.getChild(Matcher194.FIRST_CHILD_ID), children, data
+        );
+        flag = flag && Matcher196.INSTANCE.match(
+            node.getChild(Matcher194.SECOND_CHILD_ID), children, data
+        );
+        flag = flag && Matcher198.INSTANCE.match(
+            node.getChild(Matcher194.THIRD_CHILD_ID), children, data
+        );
+        return flag;
     }
 }

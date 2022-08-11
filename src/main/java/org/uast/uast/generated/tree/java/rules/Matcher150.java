@@ -25,7 +25,7 @@ public final class Matcher150 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "LogicalComplement";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.

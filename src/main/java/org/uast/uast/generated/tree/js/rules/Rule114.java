@@ -27,24 +27,14 @@ public final class Rule114 implements Converter {
     public static final Converter INSTANCE = new Rule114();
 
     /**
-     * The number of the first hole.
+     * The 'DeclaratorList' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String DECLARATOR_LIST = "DeclaratorList";
 
     /**
-     * The 'ParameterBlock' string.
+     * The 'VariableDeclaration' string.
      */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
-
-    /**
-     * The 'StatementBlock' string.
-     */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String VARIABLE_DECLARA = "VariableDeclaration";
 
     /**
      * Constructor.
@@ -57,7 +47,7 @@ public final class Rule114 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher366.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher338.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule114.firstBuilder(factory, children);
         }
@@ -65,7 +55,7 @@ public final class Rule114 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'VariableDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,11 +63,9 @@ public final class Rule114 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule114.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule114.VARIABLE_DECLARA);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule114.FIRST_HOLE_ID));
-        list.add(Rule114.secondBuilder(factory));
-        list.add(Rule114.thirdBuilder(factory));
+        list.add(Rule114.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -86,28 +74,18 @@ public final class Rule114 implements Converter {
     }
 
     /**
-     * Builds a node with 'ParameterBlock' type.
+     * Builds a node with 'DeclaratorList' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory) {
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule114.PARAMETER_BLOCK);
-        if (builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'StatementBlock' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule114.STATEMENT_BLOCK);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule114.DECLARATOR_LIST);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

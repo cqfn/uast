@@ -37,9 +37,9 @@ public final class Rule53 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'RightShift' string.
+     * The 'BitwiseOr' string.
      */
-    private static final String RIGHT_SHIFT = "RightShift";
+    private static final String BITWISE_OR = "BitwiseOr";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule53 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher159.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher157.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule53.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule53 implements Converter {
     }
 
     /**
-     * Builds a node with 'RightShift' type.
+     * Builds a node with 'BitwiseOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule53 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule53.RIGHT_SHIFT);
+        final Builder builder = factory.createBuilder(Rule53.BITWISE_OR);
         final List<Node> list = new LinkedList<>();
         list.add(Rule53.secondBuilder(factory, children));
         list.add(Rule53.fourthBuilder(factory, children));

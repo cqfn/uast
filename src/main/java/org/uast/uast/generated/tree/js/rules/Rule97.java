@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,14 +26,9 @@ public final class Rule97 implements Converter {
     public static final Converter INSTANCE = new Rule97();
 
     /**
-     * The 'DeclaratorList' string.
+     * The 'Negative' string.
      */
-    private static final String DECLARATOR_LIST = "DeclaratorList";
-
-    /**
-     * The 'VariableDeclaration' string.
-     */
-    private static final String VARIABLE_DECLARA = "VariableDeclaration";
+    private static final String NEGATIVE = "Negative";
 
     /**
      * Constructor.
@@ -47,7 +41,7 @@ public final class Rule97 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher303.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher290.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule97.firstBuilder(factory, children);
         }
@@ -55,7 +49,7 @@ public final class Rule97 implements Converter {
     }
 
     /**
-     * Builds a node with 'VariableDeclaration' type.
+     * Builds a node with 'Negative' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -63,26 +57,7 @@ public final class Rule97 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule97.VARIABLE_DECLARA);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule97.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'DeclaratorList' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule97.DECLARATOR_LIST);
+        final Builder builder = factory.createBuilder(Rule97.NEGATIVE);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

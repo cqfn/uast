@@ -27,24 +27,19 @@ public final class Rule84 implements Converter {
     public static final Converter INSTANCE = new Rule84();
 
     /**
-     * The 'Name' string.
-     */
-    private static final String NAME = "Name";
-
-    /**
-     * The 'Variable' string.
-     */
-    private static final String VARIABLE = "Variable";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'AdditionAssignment' string.
+     * The number of the second hole.
      */
-    private static final String ADDITION_ASSIGNM = "AdditionAssignment";
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'Addition' string.
+     */
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule84 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher252.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher249.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule84.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule84 implements Converter {
     }
 
     /**
-     * Builds a node with 'AdditionAssignment' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,47 +68,10 @@ public final class Rule84 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule84.ADDITION_ASSIGNM);
+        final Builder builder = factory.createBuilder(Rule84.ADDITION);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule84.secondBuilder(factory, children));
         list.addAll(children.get(Rule84.FIRST_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule84.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule84.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule84.NAME);
-        final List<Node> list = children.get(1);
+        list.addAll(children.get(Rule84.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

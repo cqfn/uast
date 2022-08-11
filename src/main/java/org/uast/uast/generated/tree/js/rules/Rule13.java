@@ -37,9 +37,9 @@ public final class Rule13 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'IsEqualTo' string.
+     * The 'Multiplication' string.
      */
-    private static final String IS_EQUAL_TO = "IsEqualTo";
+    private static final String MULTIPLICATION = "Multiplication";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule13 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher39.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher37.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule13.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule13 implements Converter {
     }
 
     /**
-     * Builds a node with 'IsEqualTo' type.
+     * Builds a node with 'Multiplication' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule13 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule13.IS_EQUAL_TO);
+        final Builder builder = factory.createBuilder(Rule13.MULTIPLICATION);
         final List<Node> list = new LinkedList<>();
         list.add(Rule13.secondBuilder(factory, children));
         list.add(Rule13.fourthBuilder(factory, children));

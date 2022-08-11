@@ -24,7 +24,7 @@ public final class Matcher199 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "Modifier";
+    private static final String EXPECTED_TYPE = "SimpleName";
 
     /**
      * Expected number of child nodes.

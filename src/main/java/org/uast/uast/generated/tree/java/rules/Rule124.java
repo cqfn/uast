@@ -27,39 +27,14 @@ public final class Rule124 implements Converter {
     public static final Converter INSTANCE = new Rule124();
 
     /**
-     * The 'Modifier' string.
+     * The 'Name' string.
      */
-    private static final String MODIFIER = "Modifier";
+    private static final String NAME = "Name";
 
     /**
-     * The 'ModifierBlock' string.
+     * The 'ClassType' string.
      */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 5;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 3;
-
-    /**
-     * The 'ParameterBlock' string.
-     */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 6;
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String CLASS_TYPE = "ClassType";
 
     /**
      * Constructor.
@@ -72,31 +47,25 @@ public final class Rule124 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher213.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher216.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule124.firstBuilder(factory, children, data);
+            result = Rule124.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'ClassType' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule124.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule124.CLASS_TYPE);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule124.secondBuilder(factory, data));
-        list.addAll(children.get(Rule124.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule124.SECOND_HOLE_ID));
-        list.add(Rule124.fifthBuilder(factory, children));
-        list.addAll(children.get(Rule124.THIRD_HOLE_ID));
+        list.add(Rule124.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,67 +74,16 @@ public final class Rule124 implements Converter {
     }
 
     /**
-     * Builds a node with 'ModifierBlock' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule124.MODIFIER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule124.thirdBuilder(factory, data));
-        list.add(Rule124.fourthBuilder(factory, data));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule124.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule124.MODIFIER);
-        final boolean set = builder.setData(data.get(2));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ParameterBlock' type.
+     * Builds a node with 'Name' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fifthBuilder(final Factory factory,
+    private static Node secondBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule124.PARAMETER_BLOCK);
-        final List<Node> list = children.get(4);
+        final Builder builder = factory.createBuilder(Rule124.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

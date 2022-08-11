@@ -41,8 +41,27 @@ import org.uast.uast.generated.tree.java.rules.Rule122;
 import org.uast.uast.generated.tree.java.rules.Rule123;
 import org.uast.uast.generated.tree.java.rules.Rule124;
 import org.uast.uast.generated.tree.java.rules.Rule125;
+import org.uast.uast.generated.tree.java.rules.Rule126;
+import org.uast.uast.generated.tree.java.rules.Rule127;
+import org.uast.uast.generated.tree.java.rules.Rule128;
+import org.uast.uast.generated.tree.java.rules.Rule129;
 import org.uast.uast.generated.tree.java.rules.Rule13;
+import org.uast.uast.generated.tree.java.rules.Rule130;
+import org.uast.uast.generated.tree.java.rules.Rule131;
+import org.uast.uast.generated.tree.java.rules.Rule132;
+import org.uast.uast.generated.tree.java.rules.Rule133;
+import org.uast.uast.generated.tree.java.rules.Rule134;
+import org.uast.uast.generated.tree.java.rules.Rule135;
+import org.uast.uast.generated.tree.java.rules.Rule136;
+import org.uast.uast.generated.tree.java.rules.Rule137;
+import org.uast.uast.generated.tree.java.rules.Rule138;
+import org.uast.uast.generated.tree.java.rules.Rule139;
 import org.uast.uast.generated.tree.java.rules.Rule14;
+import org.uast.uast.generated.tree.java.rules.Rule140;
+import org.uast.uast.generated.tree.java.rules.Rule141;
+import org.uast.uast.generated.tree.java.rules.Rule142;
+import org.uast.uast.generated.tree.java.rules.Rule143;
+import org.uast.uast.generated.tree.java.rules.Rule144;
 import org.uast.uast.generated.tree.java.rules.Rule15;
 import org.uast.uast.generated.tree.java.rules.Rule16;
 import org.uast.uast.generated.tree.java.rules.Rule17;
@@ -287,7 +306,26 @@ public final class JavaAdapter extends Adapter {
             Rule122.INSTANCE,
             Rule123.INSTANCE,
             Rule124.INSTANCE,
-            Rule125.INSTANCE
+            Rule125.INSTANCE,
+            Rule126.INSTANCE,
+            Rule127.INSTANCE,
+            Rule128.INSTANCE,
+            Rule129.INSTANCE,
+            Rule130.INSTANCE,
+            Rule131.INSTANCE,
+            Rule132.INSTANCE,
+            Rule133.INSTANCE,
+            Rule134.INSTANCE,
+            Rule135.INSTANCE,
+            Rule136.INSTANCE,
+            Rule137.INSTANCE,
+            Rule138.INSTANCE,
+            Rule139.INSTANCE,
+            Rule140.INSTANCE,
+            Rule141.INSTANCE,
+            Rule142.INSTANCE,
+            Rule143.INSTANCE,
+            Rule144.INSTANCE
         );
     }
 }

@@ -32,9 +32,9 @@ public final class Matcher192 implements Matcher {
     private static final int EXPECTED_COUNT = 0;
 
     /**
-     * Expected data.
+     * The number of the first hole.
      */
-    private static final String EXPECTED_DATA = "def";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
@@ -46,8 +46,11 @@ public final class Matcher192 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher192.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher192.EXPECTED_COUNT
-            && Matcher192.EXPECTED_DATA.equals(node.getData());
+        final boolean result = node.belongsToGroup(Matcher192.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher192.EXPECTED_COUNT;
+        if (result) {
+            data.put(Matcher192.FIRST_HOLE_ID, node.getData());
+        }
+        return result;
     }
 }

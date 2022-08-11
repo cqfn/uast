@@ -27,19 +27,24 @@ public final class Rule11 implements Converter {
     public static final Converter INSTANCE = new Rule11();
 
     /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The number of the second hole.
+     * The 'Multiplication' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'IsEqualTo' string.
-     */
-    private static final String IS_EQUAL_TO = "IsEqualTo";
+    private static final String MULTIPLICATION = "Multiplication";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule11 implements Converter {
     }
 
     /**
-     * Builds a node with 'IsEqualTo' type.
+     * Builds a node with 'Multiplication' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,47 @@ public final class Rule11 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule11.IS_EQUAL_TO);
+        final Builder builder = factory.createBuilder(Rule11.MULTIPLICATION);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule11.secondBuilder(factory, children));
         list.addAll(children.get(Rule11.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule11.SECOND_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule11.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule11.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule11.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

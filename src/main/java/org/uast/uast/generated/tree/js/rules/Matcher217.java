@@ -29,7 +29,7 @@ public final class Matcher217 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * Constructor.
@@ -43,6 +43,7 @@ public final class Matcher217 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher217.EXPECTED_TYPE)
             && node.getChildCount() == Matcher217.EXPECTED_COUNT
-            && Matcher218.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher218.INSTANCE.match(node.getChild(0), children, data)
+            && Matcher219.INSTANCE.match(node.getChild(1), children, data);
     }
 }

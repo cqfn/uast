@@ -37,9 +37,9 @@ public final class Rule61 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'BitwiseComplement' string.
+     * The 'LeftShift' string.
      */
-    private static final String BITWISE_COMPLEME = "BitwiseComplement";
+    private static final String LEFT_SHIFT = "LeftShift";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule61 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher183.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher181.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule61.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule61 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseComplement' type.
+     * Builds a node with 'LeftShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +68,10 @@ public final class Rule61 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule61.BITWISE_COMPLEME);
+        final Builder builder = factory.createBuilder(Rule61.LEFT_SHIFT);
         final List<Node> list = new LinkedList<>();
         list.add(Rule61.secondBuilder(factory, children));
+        list.add(Rule61.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -108,6 +109,43 @@ public final class Rule61 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule61.NAME);
         final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule61.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule61.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule61.NAME);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

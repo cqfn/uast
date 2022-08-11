@@ -32,14 +32,14 @@ public final class Rule104 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ClassBody' string.
+     * The number of the second hole.
      */
-    private static final String CLASS_BODY = "ClassBody";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'ClassDeclaration' string.
+     * The 'DivisionAssignment' string.
      */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final String DIVISION_ASSIGNM = "DivisionAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule104 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher331.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher307.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule104.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule104 implements Converter {
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'DivisionAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,26 +68,12 @@ public final class Rule104 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule104.CLASS_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule104.DIVISION_ASSIGNM);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule104.FIRST_HOLE_ID));
-        list.add(Rule104.secondBuilder(factory));
+        list.addAll(children.get(Rule104.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule104.CLASS_BODY);
-        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

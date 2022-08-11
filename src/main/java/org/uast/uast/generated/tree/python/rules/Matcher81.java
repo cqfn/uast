@@ -25,22 +25,22 @@ public final class Matcher81 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "expr";
+    private static final String EXPECTED_TYPE = "comparison";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 1;
+    private static final int FIRST_CHILD_ID = 0;
 
     /**
      * Constructor.
@@ -53,8 +53,7 @@ public final class Matcher81 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher81.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher81.EXPECTED_COUNT
-            && Matcher82.INSTANCE.match(node.getChild(0), children, data);
+            && node.getChildCount() == Matcher81.EXPECTED_COUNT;
         if (result) {
             children.put(
                 Matcher81.FIRST_HOLE_ID,

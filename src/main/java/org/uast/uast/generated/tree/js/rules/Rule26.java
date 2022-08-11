@@ -42,9 +42,9 @@ public final class Rule26 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'LessThan' string.
+     * The 'IsEqualTo' string.
      */
-    private static final String LESS_THAN = "LessThan";
+    private static final String IS_EQUAL_TO = "IsEqualTo";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule26 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher79.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher77.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule26.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule26 implements Converter {
     }
 
     /**
-     * Builds a node with 'LessThan' type.
+     * Builds a node with 'IsEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule26 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule26.LESS_THAN);
+        final Builder builder = factory.createBuilder(Rule26.IS_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule26.secondBuilder(factory, children));
         list.addAll(children.get(Rule26.FIRST_HOLE_ID));

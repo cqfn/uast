@@ -24,7 +24,7 @@ public final class Matcher294 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "assignmentOperator";
+    private static final String EXPECTED_TYPE = "identifier";
 
     /**
      * Expected number of child nodes.

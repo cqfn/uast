@@ -72,7 +72,15 @@ import org.uast.uast.generated.tree.python.rules.Rule61;
 import org.uast.uast.generated.tree.python.rules.Rule62;
 import org.uast.uast.generated.tree.python.rules.Rule63;
 import org.uast.uast.generated.tree.python.rules.Rule64;
+import org.uast.uast.generated.tree.python.rules.Rule65;
+import org.uast.uast.generated.tree.python.rules.Rule66;
+import org.uast.uast.generated.tree.python.rules.Rule67;
+import org.uast.uast.generated.tree.python.rules.Rule68;
+import org.uast.uast.generated.tree.python.rules.Rule69;
 import org.uast.uast.generated.tree.python.rules.Rule7;
+import org.uast.uast.generated.tree.python.rules.Rule70;
+import org.uast.uast.generated.tree.python.rules.Rule71;
+import org.uast.uast.generated.tree.python.rules.Rule72;
 import org.uast.uast.generated.tree.python.rules.Rule8;
 import org.uast.uast.generated.tree.python.rules.Rule9;
 
@@ -164,7 +172,15 @@ public final class PythonAdapter extends Adapter {
             Rule61.INSTANCE,
             Rule62.INSTANCE,
             Rule63.INSTANCE,
-            Rule64.INSTANCE
+            Rule64.INSTANCE,
+            Rule65.INSTANCE,
+            Rule66.INSTANCE,
+            Rule67.INSTANCE,
+            Rule68.INSTANCE,
+            Rule69.INSTANCE,
+            Rule70.INSTANCE,
+            Rule71.INSTANCE,
+            Rule72.INSTANCE
         );
     }
 }

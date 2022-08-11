@@ -42,9 +42,9 @@ public final class Rule38 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'BitwiseAnd' string.
+     * The 'LessThan' string.
      */
-    private static final String BITWISE_AND = "BitwiseAnd";
+    private static final String LESS_THAN = "LessThan";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule38 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher115.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher113.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule38.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule38 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseAnd' type.
+     * Builds a node with 'LessThan' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule38 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule38.BITWISE_AND);
+        final Builder builder = factory.createBuilder(Rule38.LESS_THAN);
         final List<Node> list = new LinkedList<>();
         list.add(Rule38.secondBuilder(factory, children));
         list.addAll(children.get(Rule38.FIRST_HOLE_ID));

@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule104 implements Converter {
     public static final Converter INSTANCE = new Rule104();
 
     /**
-     * The number of the first hole.
+     * The 'Positive' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Name' string.
-     */
-    private static final String NAME = "Name";
+    private static final String POSITIVE = "Positive";
 
     /**
      * Constructor.
@@ -52,7 +41,7 @@ public final class Rule104 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher180.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher188.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule104.firstBuilder(factory, children);
         }
@@ -60,7 +49,7 @@ public final class Rule104 implements Converter {
     }
 
     /**
-     * Builds a node with 'Name' type.
+     * Builds a node with 'Positive' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +57,8 @@ public final class Rule104 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule104.NAME);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule104.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule104.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule104.POSITIVE);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -42,9 +42,9 @@ public final class Rule15 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'IsEqualTo' string.
+     * The 'Multiplication' string.
      */
-    private static final String IS_EQUAL_TO = "IsEqualTo";
+    private static final String MULTIPLICATION = "Multiplication";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule15 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher46.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher44.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule15.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule15 implements Converter {
     }
 
     /**
-     * Builds a node with 'IsEqualTo' type.
+     * Builds a node with 'Multiplication' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule15 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule15.IS_EQUAL_TO);
+        final Builder builder = factory.createBuilder(Rule15.MULTIPLICATION);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule15.FIRST_HOLE_ID));
         list.add(Rule15.secondBuilder(factory, children));

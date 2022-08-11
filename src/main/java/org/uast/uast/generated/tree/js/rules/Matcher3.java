@@ -24,7 +24,7 @@ public final class Matcher3 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "literal";
+    private static final String EXPECTED_TYPE = "Identifier";
 
     /**
      * Expected number of child nodes.

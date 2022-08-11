@@ -8,7 +8,6 @@ package org.uast.uast.generated.tree.python.rules;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.uast.uast.base.Builder;
 import org.uast.uast.base.Converter;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
@@ -26,9 +25,9 @@ public final class Rule29 implements Converter {
     public static final Converter INSTANCE = new Rule29();
 
     /**
-     * The 'LogicalNot' string.
+     * The number of the first hole.
      */
-    private static final String LOGICAL_NOT = "LogicalNot";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
@@ -41,27 +40,12 @@ public final class Rule29 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher88.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher90.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule29.firstBuilder(factory, children);
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'LogicalNot' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule29.LOGICAL_NOT);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
+            final List<Node> list = children.get(Rule29.FIRST_HOLE_ID);
+            if (list != null && list.size() == 1) {
+                result = list.get(0);
+            }
         }
         return result;
     }

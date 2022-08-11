@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -24,17 +25,22 @@ public final class Matcher181 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "literal";
+    private static final String EXPECTED_TYPE = "small_stmt";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * The number of the first hole.
      */
     private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
 
     /**
      * Constructor.
@@ -47,9 +53,13 @@ public final class Matcher181 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher181.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher181.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher181.EXPECTED_COUNT
+            && Matcher182.INSTANCE.match(node.getChild(1), children, data);
         if (result) {
-            data.put(Matcher181.FIRST_HOLE_ID, node.getData());
+            children.put(
+                Matcher181.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher181.FIRST_CHILD_ID))
+            );
         }
         return result;
     }

@@ -27,19 +27,24 @@ public final class Rule51 implements Converter {
     public static final Converter INSTANCE = new Rule51();
 
     /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The number of the second hole.
+     * The 'BitwiseOr' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'RightShift' string.
-     */
-    private static final String RIGHT_SHIFT = "RightShift";
+    private static final String BITWISE_OR = "BitwiseOr";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule51 implements Converter {
     }
 
     /**
-     * Builds a node with 'RightShift' type.
+     * Builds a node with 'BitwiseOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,47 @@ public final class Rule51 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule51.RIGHT_SHIFT);
+        final Builder builder = factory.createBuilder(Rule51.BITWISE_OR);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule51.secondBuilder(factory, children));
         list.addAll(children.get(Rule51.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule51.SECOND_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule51.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule51.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule51.NAME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

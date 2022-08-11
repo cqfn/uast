@@ -27,29 +27,19 @@ public final class Rule118 implements Converter {
     public static final Converter INSTANCE = new Rule118();
 
     /**
-     * The 'Modifier' string.
-     */
-    private static final String MODIFIER = "Modifier";
-
-    /**
-     * The 'ModifierBlock' string.
-     */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ClassBody' string.
+     * The number of the second hole.
      */
-    private static final String CLASS_BODY = "ClassBody";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'ClassDeclaration' string.
+     * The 'Addition' string.
      */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -62,79 +52,28 @@ public final class Rule118 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher200.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher207.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule118.firstBuilder(factory, children, data);
+            result = Rule118.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule118.CLASS_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule118.ADDITION);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule118.secondBuilder(factory, data));
         list.addAll(children.get(Rule118.FIRST_HOLE_ID));
-        list.add(Rule118.fourthBuilder(factory));
+        list.addAll(children.get(Rule118.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ModifierBlock' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule118.MODIFIER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule118.thirdBuilder(factory, data));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule118.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule118.CLASS_BODY);
-        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

@@ -26,9 +26,9 @@ public final class Rule105 implements Converter {
     public static final Converter INSTANCE = new Rule105();
 
     /**
-     * The 'StringLiteral' string.
+     * The 'PrimitiveType' string.
      */
-    private static final String STRING_LITERAL = "StringLiteral";
+    private static final String PRIMITIVE_TYPE = "PrimitiveType";
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public final class Rule105 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher181.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher189.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule105.firstBuilder(factory, data);
         }
@@ -49,14 +49,14 @@ public final class Rule105 implements Converter {
     }
 
     /**
-     * Builds a node with 'StringLiteral' type.
+     * Builds a node with 'PrimitiveType' type.
      * @param factory The node factory
      * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule105.STRING_LITERAL);
+        final Builder builder = factory.createBuilder(Rule105.PRIMITIVE_TYPE);
         final boolean set = builder.setData(data.get(1));
         if (set && builder.isValid()) {
             result = builder.createNode();

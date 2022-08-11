@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule95 implements Converter {
     public static final Converter INSTANCE = new Rule95();
 
     /**
-     * The 'PrimitiveType' string.
+     * The 'Name' string.
      */
-    private static final String PRIMITIVE_TYPE = "PrimitiveType";
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
+     * The 'PreDecrement' string.
+     */
+    private static final String PRE_DECREMENT = "PreDecrement";
 
     /**
      * Constructor.
@@ -41,24 +52,64 @@ public final class Rule95 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher169.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher174.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule95.firstBuilder(factory, data);
+            result = Rule95.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'PrimitiveType' type.
+     * Builds a node with 'PreDecrement' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule95.PRIMITIVE_TYPE);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule95.PRE_DECREMENT);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule95.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule95.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule95.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule95.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

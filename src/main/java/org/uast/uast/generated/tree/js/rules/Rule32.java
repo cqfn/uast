@@ -37,9 +37,9 @@ public final class Rule32 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'LessThanOrEqualTo' string.
+     * The 'GreaterThan' string.
      */
-    private static final String LESS_THAN_OR_EQU = "LessThanOrEqualTo";
+    private static final String GREATER_THAN = "GreaterThan";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule32 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher97.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher95.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule32.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule32 implements Converter {
     }
 
     /**
-     * Builds a node with 'LessThanOrEqualTo' type.
+     * Builds a node with 'GreaterThan' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule32 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule32.LESS_THAN_OR_EQU);
+        final Builder builder = factory.createBuilder(Rule32.GREATER_THAN);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule32.FIRST_HOLE_ID));
         list.addAll(children.get(Rule32.SECOND_HOLE_ID));

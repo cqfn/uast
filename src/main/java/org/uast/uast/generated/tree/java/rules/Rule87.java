@@ -27,19 +27,19 @@ public final class Rule87 implements Converter {
     public static final Converter INSTANCE = new Rule87();
 
     /**
-     * The 'Name' string.
-     */
-    private static final String NAME = "Name";
-
-    /**
      * The 'Variable' string.
      */
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'PostIncrement' string.
+     * The number of the first hole.
      */
-    private static final String POST_INCREMENT = "PostIncrement";
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The 'ExclusiveOrAssignment' string.
+     */
+    private static final String EXCLUSIVE_OR_ASS = "ExclusiveOrAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule87 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher157.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher164.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule87.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule87 implements Converter {
     }
 
     /**
-     * Builds a node with 'PostIncrement' type.
+     * Builds a node with 'ExclusiveOrAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +68,10 @@ public final class Rule87 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule87.POST_INCREMENT);
+        final Builder builder = factory.createBuilder(Rule87.EXCLUSIVE_OR_ASS);
         final List<Node> list = new LinkedList<>();
         list.add(Rule87.secondBuilder(factory, children));
+        list.addAll(children.get(Rule87.FIRST_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -88,25 +89,6 @@ public final class Rule87 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule87.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule87.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule87.NAME);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

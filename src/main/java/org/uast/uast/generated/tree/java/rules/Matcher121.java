@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -34,12 +35,22 @@ public final class Matcher121 implements Matcher {
     /**
      * Expected data.
      */
-    private static final String EXPECTED_DATA = "&&";
+    private static final String EXPECTED_DATA = ">>";
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
      */
     private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
      * The index of the second child.
@@ -56,28 +67,19 @@ public final class Matcher121 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher121.EXPECTED_TYPE)
+        final boolean result = node.belongsToGroup(Matcher121.EXPECTED_TYPE)
             && node.getChildCount() == Matcher121.EXPECTED_COUNT
-            && Matcher121.EXPECTED_DATA.equals(node.getData())
-            && Matcher121.matchChildren(node, children, data);
-    }
-
-    /**
-     * Checks if the children matches some structure, and extracts the data and children if so.
-     * @param node The node
-     * @param children Where to save children when matched
-     * @param data Where to save data when matched
-     * @return The result of matching, {@code true} if node matches and data was extracted
-     */
-    private static boolean matchChildren(final Node node,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        boolean flag = Matcher122.INSTANCE.match(
-            node.getChild(Matcher121.FIRST_CHILD_ID), children, data
-        );
-        flag = flag && Matcher123.INSTANCE.match(
-            node.getChild(Matcher121.SECOND_CHILD_ID), children, data
-        );
-        return flag;
+            && Matcher121.EXPECTED_DATA.equals(node.getData());
+        if (result) {
+            children.put(
+                Matcher121.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher121.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher121.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher121.SECOND_CHILD_ID))
+            );
+        }
+        return result;
     }
 }

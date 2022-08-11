@@ -27,6 +27,11 @@ public final class Rule56 implements Converter {
     public static final Converter INSTANCE = new Rule56();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule56 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'UnsignedRightShift' string.
+     * The 'ExclusiveOr' string.
      */
-    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShift";
+    private static final String EXCLUSIVE_OR = "ExclusiveOr";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule56 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher110.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher111.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule56.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule56 implements Converter {
     }
 
     /**
-     * Builds a node with 'UnsignedRightShift' type.
+     * Builds a node with 'ExclusiveOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule56 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule56.UNSIGNED_RIGHT_S);
+        final Builder builder = factory.createBuilder(Rule56.EXCLUSIVE_OR);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule56.FIRST_HOLE_ID));
         list.add(Rule56.secondBuilder(factory, children));
-        list.add(Rule56.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,43 +110,6 @@ public final class Rule56 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule56.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule56.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule56.fifthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule56.NAME);

@@ -8,6 +8,7 @@ package org.uast.uast.generated.tree.python.rules;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.uast.uast.base.Builder;
 import org.uast.uast.base.Converter;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
@@ -25,9 +26,9 @@ public final class Rule27 implements Converter {
     public static final Converter INSTANCE = new Rule27();
 
     /**
-     * The number of the first hole.
+     * The 'Negative' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String NEGATIVE = "Negative";
 
     /**
      * Constructor.
@@ -40,12 +41,27 @@ public final class Rule27 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher85.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher86.INSTANCE.match(node, children, data);
         if (matched) {
-            final List<Node> list = children.get(Rule27.FIRST_HOLE_ID);
-            if (list != null && list.size() == 1) {
-                result = list.get(0);
-            }
+            result = Rule27.firstBuilder(factory, children);
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Negative' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule27.NEGATIVE);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
         }
         return result;
     }

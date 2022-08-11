@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,12 +24,17 @@ public final class Matcher303 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "variableDeclarationList";
+    private static final String EXPECTED_TYPE = "literal";
 
     /**
-     * The number of the first hole.
+     * Expected number of child nodes.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int EXPECTED_COUNT = 0;
+
+    /**
+     * Expected data.
+     */
+    private static final String EXPECTED_DATA = "-=";
 
     /**
      * Constructor.
@@ -42,16 +46,8 @@ public final class Matcher303 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher303.EXPECTED_TYPE)
-            && Matcher304.INSTANCE.match(node.getChild(0), children, data);
-        if (result) {
-            final int count = node.getChildCount();
-            final List<Node> list = new ArrayList<>(count - 1);
-            for (int index = 1; index < count; index = index + 1) {
-                list.add(node.getChild(index));
-            }
-            children.put(Matcher303.FIRST_HOLE_ID, list);
-        }
-        return result;
+        return node.belongsToGroup(Matcher303.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher303.EXPECTED_COUNT
+            && Matcher303.EXPECTED_DATA.equals(node.getData());
     }
 }

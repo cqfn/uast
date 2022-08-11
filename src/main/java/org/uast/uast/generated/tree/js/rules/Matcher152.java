@@ -30,7 +30,7 @@ public final class Matcher152 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * The number of the first hole.
@@ -53,7 +53,9 @@ public final class Matcher152 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher152.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher152.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher152.EXPECTED_COUNT
+            && Matcher153.INSTANCE.match(node.getChild(1), children, data)
+            && Matcher154.INSTANCE.match(node.getChild(2), children, data);
         if (result) {
             children.put(
                 Matcher152.FIRST_HOLE_ID,

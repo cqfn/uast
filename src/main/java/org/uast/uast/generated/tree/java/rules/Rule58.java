@@ -27,11 +27,6 @@ public final class Rule58 implements Converter {
     public static final Converter INSTANCE = new Rule58();
 
     /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -42,9 +37,9 @@ public final class Rule58 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'UnsignedRightShift' string.
+     * The 'LeftShift' string.
      */
-    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShift";
+    private static final String LEFT_SHIFT = "LeftShift";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule58 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher115.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher114.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule58.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule58 implements Converter {
     }
 
     /**
-     * Builds a node with 'UnsignedRightShift' type.
+     * Builds a node with 'LeftShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,10 +68,10 @@ public final class Rule58 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule58.UNSIGNED_RIGHT_S);
+        final Builder builder = factory.createBuilder(Rule58.LEFT_SHIFT);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule58.FIRST_HOLE_ID));
         list.add(Rule58.secondBuilder(factory, children));
+        list.add(Rule58.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -110,6 +105,43 @@ public final class Rule58 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule58.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule58.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule58.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule58.NAME);

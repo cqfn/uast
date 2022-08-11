@@ -37,9 +37,9 @@ public final class Rule108 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Property' string.
+     * The 'ExclusiveOr' string.
      */
-    private static final String PROPERTY = "Property";
+    private static final String EXCLUSIVE_OR = "ExclusiveOr";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule108 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher347.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher319.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule108.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule108 implements Converter {
     }
 
     /**
-     * Builds a node with 'Property' type.
+     * Builds a node with 'ExclusiveOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule108 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule108.PROPERTY);
+        final Builder builder = factory.createBuilder(Rule108.EXCLUSIVE_OR);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule108.FIRST_HOLE_ID));
         list.addAll(children.get(Rule108.SECOND_HOLE_ID));

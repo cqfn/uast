@@ -42,9 +42,9 @@ public final class Rule43 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'BitwiseOr' string.
+     * The 'GreaterThanOrEqualTo' string.
      */
-    private static final String BITWISE_OR = "BitwiseOr";
+    private static final String GREATER_THAN_OR = "GreaterThanOrEqualTo";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule43 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher130.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher128.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule43.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule43 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseOr' type.
+     * Builds a node with 'GreaterThanOrEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule43 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule43.BITWISE_OR);
+        final Builder builder = factory.createBuilder(Rule43.GREATER_THAN_OR);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule43.FIRST_HOLE_ID));
         list.add(Rule43.secondBuilder(factory, children));

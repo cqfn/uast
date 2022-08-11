@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,24 +26,9 @@ public final class Rule112 implements Converter {
     public static final Converter INSTANCE = new Rule112();
 
     /**
-     * The number of the first hole.
+     * The 'Identifier' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The 'Dimension' string.
-     */
-    private static final String DIMENSION = "Dimension";
-
-    /**
-     * The 'DimensionList' string.
-     */
-    private static final String DIMENSION_LIST = "DimensionList";
-
-    /**
-     * The 'ArrayType' string.
-     */
-    private static final String ARRAY_TYPE = "ArrayType";
+    private static final String IDENTIFIER = "Identifier";
 
     /**
      * Constructor.
@@ -57,59 +41,24 @@ public final class Rule112 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher191.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher199.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule112.firstBuilder(factory, children);
+            result = Rule112.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ArrayType' type.
+     * Builds a node with 'Identifier' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule112.ARRAY_TYPE);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule112.FIRST_HOLE_ID));
-        list.add(Rule112.secondBuilder(factory));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'DimensionList' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule112.DIMENSION_LIST);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule112.thirdBuilder(factory));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Dimension' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule112.DIMENSION);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule112.IDENTIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

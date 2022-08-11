@@ -40,7 +40,7 @@ public final class Rule28 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher87.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher88.INSTANCE.match(node, children, data);
         if (matched) {
             final List<Node> list = children.get(Rule28.FIRST_HOLE_ID);
             if (list != null && list.size() == 1) {

@@ -27,6 +27,11 @@ public final class Rule71 implements Converter {
     public static final Converter INSTANCE = new Rule71();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule71 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalNot' string.
+     * The 'UnsignedRightShift' string.
      */
-    private static final String LOGICAL_NOT = "LogicalNot";
+    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShift";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule71 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalNot' type.
+     * Builds a node with 'UnsignedRightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,8 +73,9 @@ public final class Rule71 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule71.LOGICAL_NOT);
+        final Builder builder = factory.createBuilder(Rule71.UNSIGNED_RIGHT_S);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule71.FIRST_HOLE_ID));
         list.add(Rule71.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -107,7 +113,7 @@ public final class Rule71 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule71.NAME);
-        final List<Node> list = children.get(1);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

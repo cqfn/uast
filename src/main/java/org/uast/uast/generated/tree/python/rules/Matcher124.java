@@ -24,7 +24,7 @@ public final class Matcher124 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "arglist";
+    private static final String EXPECTED_TYPE = "atom";
 
     /**
      * Expected number of child nodes.

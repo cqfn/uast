@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule72 implements Converter {
     public static final Converter INSTANCE = new Rule72();
 
     /**
-     * The number of the first hole.
+     * The 'BitwiseComplement' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Addition' string.
-     */
-    private static final String ADDITION = "Addition";
+    private static final String BITWISE_COMPLEME = "BitwiseComplement";
 
     /**
      * Constructor.
@@ -60,7 +49,7 @@ public final class Rule72 implements Converter {
     }
 
     /**
-     * Builds a node with 'Addition' type.
+     * Builds a node with 'BitwiseComplement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +57,8 @@ public final class Rule72 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule72.ADDITION);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule72.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule72.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule72.BITWISE_COMPLEME);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

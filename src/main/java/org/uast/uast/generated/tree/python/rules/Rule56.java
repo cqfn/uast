@@ -27,19 +27,14 @@ public final class Rule56 implements Converter {
     public static final Converter INSTANCE = new Rule56();
 
     /**
-     * The number of the first hole.
+     * The 'Identifier' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String IDENTIFIER = "Identifier";
 
     /**
-     * The number of the second hole.
+     * The 'Parameter' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Program' string.
-     */
-    private static final String PROGRAM = "Program";
+    private static final String PARAMETER = "Parameter";
 
     /**
      * Constructor.
@@ -52,28 +47,42 @@ public final class Rule56 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher201.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher190.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule56.firstBuilder(factory, children);
+            result = Rule56.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Program' type.
+     * Builds a node with 'Parameter' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule56.PROGRAM);
+        final Builder builder = factory.createBuilder(Rule56.PARAMETER);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule56.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule56.SECOND_HOLE_ID));
+        list.add(Rule56.secondBuilder(factory, data));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Identifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule56.IDENTIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

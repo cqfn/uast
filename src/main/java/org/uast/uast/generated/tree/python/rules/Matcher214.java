@@ -24,12 +24,12 @@ public final class Matcher214 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "classdef";
+    private static final String EXPECTED_TYPE = "funcdef";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 4;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * The index of the first child.
@@ -45,11 +45,6 @@ public final class Matcher214 implements Matcher {
      * The index of the third child.
      */
     private static final int THIRD_CHILD_ID = 2;
-
-    /**
-     * The index of the fourth child.
-     */
-    private static final int FOURTH_CHILD_ID = 3;
 
     /**
      * Constructor.
@@ -84,9 +79,6 @@ public final class Matcher214 implements Matcher {
         );
         flag = flag && Matcher218.INSTANCE.match(
             node.getChild(Matcher214.THIRD_CHILD_ID), children, data
-        );
-        flag = flag && Matcher221.INSTANCE.match(
-            node.getChild(Matcher214.FOURTH_CHILD_ID), children, data
         );
         return flag;
     }

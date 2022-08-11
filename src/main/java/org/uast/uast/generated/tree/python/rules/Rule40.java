@@ -27,19 +27,19 @@ public final class Rule40 implements Converter {
     public static final Converter INSTANCE = new Rule40();
 
     /**
-     * The number of the first hole.
+     * The 'Identifier' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String IDENTIFIER = "Identifier";
 
     /**
-     * The number of the second hole.
+     * The 'ExpressionList' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
+    private static final String EXPRESSION_LIST = "ExpressionList";
 
     /**
-     * The 'SimpleAssignment' string.
+     * The 'FunctionCallExpression' string.
      */
-    private static final String SIMPLE_ASSIGNMEN = "SimpleAssignment";
+    private static final String FUNCTION_CALL_EX = "FunctionCallExpression";
 
     /**
      * Constructor.
@@ -52,26 +52,62 @@ public final class Rule40 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher138.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher143.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule40.firstBuilder(factory, children);
+            result = Rule40.firstBuilder(factory, children, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'SimpleAssignment' type.
+     * Builds a node with 'FunctionCallExpression' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @param data The data
+     * @return A node
+     */
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule40.FUNCTION_CALL_EX);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule40.secondBuilder(factory, data));
+        list.add(Rule40.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Identifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule40.IDENTIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ExpressionList' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
+    private static Node thirdBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule40.SIMPLE_ASSIGNMEN);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule40.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule40.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule40.EXPRESSION_LIST);
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -37,9 +37,9 @@ public final class Rule91 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Negative' string.
+     * The 'LogicalNot' string.
      */
-    private static final String NEGATIVE = "Negative";
+    private static final String LOGICAL_NOT = "LogicalNot";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule91 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher163.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher168.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule91.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule91 implements Converter {
     }
 
     /**
-     * Builds a node with 'Negative' type.
+     * Builds a node with 'LogicalNot' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule91 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule91.NEGATIVE);
+        final Builder builder = factory.createBuilder(Rule91.LOGICAL_NOT);
         final List<Node> list = new LinkedList<>();
         list.add(Rule91.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);

@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -30,17 +29,7 @@ public final class Matcher260 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 2;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * Constructor.
@@ -52,16 +41,9 @@ public final class Matcher260 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher260.EXPECTED_TYPE)
+        return node.belongsToGroup(Matcher260.EXPECTED_TYPE)
             && node.getChildCount() == Matcher260.EXPECTED_COUNT
             && Matcher261.INSTANCE.match(node.getChild(0), children, data)
             && Matcher262.INSTANCE.match(node.getChild(1), children, data);
-        if (result) {
-            children.put(
-                Matcher260.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher260.FIRST_CHILD_ID))
-            );
-        }
-        return result;
     }
 }

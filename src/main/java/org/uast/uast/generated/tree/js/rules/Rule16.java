@@ -37,9 +37,9 @@ public final class Rule16 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'NotEqualTo' string.
+     * The 'Division' string.
      */
-    private static final String NOT_EQUAL_TO = "NotEqualTo";
+    private static final String DIVISION = "Division";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule16 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher49.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher47.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule16.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule16 implements Converter {
     }
 
     /**
-     * Builds a node with 'NotEqualTo' type.
+     * Builds a node with 'Division' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule16 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule16.NOT_EQUAL_TO);
+        final Builder builder = factory.createBuilder(Rule16.DIVISION);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule16.FIRST_HOLE_ID));
         list.addAll(children.get(Rule16.SECOND_HOLE_ID));

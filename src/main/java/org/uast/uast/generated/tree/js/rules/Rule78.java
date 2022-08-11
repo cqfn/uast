@@ -27,19 +27,19 @@ public final class Rule78 implements Converter {
     public static final Converter INSTANCE = new Rule78();
 
     /**
-     * The 'Name' string.
+     * The number of the first hole.
      */
-    private static final String NAME = "Name";
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'Variable' string.
+     * The number of the second hole.
      */
-    private static final String VARIABLE = "Variable";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Negative' string.
+     * The 'LogicalOr' string.
      */
-    private static final String NEGATIVE = "Negative";
+    private static final String LOGICAL_OR = "LogicalOr";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule78 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher237.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher232.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule78.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule78 implements Converter {
     }
 
     /**
-     * Builds a node with 'Negative' type.
+     * Builds a node with 'LogicalOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,46 +68,10 @@ public final class Rule78 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule78.NEGATIVE);
+        final Builder builder = factory.createBuilder(Rule78.LOGICAL_OR);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule78.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule78.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule78.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule78.NAME);
-        final List<Node> list = children.get(1);
+        list.addAll(children.get(Rule78.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule78.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
