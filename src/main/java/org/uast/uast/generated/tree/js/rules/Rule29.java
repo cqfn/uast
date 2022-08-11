@@ -37,9 +37,9 @@ public final class Rule29 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'GreaterThanOrEqualTo' string.
+     * The 'NotEqualTo' string.
      */
-    private static final String GREATER_THAN_OR = "GreaterThanOrEqualTo";
+    private static final String NOT_EQUAL_TO = "NotEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule29 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher87.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher85.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule29.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule29 implements Converter {
     }
 
     /**
-     * Builds a node with 'GreaterThanOrEqualTo' type.
+     * Builds a node with 'NotEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule29 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule29.GREATER_THAN_OR);
+        final Builder builder = factory.createBuilder(Rule29.NOT_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule29.secondBuilder(factory, children));
         list.add(Rule29.fourthBuilder(factory, children));

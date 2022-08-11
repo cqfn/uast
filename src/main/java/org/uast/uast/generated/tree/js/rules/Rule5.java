@@ -37,9 +37,9 @@ public final class Rule5 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Subtraction' string.
+     * The 'Addition' string.
      */
-    private static final String SUBTRACTION = "Subtraction";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule5 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher15.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher13.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule5.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule5 implements Converter {
     }
 
     /**
-     * Builds a node with 'Subtraction' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule5 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule5.SUBTRACTION);
+        final Builder builder = factory.createBuilder(Rule5.ADDITION);
         final List<Node> list = new LinkedList<>();
         list.add(Rule5.secondBuilder(factory, children));
         list.add(Rule5.fourthBuilder(factory, children));

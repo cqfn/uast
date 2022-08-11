@@ -27,6 +27,11 @@ public final class Rule40 implements Converter {
     public static final Converter INSTANCE = new Rule40();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule40 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'BitwiseOr' string.
+     * The 'GreaterThanOrEqualTo' string.
      */
-    private static final String BITWISE_OR = "BitwiseOr";
+    private static final String GREATER_THAN_OR = "GreaterThanOrEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule40 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher78.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher79.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule40.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule40 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseOr' type.
+     * Builds a node with 'GreaterThanOrEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule40 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule40.BITWISE_OR);
+        final Builder builder = factory.createBuilder(Rule40.GREATER_THAN_OR);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule40.FIRST_HOLE_ID));
         list.add(Rule40.secondBuilder(factory, children));
-        list.add(Rule40.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,43 +110,6 @@ public final class Rule40 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule40.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule40.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule40.fifthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule40.NAME);

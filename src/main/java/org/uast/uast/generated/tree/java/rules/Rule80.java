@@ -37,9 +37,9 @@ public final class Rule80 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'LeftShiftAssignment' string.
+     * The 'AdditionAssignment' string.
      */
-    private static final String LEFT_SHIFT_ASSIG = "LeftShiftAssignment";
+    private static final String ADDITION_ASSIGNM = "AdditionAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule80 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher147.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher157.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule80.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule80 implements Converter {
     }
 
     /**
-     * Builds a node with 'LeftShiftAssignment' type.
+     * Builds a node with 'AdditionAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule80 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule80.LEFT_SHIFT_ASSIG);
+        final Builder builder = factory.createBuilder(Rule80.ADDITION_ASSIGNM);
         final List<Node> list = new LinkedList<>();
         list.add(Rule80.secondBuilder(factory, children));
         list.addAll(children.get(Rule80.FIRST_HOLE_ID));

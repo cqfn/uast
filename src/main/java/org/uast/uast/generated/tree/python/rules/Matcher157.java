@@ -25,7 +25,7 @@ public final class Matcher157 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "assign_part";
+    private static final String EXPECTED_TYPE = "small_stmt";
 
     /**
      * Expected number of child nodes.
@@ -35,12 +35,12 @@ public final class Matcher157 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 1;
+    private static final int FIRST_CHILD_ID = 0;
 
     /**
      * Constructor.
@@ -54,7 +54,7 @@ public final class Matcher157 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher157.EXPECTED_TYPE)
             && node.getChildCount() == Matcher157.EXPECTED_COUNT
-            && Matcher158.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher158.INSTANCE.match(node.getChild(1), children, data);
         if (result) {
             children.put(
                 Matcher157.FIRST_HOLE_ID,

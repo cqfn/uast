@@ -35,17 +35,27 @@ public final class Matcher57 implements Matcher {
     /**
      * Expected data.
      */
-    private static final String EXPECTED_DATA = ">=";
+    private static final String EXPECTED_DATA = ">";
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 1;
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -59,12 +69,15 @@ public final class Matcher57 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher57.EXPECTED_TYPE)
             && node.getChildCount() == Matcher57.EXPECTED_COUNT
-            && Matcher57.EXPECTED_DATA.equals(node.getData())
-            && Matcher58.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher57.EXPECTED_DATA.equals(node.getData());
         if (result) {
             children.put(
                 Matcher57.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher57.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher57.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher57.SECOND_CHILD_ID))
             );
         }
         return result;

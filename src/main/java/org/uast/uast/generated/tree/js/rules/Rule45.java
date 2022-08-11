@@ -37,9 +37,9 @@ public final class Rule45 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'ExclusiveOr' string.
+     * The 'LessThanOrEqualTo' string.
      */
-    private static final String EXCLUSIVE_OR = "ExclusiveOr";
+    private static final String LESS_THAN_OR_EQU = "LessThanOrEqualTo";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule45 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher135.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher133.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule45.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule45 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExclusiveOr' type.
+     * Builds a node with 'LessThanOrEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule45 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule45.EXCLUSIVE_OR);
+        final Builder builder = factory.createBuilder(Rule45.LESS_THAN_OR_EQU);
         final List<Node> list = new LinkedList<>();
         list.add(Rule45.secondBuilder(factory, children));
         list.add(Rule45.fourthBuilder(factory, children));

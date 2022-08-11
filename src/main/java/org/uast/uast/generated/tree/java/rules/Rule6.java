@@ -37,9 +37,9 @@ public final class Rule6 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Multiplication' string.
+     * The 'Subtraction' string.
      */
-    private static final String MULTIPLICATION = "Multiplication";
+    private static final String SUBTRACTION = "Subtraction";
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public final class Rule6 implements Converter {
     }
 
     /**
-     * Builds a node with 'Multiplication' type.
+     * Builds a node with 'Subtraction' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule6 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule6.MULTIPLICATION);
+        final Builder builder = factory.createBuilder(Rule6.SUBTRACTION);
         final List<Node> list = new LinkedList<>();
         list.add(Rule6.secondBuilder(factory, children));
         list.add(Rule6.fourthBuilder(factory, children));

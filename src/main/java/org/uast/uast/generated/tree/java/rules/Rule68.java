@@ -42,9 +42,9 @@ public final class Rule68 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalOr' string.
+     * The 'UnsignedRightShift' string.
      */
-    private static final String LOGICAL_OR = "LogicalOr";
+    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShift";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule68 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher134.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher135.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule68.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule68 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalOr' type.
+     * Builds a node with 'UnsignedRightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule68 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule68.LOGICAL_OR);
+        final Builder builder = factory.createBuilder(Rule68.UNSIGNED_RIGHT_S);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule68.FIRST_HOLE_ID));
         list.add(Rule68.secondBuilder(factory, children));

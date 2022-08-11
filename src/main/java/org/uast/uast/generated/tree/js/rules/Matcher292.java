@@ -30,17 +30,17 @@ public final class Matcher292 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 2;
+    private static final int FIRST_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -54,8 +54,7 @@ public final class Matcher292 implements Matcher {
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher292.EXPECTED_TYPE)
             && node.getChildCount() == Matcher292.EXPECTED_COUNT
-            && Matcher293.INSTANCE.match(node.getChild(0), children, data)
-            && Matcher294.INSTANCE.match(node.getChild(1), children, data);
+            && Matcher293.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
             children.put(
                 Matcher292.FIRST_HOLE_ID,

@@ -37,9 +37,9 @@ public final class Rule9 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Division' string.
+     * The 'Subtraction' string.
      */
-    private static final String DIVISION = "Division";
+    private static final String SUBTRACTION = "Subtraction";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule9 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher27.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher25.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule9.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule9 implements Converter {
     }
 
     /**
-     * Builds a node with 'Division' type.
+     * Builds a node with 'Subtraction' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule9 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule9.DIVISION);
+        final Builder builder = factory.createBuilder(Rule9.SUBTRACTION);
         final List<Node> list = new LinkedList<>();
         list.add(Rule9.secondBuilder(factory, children));
         list.add(Rule9.fourthBuilder(factory, children));

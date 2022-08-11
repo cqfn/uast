@@ -25,12 +25,12 @@ public final class Matcher186 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "MethodCallExpr";
+    private static final String EXPECTED_TYPE = "Name";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * The number of the first hole.
@@ -41,26 +41,6 @@ public final class Matcher186 implements Matcher {
      * The index of the first child.
      */
     private static final int FIRST_CHILD_ID = 0;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 1;
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 3;
-
-    /**
-     * The index of the third child.
-     */
-    private static final int THIRD_CHILD_ID = 2;
 
     /**
      * Constructor.
@@ -78,14 +58,6 @@ public final class Matcher186 implements Matcher {
             children.put(
                 Matcher186.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher186.FIRST_CHILD_ID))
-            );
-            children.put(
-                Matcher186.SECOND_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher186.SECOND_CHILD_ID))
-            );
-            children.put(
-                Matcher186.THIRD_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher186.THIRD_CHILD_ID))
             );
         }
         return result;

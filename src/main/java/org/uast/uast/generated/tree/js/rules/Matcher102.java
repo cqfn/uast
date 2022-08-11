@@ -35,7 +35,7 @@ public final class Matcher102 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.

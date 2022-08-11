@@ -24,27 +24,12 @@ public final class Matcher31 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "comparison";
+    private static final String EXPECTED_TYPE = "expr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 0;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 1;
-
-    /**
-     * The index of the third child.
-     */
-    private static final int THIRD_CHILD_ID = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
@@ -58,28 +43,6 @@ public final class Matcher31 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher31.EXPECTED_TYPE)
             && node.getChildCount() == Matcher31.EXPECTED_COUNT
-            && Matcher31.matchChildren(node, children, data);
-    }
-
-    /**
-     * Checks if the children matches some structure, and extracts the data and children if so.
-     * @param node The node
-     * @param children Where to save children when matched
-     * @param data Where to save data when matched
-     * @return The result of matching, {@code true} if node matches and data was extracted
-     */
-    private static boolean matchChildren(final Node node,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        boolean flag = Matcher32.INSTANCE.match(
-            node.getChild(Matcher31.FIRST_CHILD_ID), children, data
-        );
-        flag = flag && Matcher33.INSTANCE.match(
-            node.getChild(Matcher31.SECOND_CHILD_ID), children, data
-        );
-        flag = flag && Matcher34.INSTANCE.match(
-            node.getChild(Matcher31.THIRD_CHILD_ID), children, data
-        );
-        return flag;
+            && Matcher32.INSTANCE.match(node.getChild(0), children, data);
     }
 }

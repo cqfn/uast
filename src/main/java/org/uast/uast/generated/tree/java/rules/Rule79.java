@@ -37,9 +37,9 @@ public final class Rule79 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'UnsignedRightShiftAssignment' string.
+     * The 'SimpleAssignment' string.
      */
-    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShiftAssignment";
+    private static final String SIMPLE_ASSIGNMEN = "SimpleAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule79 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher146.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher156.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule79.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule79 implements Converter {
     }
 
     /**
-     * Builds a node with 'UnsignedRightShiftAssignment' type.
+     * Builds a node with 'SimpleAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule79 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule79.UNSIGNED_RIGHT_S);
+        final Builder builder = factory.createBuilder(Rule79.SIMPLE_ASSIGNMEN);
         final List<Node> list = new LinkedList<>();
         list.add(Rule79.secondBuilder(factory, children));
         list.addAll(children.get(Rule79.FIRST_HOLE_ID));

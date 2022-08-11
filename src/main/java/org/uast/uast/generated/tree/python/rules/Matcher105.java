@@ -24,7 +24,7 @@ public final class Matcher105 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "name";
+    private static final String EXPECTED_TYPE = "argument";
 
     /**
      * Expected number of child nodes.

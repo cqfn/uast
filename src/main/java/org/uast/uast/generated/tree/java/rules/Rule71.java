@@ -27,19 +27,19 @@ public final class Rule71 implements Converter {
     public static final Converter INSTANCE = new Rule71();
 
     /**
-     * The 'Variable' string.
-     */
-    private static final String VARIABLE = "Variable";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'SubtractionAssignment' string.
+     * The number of the second hole.
      */
-    private static final String SUBTRACTION_ASSI = "SubtractionAssignment";
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'LogicalAnd' string.
+     */
+    private static final String LOGICAL_AND = "LogicalAnd";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule71 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher138.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher140.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule71.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule71 implements Converter {
     }
 
     /**
-     * Builds a node with 'SubtractionAssignment' type.
+     * Builds a node with 'LogicalAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,28 +68,10 @@ public final class Rule71 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule71.SUBTRACTION_ASSI);
+        final Builder builder = factory.createBuilder(Rule71.LOGICAL_AND);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule71.secondBuilder(factory, children));
         list.addAll(children.get(Rule71.FIRST_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule71.VARIABLE);
-        final List<Node> list = children.get(1);
+        list.addAll(children.get(Rule71.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

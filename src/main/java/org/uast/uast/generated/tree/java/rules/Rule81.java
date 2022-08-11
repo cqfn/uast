@@ -27,19 +27,19 @@ public final class Rule81 implements Converter {
     public static final Converter INSTANCE = new Rule81();
 
     /**
-     * The 'Name' string.
-     */
-    private static final String NAME = "Name";
-
-    /**
      * The 'Variable' string.
      */
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalNot' string.
+     * The number of the first hole.
      */
-    private static final String LOGICAL_NOT = "LogicalNot";
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The 'SubtractionAssignment' string.
+     */
+    private static final String SUBTRACTION_ASSI = "SubtractionAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule81 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher148.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher158.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule81.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule81 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalNot' type.
+     * Builds a node with 'SubtractionAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +68,10 @@ public final class Rule81 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule81.LOGICAL_NOT);
+        final Builder builder = factory.createBuilder(Rule81.SUBTRACTION_ASSI);
         final List<Node> list = new LinkedList<>();
         list.add(Rule81.secondBuilder(factory, children));
+        list.addAll(children.get(Rule81.FIRST_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -88,25 +89,6 @@ public final class Rule81 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule81.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule81.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule81.NAME);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

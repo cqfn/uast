@@ -25,7 +25,7 @@ public final class Matcher140 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "AssignExpr";
+    private static final String EXPECTED_TYPE = "BinaryExpr";
 
     /**
      * Expected number of child nodes.
@@ -35,7 +35,7 @@ public final class Matcher140 implements Matcher {
     /**
      * Expected data.
      */
-    private static final String EXPECTED_DATA = "/=";
+    private static final String EXPECTED_DATA = "&&";
 
     /**
      * The number of the first hole.

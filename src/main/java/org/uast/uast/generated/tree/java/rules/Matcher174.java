@@ -24,12 +24,12 @@ public final class Matcher174 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "BlockStmt";
+    private static final String EXPECTED_TYPE = "PrefixDecrement";
 
     /**
-     * The number of the first hole.
+     * Expected number of child nodes.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
@@ -41,10 +41,8 @@ public final class Matcher174 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher174.EXPECTED_TYPE);
-        if (result) {
-            children.put(Matcher174.FIRST_HOLE_ID, node.getChildrenList());
-        }
-        return result;
+        return node.belongsToGroup(Matcher174.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher174.EXPECTED_COUNT
+            && Matcher175.INSTANCE.match(node.getChild(0), children, data);
     }
 }

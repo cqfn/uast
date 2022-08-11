@@ -42,9 +42,9 @@ public final class Rule63 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'LogicalAnd' string.
+     * The 'RightShift' string.
      */
-    private static final String LOGICAL_AND = "LogicalAnd";
+    private static final String RIGHT_SHIFT = "RightShift";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule63 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher124.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher125.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule63.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule63 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalAnd' type.
+     * Builds a node with 'RightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule63 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule63.LOGICAL_AND);
+        final Builder builder = factory.createBuilder(Rule63.RIGHT_SHIFT);
         final List<Node> list = new LinkedList<>();
         list.add(Rule63.secondBuilder(factory, children));
         list.addAll(children.get(Rule63.FIRST_HOLE_ID));

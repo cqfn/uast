@@ -27,11 +27,6 @@ public final class Rule69 implements Converter {
     public static final Converter INSTANCE = new Rule69();
 
     /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -42,9 +37,9 @@ public final class Rule69 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalOr' string.
+     * The 'UnsignedRightShift' string.
      */
-    private static final String LOGICAL_OR = "LogicalOr";
+    private static final String UNSIGNED_RIGHT_S = "UnsignedRightShift";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule69 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher207.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher205.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule69.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule69 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalOr' type.
+     * Builds a node with 'UnsignedRightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,10 +68,10 @@ public final class Rule69 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule69.LOGICAL_OR);
+        final Builder builder = factory.createBuilder(Rule69.UNSIGNED_RIGHT_S);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule69.FIRST_HOLE_ID));
         list.add(Rule69.secondBuilder(factory, children));
+        list.add(Rule69.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -110,6 +105,43 @@ public final class Rule69 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule69.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule69.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule69.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule69.NAME);

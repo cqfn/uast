@@ -5,7 +5,7 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,22 +25,12 @@ public final class Matcher338 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "singleExpression";
-
-    /**
-     * Expected number of child nodes.
-     */
-    private static final int EXPECTED_COUNT = 1;
+    private static final String EXPECTED_TYPE = "variableDeclarationList";
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 0;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
@@ -53,12 +43,14 @@ public final class Matcher338 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher338.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher338.EXPECTED_COUNT;
+            && Matcher339.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
-            children.put(
-                Matcher338.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher338.FIRST_CHILD_ID))
-            );
+            final int count = node.getChildCount();
+            final List<Node> list = new ArrayList<>(count - 1);
+            for (int index = 1; index < count; index = index + 1) {
+                list.add(node.getChild(index));
+            }
+            children.put(Matcher338.FIRST_HOLE_ID, list);
         }
         return result;
     }

@@ -37,9 +37,9 @@ public final class Rule49 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'RightShift' string.
+     * The 'DivisionAssignment' string.
      */
-    private static final String RIGHT_SHIFT = "RightShift";
+    private static final String DIVISION_ASSIGNM = "DivisionAssignment";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule49 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher165.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher169.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule49.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule49 implements Converter {
     }
 
     /**
-     * Builds a node with 'RightShift' type.
+     * Builds a node with 'DivisionAssignment' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule49 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule49.RIGHT_SHIFT);
+        final Builder builder = factory.createBuilder(Rule49.DIVISION_ASSIGNM);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule49.FIRST_HOLE_ID));
         list.addAll(children.get(Rule49.SECOND_HOLE_ID));

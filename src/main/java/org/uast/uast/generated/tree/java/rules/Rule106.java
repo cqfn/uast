@@ -37,9 +37,24 @@ public final class Rule106 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Addition' string.
+     * The number of the third hole.
      */
-    private static final String ADDITION = "Addition";
+    private static final int THIRD_HOLE_ID = 3;
+
+    /**
+     * The 'Declarator' string.
+     */
+    private static final String DECLARATOR = "Declarator";
+
+    /**
+     * The 'DeclaratorList' string.
+     */
+    private static final String DECLARATOR_LIST = "DeclaratorList";
+
+    /**
+     * The 'VariableDeclaration' string.
+     */
+    private static final String VARIABLE_DECLARA = "VariableDeclaration";
 
     /**
      * Constructor.
@@ -52,7 +67,7 @@ public final class Rule106 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher182.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher190.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule106.firstBuilder(factory, children);
         }
@@ -60,7 +75,7 @@ public final class Rule106 implements Converter {
     }
 
     /**
-     * Builds a node with 'Addition' type.
+     * Builds a node with 'VariableDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +83,49 @@ public final class Rule106 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule106.ADDITION);
+        final Builder builder = factory.createBuilder(Rule106.VARIABLE_DECLARA);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule106.FIRST_HOLE_ID));
+        list.add(Rule106.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'DeclaratorList' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule106.DECLARATOR_LIST);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule106.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Declarator' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule106.DECLARATOR);
+        final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule106.SECOND_HOLE_ID));
+        list.addAll(children.get(Rule106.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -26,9 +26,9 @@ public final class Rule116 implements Converter {
     public static final Converter INSTANCE = new Rule116();
 
     /**
-     * The 'Program' string.
+     * The 'StringLiteral' string.
      */
-    private static final String PROGRAM = "Program";
+    private static final String STRING_LITERAL = "StringLiteral";
 
     /**
      * Constructor.
@@ -41,26 +41,24 @@ public final class Rule116 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher197.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher204.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule116.firstBuilder(factory, children);
+            result = Rule116.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Program' type.
+     * Builds a node with 'StringLiteral' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule116.PROGRAM);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule116.STRING_LITERAL);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

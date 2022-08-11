@@ -25,7 +25,7 @@ public final class Matcher188 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ExpressionStmt";
+    private static final String EXPECTED_TYPE = "Plus";
 
     /**
      * Expected number of child nodes.

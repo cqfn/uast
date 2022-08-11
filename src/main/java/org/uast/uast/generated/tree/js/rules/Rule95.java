@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule95 implements Converter {
     public static final Converter INSTANCE = new Rule95();
 
     /**
-     * The number of the first hole.
+     * The 'PostIncrement' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Declarator' string.
-     */
-    private static final String DECLARATOR = "Declarator";
+    private static final String POST_INCREMENT = "PostIncrement";
 
     /**
      * Constructor.
@@ -52,7 +41,7 @@ public final class Rule95 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher296.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher286.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule95.firstBuilder(factory, children);
         }
@@ -60,7 +49,7 @@ public final class Rule95 implements Converter {
     }
 
     /**
-     * Builds a node with 'Declarator' type.
+     * Builds a node with 'PostIncrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +57,8 @@ public final class Rule95 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule95.DECLARATOR);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule95.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule95.SECOND_HOLE_ID));
+        final Builder builder = factory.createBuilder(Rule95.POST_INCREMENT);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

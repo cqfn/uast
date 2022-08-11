@@ -24,7 +24,7 @@ public final class Matcher2 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "numericLiteral";
+    private static final String EXPECTED_TYPE = "singleExpression";
 
     /**
      * Expected number of child nodes.

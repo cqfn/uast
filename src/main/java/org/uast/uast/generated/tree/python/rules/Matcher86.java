@@ -25,12 +25,12 @@ public final class Matcher86 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "comparison";
+    private static final String EXPECTED_TYPE = "expr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * The number of the first hole.
@@ -40,7 +40,7 @@ public final class Matcher86 implements Matcher {
     /**
      * The index of the first child.
      */
-    private static final int FIRST_CHILD_ID = 0;
+    private static final int FIRST_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -53,7 +53,8 @@ public final class Matcher86 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher86.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher86.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher86.EXPECTED_COUNT
+            && Matcher87.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
             children.put(
                 Matcher86.FIRST_HOLE_ID,

@@ -25,17 +25,12 @@ public final class Matcher139 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "AssignExpr";
+    private static final String EXPECTED_TYPE = "BitwiseComplement";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
-
-    /**
-     * Expected data.
-     */
-    private static final String EXPECTED_DATA = "*=";
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * The number of the first hole.
@@ -48,16 +43,6 @@ public final class Matcher139 implements Matcher {
     private static final int FIRST_CHILD_ID = 0;
 
     /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 1;
-
-    /**
      * Constructor.
      */
     private Matcher139() {
@@ -68,16 +53,11 @@ public final class Matcher139 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher139.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher139.EXPECTED_COUNT
-            && Matcher139.EXPECTED_DATA.equals(node.getData());
+            && node.getChildCount() == Matcher139.EXPECTED_COUNT;
         if (result) {
             children.put(
                 Matcher139.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher139.FIRST_CHILD_ID))
-            );
-            children.put(
-                Matcher139.SECOND_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher139.SECOND_CHILD_ID))
             );
         }
         return result;

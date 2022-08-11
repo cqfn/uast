@@ -25,7 +25,7 @@ public final class Matcher179 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "NameExpr";
+    private static final String EXPECTED_TYPE = "PostfixIncrement";
 
     /**
      * Expected number of child nodes.

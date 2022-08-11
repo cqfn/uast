@@ -27,6 +27,11 @@ public final class Rule4 implements Converter {
     public static final Converter INSTANCE = new Rule4();
 
     /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -37,9 +42,9 @@ public final class Rule4 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'Subtraction' string.
+     * The 'Addition' string.
      */
-    private static final String SUBTRACTION = "Subtraction";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -52,7 +57,7 @@ public final class Rule4 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher6.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher7.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule4.firstBuilder(factory, children);
         }
@@ -60,7 +65,7 @@ public final class Rule4 implements Converter {
     }
 
     /**
-     * Builds a node with 'Subtraction' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,10 +73,10 @@ public final class Rule4 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.SUBTRACTION);
+        final Builder builder = factory.createBuilder(Rule4.ADDITION);
         final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule4.FIRST_HOLE_ID));
         list.add(Rule4.secondBuilder(factory, children));
-        list.add(Rule4.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,43 +110,6 @@ public final class Rule4 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule4.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule4.fifthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule4.NAME);

@@ -27,11 +27,6 @@ public final class Rule22 implements Converter {
     public static final Converter INSTANCE = new Rule22();
 
     /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
      * The 'Name' string.
      */
     private static final String NAME = "Name";
@@ -42,9 +37,9 @@ public final class Rule22 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'GreaterThan' string.
+     * The 'IsEqualTo' string.
      */
-    private static final String GREATER_THAN = "GreaterThan";
+    private static final String IS_EQUAL_TO = "IsEqualTo";
 
     /**
      * Constructor.
@@ -57,7 +52,7 @@ public final class Rule22 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher43.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher42.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule22.firstBuilder(factory, children);
         }
@@ -65,7 +60,7 @@ public final class Rule22 implements Converter {
     }
 
     /**
-     * Builds a node with 'GreaterThan' type.
+     * Builds a node with 'IsEqualTo' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,10 +68,10 @@ public final class Rule22 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule22.GREATER_THAN);
+        final Builder builder = factory.createBuilder(Rule22.IS_EQUAL_TO);
         final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule22.FIRST_HOLE_ID));
         list.add(Rule22.secondBuilder(factory, children));
+        list.add(Rule22.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -110,6 +105,43 @@ public final class Rule22 implements Converter {
      * @return A node
      */
     private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule22.NAME);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule22.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule22.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule22.NAME);

@@ -37,9 +37,9 @@ public final class Rule9 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Modulus' string.
+     * The 'Multiplication' string.
      */
-    private static final String MODULUS = "Modulus";
+    private static final String MULTIPLICATION = "Multiplication";
 
     /**
      * Constructor.
@@ -60,7 +60,7 @@ public final class Rule9 implements Converter {
     }
 
     /**
-     * Builds a node with 'Modulus' type.
+     * Builds a node with 'Multiplication' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule9 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule9.MODULUS);
+        final Builder builder = factory.createBuilder(Rule9.MULTIPLICATION);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule9.FIRST_HOLE_ID));
         list.addAll(children.get(Rule9.SECOND_HOLE_ID));

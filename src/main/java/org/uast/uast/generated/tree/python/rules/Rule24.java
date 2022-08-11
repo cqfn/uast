@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule24 implements Converter {
     public static final Converter INSTANCE = new Rule24();
 
     /**
-     * The 'BitwiseComplement' string.
+     * The number of the first hole.
      */
-    private static final String BITWISE_COMPLEME = "BitwiseComplement";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The 'RightShift' string.
+     */
+    private static final String RIGHT_SHIFT = "RightShift";
 
     /**
      * Constructor.
@@ -41,7 +52,7 @@ public final class Rule24 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher79.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher78.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule24.firstBuilder(factory, children);
         }
@@ -49,7 +60,7 @@ public final class Rule24 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseComplement' type.
+     * Builds a node with 'RightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +68,10 @@ public final class Rule24 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule24.BITWISE_COMPLEME);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule24.RIGHT_SHIFT);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule24.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule24.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

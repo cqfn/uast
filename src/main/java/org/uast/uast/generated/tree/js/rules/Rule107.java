@@ -32,14 +32,14 @@ public final class Rule107 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The 'ClassBody' string.
+     * The number of the second hole.
      */
-    private static final String CLASS_BODY = "ClassBody";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'ClassDeclaration' string.
+     * The 'BitwiseOr' string.
      */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final String BITWISE_OR = "BitwiseOr";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule107 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher344.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher316.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule107.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule107 implements Converter {
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'BitwiseOr' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,28 +68,10 @@ public final class Rule107 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule107.CLASS_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule107.BITWISE_OR);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule107.FIRST_HOLE_ID));
-        list.add(Rule107.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule107.CLASS_BODY);
-        final List<Node> list = children.get(2);
+        list.addAll(children.get(Rule107.SECOND_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

@@ -27,39 +27,24 @@ public final class Rule125 implements Converter {
     public static final Converter INSTANCE = new Rule125();
 
     /**
-     * The 'Modifier' string.
-     */
-    private static final String MODIFIER = "Modifier";
-
-    /**
-     * The 'ModifierBlock' string.
-     */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
-
-    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The number of the second hole.
+     * The 'Dimension' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
+    private static final String DIMENSION = "Dimension";
 
     /**
-     * The 'ParameterBlock' string.
+     * The 'DimensionList' string.
      */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
+    private static final String DIMENSION_LIST = "DimensionList";
 
     /**
-     * The number of the third hole.
+     * The 'ArrayType' string.
      */
-    private static final int THIRD_HOLE_ID = 4;
-
-    /**
-     * The 'FunctionDeclaration' string.
-     */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String ARRAY_TYPE = "ArrayType";
 
     /**
      * Constructor.
@@ -72,31 +57,26 @@ public final class Rule125 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher216.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher217.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule125.firstBuilder(factory, children, data);
+            result = Rule125.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'ArrayType' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule125.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule125.ARRAY_TYPE);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule125.secondBuilder(factory, data));
         list.addAll(children.get(Rule125.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule125.SECOND_HOLE_ID));
-        list.add(Rule125.fourthBuilder(factory));
-        list.addAll(children.get(Rule125.THIRD_HOLE_ID));
+        list.add(Rule125.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -105,16 +85,15 @@ public final class Rule125 implements Converter {
     }
 
     /**
-     * Builds a node with 'ModifierBlock' type.
+     * Builds a node with 'DimensionList' type.
      * @param factory The node factory
-     * @param data The data
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node secondBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule125.MODIFIER_BLOCK);
+        final Builder builder = factory.createBuilder(Rule125.DIMENSION_LIST);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule125.thirdBuilder(factory, data));
+        list.add(Rule125.thirdBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -123,29 +102,13 @@ public final class Rule125 implements Converter {
     }
 
     /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule125.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ParameterBlock' type.
+     * Builds a node with 'Dimension' type.
      * @param factory The node factory
      * @return A node
      */
-    private static Node fourthBuilder(final Factory factory) {
+    private static Node thirdBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule125.PARAMETER_BLOCK);
+        final Builder builder = factory.createBuilder(Rule125.DIMENSION);
         if (builder.isValid()) {
             result = builder.createNode();
         }

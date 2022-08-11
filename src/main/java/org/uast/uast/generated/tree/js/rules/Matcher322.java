@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -24,12 +25,32 @@ public final class Matcher322 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "sourceElement";
+    private static final String EXPECTED_TYPE = "singleExpression";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 3;
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 2;
 
     /**
      * Constructor.
@@ -41,8 +62,19 @@ public final class Matcher322 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher322.EXPECTED_TYPE)
+        final boolean result = node.belongsToGroup(Matcher322.EXPECTED_TYPE)
             && node.getChildCount() == Matcher322.EXPECTED_COUNT
-            && Matcher323.INSTANCE.match(node.getChild(0), children, data);
+            && Matcher323.INSTANCE.match(node.getChild(1), children, data);
+        if (result) {
+            children.put(
+                Matcher322.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher322.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher322.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher322.SECOND_CHILD_ID))
+            );
+        }
+        return result;
     }
 }

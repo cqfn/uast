@@ -26,9 +26,9 @@ public final class Rule82 implements Converter {
     public static final Converter INSTANCE = new Rule82();
 
     /**
-     * The 'Identifier' string.
+     * The 'LogicalNot' string.
      */
-    private static final String IDENTIFIER = "Identifier";
+    private static final String LOGICAL_NOT = "LogicalNot";
 
     /**
      * Constructor.
@@ -41,24 +41,26 @@ public final class Rule82 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher247.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher244.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule82.firstBuilder(factory, data);
+            result = Rule82.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Identifier' type.
+     * Builds a node with 'LogicalNot' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule82.IDENTIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule82.LOGICAL_NOT);
+        final List<Node> list = children.get(1);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

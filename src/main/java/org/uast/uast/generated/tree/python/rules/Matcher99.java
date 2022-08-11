@@ -24,7 +24,7 @@ public final class Matcher99 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "arguments";
+    private static final String EXPECTED_TYPE = "atom";
 
     /**
      * Expected number of child nodes.

@@ -32,24 +32,19 @@ public final class Rule60 implements Converter {
     private static final String IDENTIFIER = "Identifier";
 
     /**
-     * The 'ClassType' string.
+     * The 'ParameterBlock' string.
      */
-    private static final String CLASS_TYPE = "ClassType";
+    private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
-     * The 'ExtendsBlock' string.
+     * The 'StatementBlock' string.
      */
-    private static final String EXTENDS_BLOCK = "ExtendsBlock";
+    private static final String STATEMENT_BLOCK = "StatementBlock";
 
     /**
-     * The 'ClassBody' string.
+     * The 'FunctionDeclaration' string.
      */
-    private static final String CLASS_BODY = "ClassBody";
-
-    /**
-     * The 'ClassDeclaration' string.
-     */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
 
     /**
      * Constructor.
@@ -62,29 +57,26 @@ public final class Rule60 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher214.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher207.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule60.firstBuilder(factory, children, data);
+            result = Rule60.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'FunctionDeclaration' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule60.CLASS_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule60.FUNCTION_DECLARA);
         final List<Node> list = new LinkedList<>();
         list.add(Rule60.secondBuilder(factory, data));
-        list.add(Rule60.thirdBuilder(factory, children));
-        list.add(Rule60.fifthBuilder(factory));
+        list.add(Rule60.thirdBuilder(factory));
+        list.add(Rule60.fourthBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -109,50 +101,27 @@ public final class Rule60 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExtendsBlock' type.
+     * Builds a node with 'ParameterBlock' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node thirdBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule60.EXTENDS_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule60.fourthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule60.PARAMETER_BLOCK);
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ClassType' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule60.CLASS_TYPE);
-        final List<Node> list = children.get(2);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
+     * Builds a node with 'StatementBlock' type.
      * @param factory The node factory
      * @return A node
      */
-    private static Node fifthBuilder(final Factory factory) {
+    private static Node fourthBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule60.CLASS_BODY);
+        final Builder builder = factory.createBuilder(Rule60.STATEMENT_BLOCK);
         if (builder.isValid()) {
             result = builder.createNode();
         }

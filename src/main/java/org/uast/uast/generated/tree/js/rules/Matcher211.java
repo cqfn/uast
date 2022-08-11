@@ -34,7 +34,7 @@ public final class Matcher211 implements Matcher {
     /**
      * Expected data.
      */
-    private static final String EXPECTED_DATA = "!";
+    private static final String EXPECTED_DATA = ">>>";
 
     /**
      * Constructor.

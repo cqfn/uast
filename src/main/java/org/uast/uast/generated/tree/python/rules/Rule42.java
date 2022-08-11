@@ -5,11 +5,9 @@
 
 package org.uast.uast.generated.tree.python.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.uast.uast.base.Builder;
 import org.uast.uast.base.Converter;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
@@ -32,16 +30,6 @@ public final class Rule42 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'SubtractionAssignment' string.
-     */
-    private static final String SUBTRACTION_ASSI = "SubtractionAssignment";
-
-    /**
      * Constructor.
      */
     private Rule42() {
@@ -52,29 +40,12 @@ public final class Rule42 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher144.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher151.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule42.firstBuilder(factory, children);
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'SubtractionAssignment' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule42.SUBTRACTION_ASSI);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule42.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule42.SECOND_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
+            final List<Node> list = children.get(Rule42.FIRST_HOLE_ID);
+            if (list != null && list.size() == 1) {
+                result = list.get(0);
+            }
         }
         return result;
     }

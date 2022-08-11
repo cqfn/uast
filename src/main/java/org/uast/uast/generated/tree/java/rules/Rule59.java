@@ -37,9 +37,14 @@ public final class Rule59 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'BitwiseComplement' string.
+     * The number of the first hole.
      */
-    private static final String BITWISE_COMPLEME = "BitwiseComplement";
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The 'LeftShift' string.
+     */
+    private static final String LEFT_SHIFT = "LeftShift";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule59 implements Converter {
     }
 
     /**
-     * Builds a node with 'BitwiseComplement' type.
+     * Builds a node with 'LeftShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +73,10 @@ public final class Rule59 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule59.BITWISE_COMPLEME);
+        final Builder builder = factory.createBuilder(Rule59.LEFT_SHIFT);
         final List<Node> list = new LinkedList<>();
         list.add(Rule59.secondBuilder(factory, children));
+        list.addAll(children.get(Rule59.FIRST_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

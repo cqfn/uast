@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,19 @@ public final class Rule99 implements Converter {
     public static final Converter INSTANCE = new Rule99();
 
     /**
-     * The 'StatementBlock' string.
+     * The 'Name' string.
      */
-    private static final String STATEMENT_BLOCK = "StatementBlock";
+    private static final String NAME = "Name";
+
+    /**
+     * The 'Variable' string.
+     */
+    private static final String VARIABLE = "Variable";
+
+    /**
+     * The 'PostDecrement' string.
+     */
+    private static final String POST_DECREMENT = "PostDecrement";
 
     /**
      * Constructor.
@@ -41,7 +52,7 @@ public final class Rule99 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher174.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher180.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule99.firstBuilder(factory, children);
         }
@@ -49,7 +60,7 @@ public final class Rule99 implements Converter {
     }
 
     /**
-     * Builds a node with 'StatementBlock' type.
+     * Builds a node with 'PostDecrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,7 +68,45 @@ public final class Rule99 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule99.STATEMENT_BLOCK);
+        final Builder builder = factory.createBuilder(Rule99.POST_DECREMENT);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule99.secondBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Variable' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule99.VARIABLE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule99.thirdBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule99.NAME);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

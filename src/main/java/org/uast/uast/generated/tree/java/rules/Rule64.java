@@ -42,9 +42,9 @@ public final class Rule64 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LogicalAnd' string.
+     * The 'RightShift' string.
      */
-    private static final String LOGICAL_AND = "LogicalAnd";
+    private static final String RIGHT_SHIFT = "RightShift";
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public final class Rule64 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher126.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher127.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule64.firstBuilder(factory, children);
         }
@@ -65,7 +65,7 @@ public final class Rule64 implements Converter {
     }
 
     /**
-     * Builds a node with 'LogicalAnd' type.
+     * Builds a node with 'RightShift' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -73,7 +73,7 @@ public final class Rule64 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule64.LOGICAL_AND);
+        final Builder builder = factory.createBuilder(Rule64.RIGHT_SHIFT);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule64.FIRST_HOLE_ID));
         list.add(Rule64.secondBuilder(factory, children));

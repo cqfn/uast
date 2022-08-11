@@ -26,9 +26,9 @@ public final class Rule94 implements Converter {
     public static final Converter INSTANCE = new Rule94();
 
     /**
-     * The 'Positive' string.
+     * The 'PreIncrement' string.
      */
-    private static final String POSITIVE = "Positive";
+    private static final String PRE_INCREMENT = "PreIncrement";
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public final class Rule94 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher168.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher173.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule94.firstBuilder(factory, children);
         }
@@ -49,7 +49,7 @@ public final class Rule94 implements Converter {
     }
 
     /**
-     * Builds a node with 'Positive' type.
+     * Builds a node with 'PreIncrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,7 +57,7 @@ public final class Rule94 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule94.POSITIVE);
+        final Builder builder = factory.createBuilder(Rule94.PRE_INCREMENT);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

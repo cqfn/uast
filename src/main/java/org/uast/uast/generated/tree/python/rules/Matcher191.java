@@ -24,27 +24,12 @@ public final class Matcher191 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "funcdef";
+    private static final String EXPECTED_TYPE = "name";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 0;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 1;
-
-    /**
-     * The index of the third child.
-     */
-    private static final int THIRD_CHILD_ID = 2;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
@@ -58,28 +43,6 @@ public final class Matcher191 implements Matcher {
         final Map<Integer, String> data) {
         return node.belongsToGroup(Matcher191.EXPECTED_TYPE)
             && node.getChildCount() == Matcher191.EXPECTED_COUNT
-            && Matcher191.matchChildren(node, children, data);
-    }
-
-    /**
-     * Checks if the children matches some structure, and extracts the data and children if so.
-     * @param node The node
-     * @param children Where to save children when matched
-     * @param data Where to save data when matched
-     * @return The result of matching, {@code true} if node matches and data was extracted
-     */
-    private static boolean matchChildren(final Node node,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        boolean flag = Matcher192.INSTANCE.match(
-            node.getChild(Matcher191.FIRST_CHILD_ID), children, data
-        );
-        flag = flag && Matcher193.INSTANCE.match(
-            node.getChild(Matcher191.SECOND_CHILD_ID), children, data
-        );
-        flag = flag && Matcher195.INSTANCE.match(
-            node.getChild(Matcher191.THIRD_CHILD_ID), children, data
-        );
-        return flag;
+            && Matcher192.INSTANCE.match(node.getChild(0), children, data);
     }
 }

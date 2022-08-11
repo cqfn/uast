@@ -24,7 +24,7 @@ public final class Matcher204 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "Modifier";
+    private static final String EXPECTED_TYPE = "StringLiteralExpr";
 
     /**
      * Expected number of child nodes.

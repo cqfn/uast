@@ -8,6 +8,7 @@ package org.uast.uast.generated.tree.js.rules;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.uast.uast.base.Builder;
 import org.uast.uast.base.Converter;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
@@ -25,9 +26,9 @@ public final class Rule99 implements Converter {
     public static final Converter INSTANCE = new Rule99();
 
     /**
-     * The number of the first hole.
+     * The 'Identifier' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final String IDENTIFIER = "Identifier";
 
     /**
      * Constructor.
@@ -40,12 +41,25 @@ public final class Rule99 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher309.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher294.INSTANCE.match(node, children, data);
         if (matched) {
-            final List<Node> list = children.get(Rule99.FIRST_HOLE_ID);
-            if (list != null && list.size() == 1) {
-                result = list.get(0);
-            }
+            result = Rule99.firstBuilder(factory, data);
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Identifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule99.IDENTIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
+            result = builder.createNode();
         }
         return result;
     }

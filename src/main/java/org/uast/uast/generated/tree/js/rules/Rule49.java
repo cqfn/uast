@@ -37,9 +37,9 @@ public final class Rule49 implements Converter {
     private static final String VARIABLE = "Variable";
 
     /**
-     * The 'LeftShift' string.
+     * The 'BitwiseAnd' string.
      */
-    private static final String LEFT_SHIFT = "LeftShift";
+    private static final String BITWISE_AND = "BitwiseAnd";
 
     /**
      * Constructor.
@@ -52,7 +52,7 @@ public final class Rule49 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher147.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher145.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule49.firstBuilder(factory, children);
         }
@@ -60,7 +60,7 @@ public final class Rule49 implements Converter {
     }
 
     /**
-     * Builds a node with 'LeftShift' type.
+     * Builds a node with 'BitwiseAnd' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,7 +68,7 @@ public final class Rule49 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule49.LEFT_SHIFT);
+        final Builder builder = factory.createBuilder(Rule49.BITWISE_AND);
         final List<Node> list = new LinkedList<>();
         list.add(Rule49.secondBuilder(factory, children));
         list.add(Rule49.fourthBuilder(factory, children));

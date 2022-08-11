@@ -26,9 +26,9 @@ public final class Rule98 implements Converter {
     public static final Converter INSTANCE = new Rule98();
 
     /**
-     * The 'Return' string.
+     * The 'PostIncrement' string.
      */
-    private static final String RETURN = "Return";
+    private static final String POST_INCREMENT = "PostIncrement";
 
     /**
      * Constructor.
@@ -41,7 +41,7 @@ public final class Rule98 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher173.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher179.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule98.firstBuilder(factory, children);
         }
@@ -49,7 +49,7 @@ public final class Rule98 implements Converter {
     }
 
     /**
-     * Builds a node with 'Return' type.
+     * Builds a node with 'PostIncrement' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,7 +57,7 @@ public final class Rule98 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule98.RETURN);
+        final Builder builder = factory.createBuilder(Rule98.POST_INCREMENT);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
