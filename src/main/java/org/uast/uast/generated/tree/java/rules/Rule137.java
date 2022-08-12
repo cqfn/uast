@@ -32,16 +32,6 @@ public final class Rule137 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 3;
-
-    /**
      * The 'Declarator' string.
      */
     private static final String DECLARATOR = "Declarator";
@@ -67,7 +57,7 @@ public final class Rule137 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher238.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher237.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule137.firstBuilder(factory, children);
         }
@@ -123,9 +113,7 @@ public final class Rule137 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule137.DECLARATOR);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule137.SECOND_HOLE_ID));
-        list.addAll(children.get(Rule137.THIRD_HOLE_ID));
+        final List<Node> list = children.get(2);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

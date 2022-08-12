@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -16,49 +15,41 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher236 implements Matcher {
+public final class Matcher256 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher236();
+    public static final Matcher INSTANCE = new Matcher256();
 
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ClassType";
+    private static final String EXPECTED_TYPE = "Modifier";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 0;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 0;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
      */
-    private Matcher236() {
+    private Matcher256() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher236.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher236.EXPECTED_COUNT;
+        final boolean result = node.belongsToGroup(Matcher256.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher256.EXPECTED_COUNT;
         if (result) {
-            children.put(
-                Matcher236.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher236.FIRST_CHILD_ID))
-            );
+            data.put(Matcher256.FIRST_HOLE_ID, node.getData());
         }
         return result;
     }

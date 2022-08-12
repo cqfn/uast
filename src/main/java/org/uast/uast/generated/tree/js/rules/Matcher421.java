@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.java.rules;
+package org.uast.uast.generated.tree.js.rules;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,16 +16,16 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher236 implements Matcher {
+public final class Matcher421 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher236();
+    public static final Matcher INSTANCE = new Matcher421();
 
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ClassType";
+    private static final String EXPECTED_TYPE = "assignable";
 
     /**
      * Expected number of child nodes.
@@ -35,7 +35,7 @@ public final class Matcher236 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
@@ -45,19 +45,19 @@ public final class Matcher236 implements Matcher {
     /**
      * Constructor.
      */
-    private Matcher236() {
+    private Matcher421() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher236.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher236.EXPECTED_COUNT;
+        final boolean result = node.belongsToGroup(Matcher421.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher421.EXPECTED_COUNT;
         if (result) {
             children.put(
-                Matcher236.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher236.FIRST_CHILD_ID))
+                Matcher421.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher421.FIRST_CHILD_ID))
             );
         }
         return result;

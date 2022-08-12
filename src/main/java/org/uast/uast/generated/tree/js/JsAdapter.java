@@ -57,6 +57,7 @@ import org.uast.uast.generated.tree.js.rules.Rule137;
 import org.uast.uast.generated.tree.js.rules.Rule138;
 import org.uast.uast.generated.tree.js.rules.Rule139;
 import org.uast.uast.generated.tree.js.rules.Rule14;
+import org.uast.uast.generated.tree.js.rules.Rule140;
 import org.uast.uast.generated.tree.js.rules.Rule15;
 import org.uast.uast.generated.tree.js.rules.Rule16;
 import org.uast.uast.generated.tree.js.rules.Rule17;
@@ -315,7 +316,8 @@ public final class JsAdapter extends Adapter {
             Rule136.INSTANCE,
             Rule137.INSTANCE,
             Rule138.INSTANCE,
-            Rule139.INSTANCE
+            Rule139.INSTANCE,
+            Rule140.INSTANCE
         );
     }
 }

@@ -72,7 +72,7 @@ public final class Rule139 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher243.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher241.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule139.firstBuilder(factory, children, data);
         }

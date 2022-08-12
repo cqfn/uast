@@ -20,11 +20,11 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Rule136 implements Converter {
+public final class Rule145 implements Converter {
     /**
      * The instance.
      */
-    public static final Converter INSTANCE = new Rule136();
+    public static final Converter INSTANCE = new Rule145();
 
     /**
      * The 'Modifier' string.
@@ -39,32 +39,52 @@ public final class Rule136 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 7;
 
     /**
-     * The 'ClassType' string.
+     * The number of the second hole.
      */
-    private static final String CLASS_TYPE = "ClassType";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'ExtendsBlock' string.
+     * The number of the third hole.
      */
-    private static final String EXTENDS_BLOCK = "ExtendsBlock";
+    private static final int THIRD_HOLE_ID = 3;
 
     /**
-     * The 'ClassBody' string.
+     * The number of the fourth hole.
      */
-    private static final String CLASS_BODY = "ClassBody";
+    private static final int FOURTH_HOLE_ID = 4;
 
     /**
-     * The 'ClassDeclaration' string.
+     * The number of the fifth hole.
      */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final int FIFTH_HOLE_ID = 5;
+
+    /**
+     * The number of the sixth hole.
+     */
+    private static final int SIXTH_HOLE_ID = 6;
+
+    /**
+     * The 'ParameterBlock' string.
+     */
+    private static final String PARAMETER_BLOCK = "ParameterBlock";
+
+    /**
+     * The number of the seventh hole.
+     */
+    private static final int SEVENTH_HOLE_ID = 8;
+
+    /**
+     * The 'FunctionDeclaration' string.
+     */
+    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
 
     /**
      * Constructor.
      */
-    private Rule136() {
+    private Rule145() {
     }
 
     @Override
@@ -72,15 +92,15 @@ public final class Rule136 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher234.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher255.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule136.firstBuilder(factory, children, data);
+            result = Rule145.firstBuilder(factory, children, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'FunctionDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @param data The data
@@ -90,12 +110,13 @@ public final class Rule136 implements Converter {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.CLASS_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule145.FUNCTION_DECLARA);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule136.secondBuilder(factory, data));
-        list.addAll(children.get(Rule136.FIRST_HOLE_ID));
-        list.add(Rule136.fourthBuilder(factory, children));
-        list.add(Rule136.sixthBuilder(factory));
+        list.add(Rule145.secondBuilder(factory, data));
+        list.addAll(children.get(Rule145.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule145.SECOND_HOLE_ID));
+        list.add(Rule145.fourthBuilder(factory, children));
+        list.addAll(children.get(Rule145.SEVENTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -111,9 +132,9 @@ public final class Rule136 implements Converter {
      */
     private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.MODIFIER_BLOCK);
+        final Builder builder = factory.createBuilder(Rule145.MODIFIER_BLOCK);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule136.thirdBuilder(factory, data));
+        list.add(Rule145.thirdBuilder(factory, data));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -129,7 +150,7 @@ public final class Rule136 implements Converter {
      */
     private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.MODIFIER);
+        final Builder builder = factory.createBuilder(Rule145.MODIFIER);
         final boolean set = builder.setData(data.get(1));
         if (set && builder.isValid()) {
             result = builder.createNode();
@@ -138,7 +159,7 @@ public final class Rule136 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExtendsBlock' type.
+     * Builds a node with 'ParameterBlock' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -146,43 +167,14 @@ public final class Rule136 implements Converter {
     private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.EXTENDS_BLOCK);
+        final Builder builder = factory.createBuilder(Rule145.PARAMETER_BLOCK);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule136.fifthBuilder(factory, children));
+        list.addAll(children.get(Rule145.THIRD_HOLE_ID));
+        list.addAll(children.get(Rule145.FOURTH_HOLE_ID));
+        list.addAll(children.get(Rule145.FIFTH_HOLE_ID));
+        list.addAll(children.get(Rule145.SIXTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassType' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fifthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.CLASS_TYPE);
-        final List<Node> list = children.get(3);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
-     * @param factory The node factory
-     * @return A node
-     */
-    private static Node sixthBuilder(final Factory factory) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.CLASS_BODY);
-        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

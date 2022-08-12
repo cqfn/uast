@@ -3,7 +3,7 @@
  * https://github.com/unified-ast/unified-ast/blob/master/LICENSE.txt
  */
 
-package org.uast.uast.generated.tree.java.rules;
+package org.uast.uast.generated.tree.js.rules;
 
 import java.util.List;
 import java.util.Map;
@@ -15,42 +15,34 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher248 implements Matcher {
+public final class Matcher420 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher248();
+    public static final Matcher INSTANCE = new Matcher420();
 
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "Modifier";
+    private static final String EXPECTED_TYPE = "formalParameterArg";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int EXPECTED_COUNT = 1;
 
     /**
      * Constructor.
      */
-    private Matcher248() {
+    private Matcher420() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher248.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher248.EXPECTED_COUNT;
-        if (result) {
-            data.put(Matcher248.FIRST_HOLE_ID, node.getData());
-        }
-        return result;
+        return node.belongsToGroup(Matcher420.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher420.EXPECTED_COUNT
+            && Matcher421.INSTANCE.match(node.getChild(0), children, data);
     }
 }

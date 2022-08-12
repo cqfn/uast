@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,52 +24,17 @@ public final class Matcher243 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "MethodDeclaration";
+    private static final String EXPECTED_TYPE = "Modifier";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 6;
+    private static final int EXPECTED_COUNT = 0;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 2;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 4;
-
-    /**
-     * The index of the second child.
-     */
-    private static final int SECOND_CHILD_ID = 3;
-
-    /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 5;
-
-    /**
-     * The index of the third child.
-     */
-    private static final int THIRD_CHILD_ID = 4;
-
-    /**
-     * The number of the fourth hole.
-     */
-    private static final int FOURTH_HOLE_ID = 6;
-
-    /**
-     * The index of the fourth child.
-     */
-    private static final int FOURTH_CHILD_ID = 5;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * Constructor.
@@ -83,26 +47,9 @@ public final class Matcher243 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher243.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher243.EXPECTED_COUNT
-            && Matcher244.INSTANCE.match(node.getChild(0), children, data)
-            && Matcher245.INSTANCE.match(node.getChild(1), children, data);
+            && node.getChildCount() == Matcher243.EXPECTED_COUNT;
         if (result) {
-            children.put(
-                Matcher243.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher243.FIRST_CHILD_ID))
-            );
-            children.put(
-                Matcher243.SECOND_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher243.SECOND_CHILD_ID))
-            );
-            children.put(
-                Matcher243.THIRD_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher243.THIRD_CHILD_ID))
-            );
-            children.put(
-                Matcher243.FOURTH_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher243.FOURTH_CHILD_ID))
-            );
+            data.put(Matcher243.FIRST_HOLE_ID, node.getData());
         }
         return result;
     }
