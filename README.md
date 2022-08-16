@@ -46,7 +46,7 @@ to use the same algorithms to analyze the code of chosen languages.
 
 ## How to build and download
 
-TODO
+TODO after release
 
 ## How to use
 
@@ -164,6 +164,31 @@ In other words,unified trees can be constructed with relation to any language, b
 The markup of GRST allows to visually evaluate by the number of green nodes the possibility to create unified constructs
 from several programming languages. 
 The presence of *red* nodes shows the semantic differences in the languages.
+
+Example:
+
+Suppose we created a UAST for Java, Python and JavaScript languages.
+
+Let's consider the following Java code snippet:
+
+```java
+public class Example {
+    public int getValue(Object obj) {
+        synchronized (obj) {
+        }
+        return 0;
+    }
+}
+```
+
+A part of the UAST constructed from this snippet may look like this:
+
+![synchronized_java](src/main/documents/synchronized_java.png)
+
+The `StatementBlock`, `Return` statement, `Variable` and other *green* nodes have corresponding constructs in all 3 languages.
+However, the node `Synchronized` is a unique Java construct.
+It does not have analogues in JavaScript and Python.
+Therefore, this node is *red*.
 
 ## AST model
 
@@ -313,8 +338,6 @@ FunctionDeclaration <- [modifiers@ModifierBlock], [restype@TypeName], name@Ident
 ```
 you can get a function name with the only one method `getName()`.
 
-
-
 ## Ongoing research
 
 The unification of ASTs is a research task. Currently, we conduct experiments on creation of the UAST from Java,
@@ -323,7 +346,7 @@ This projects helps us to test and collect results of our approach.
 
 ### Example
 
-To describe the *prerequisites* for the creation of UAST more clearly, let us provide an example.
+To describe the prerequisites for the creation of UAST more clearly, let us provide an example.
 
 Below there are 3 code snippets in Java, JavaScript and Python languages. All of them are semantically similar.
 
@@ -398,10 +421,22 @@ Python:
 
 ![ast_py_unified](src/main/documents/ast_py_unified.png)
 
+Let's analyze the difference between these trees using side-by-side comparison.
+
+![comparison](src/main/documents/comparison.png)
 
 In the UASTs JavaScript and Python snippets have equal representation.
-The UAST of Java has additional nodes, but base nodes, which are significant within the semantics, are
-also the same.
+The UAST of Java has additional nodes responsible for modifiers and types of objects.
+
+However, base nodes, which are significant within the semantics, are the same for all 3 languages.
+Thus, by writing an algorithm on such a tree, you can process several languages at once.
+
+You may wonder, why `ModifierBlock` is a *green* node considering the fact that it is only a feature of Java.
+In order to increase the number of *green* nodes in UAST we tend to create common nodes that have *optional* children.
+Such children are not *red*, but may appear in ASTs of special languages.
+For example, `FunctionDeclaration` will contain `ModifierBlock` and a node for the return type only if you parse languages
+that have such constructs in their syntax, like Java.
+For Python and JavaScript they will be omitted.
 
 ### Contributors
 
