@@ -20,7 +20,7 @@ For now the project contains a partial unification of:
 - JavaScript - from [ANTLR](https://github.com/antlr/grammars-v4/tree/master/javascript/javascript) AST
 - Python - from [ANTLR](https://github.com/antlr/grammars-v4/tree/master/python/python) AST
 
-To create a source code for UAST nodes and transformation rules we use [Astranaut](https://github.com/cqfn/astranaut).
+To create source code for UAST nodes and transformation rules we use [Astranaut](https://github.com/cqfn/astranaut).
 
 ## Motivation
 
@@ -55,7 +55,7 @@ TODO
 > Here and below, it is assumed that the name of the executable file is `uast.jar`.
 
 In the CLI mode, the project performs transformation of initial ASTs into UAST:
-it loads a file with a source code in a general-purpose programming language, parses it with a third-party parser 
+it loads a file with source code in a general-purpose programming language, parses it with a third-party parser 
 and adapts the result into the unified format.
 
 Syntax:
@@ -66,7 +66,7 @@ java -jar uast.jar --parse <path to source file> [optional arguments]
 
 Required arguments:
 
-* `--parse` (short: `-p`), the path to a file that contains a source code in some supported programming languages.
+* `--parse` (short: `-p`), the path to a file that contains source code in some supported programming languages.
   Expected file extensions are `.txt`, `.java`, `.js`, `.py`.
 
 * `--lang` (short: `-l`), the name of the source file language. For Java, it should be `java`, 
@@ -94,6 +94,76 @@ java -jar uast.jar --parse D:\sources\MyClass.java -o D:\storage\MyClass.json -v
 ## Project structure
 
 ![project_structure](src/main/documents/project_structure.png)
+
+The input of the program is a file with source code in some programming language.
+The program sends text of the source to a relevant 3rd-party parser.
+The result of the parser is a specific AST with a structure provided by a parser (raw format).
+
+In order to be able to modify source trees we need to customize them into our [AST model](#ast-model).
+To do so, we use *converters* that convert ASTs from formats provided by 3rd-party parsers 
+to the `Node` interface.
+A converter returns a *draft* version of an AST.
+This tree consist of `DraftNode` nodes that are expected to be modified.
+
+Further, a draft AST is passed to an *adapter*.
+There is an adapter for each language to be analyzed.
+The adapter takes an array of transformation rules and a draft AST as input. 
+Then it tries to match each rule to each node of the tree, starting with leaf nodes. 
+If a rule is matched to a node, the node (and all its successors) is replaced by a new node (new subtree).
+
+Before an adapter processes a node, it converts this node into a `ConvertibleNode` object.
+The feature of the `ConvertibleNode` is the existence of methods to change the list of child nodes.
+We use this class in order to temporarily make nodes mutable.
+
+The result of the adaptation can be complete or incomplete:
+* With full conversion to a UAST all nodes of the tree are of *red* or *green* color. 
+They are immutable.
+In this case each tree node will have the full set of attributes (type, color, language), and such a tree is the most suitable for further syntax analysis. 
+
+* In the case of incomplete conversion, a partially converted tree is returned, in which some subtrees are *green-red*, but the root node is still unprocessed. 
+Technically, unprocessed nodes remain of the `ConvertibleNode` type. 
+However, the project returns only a tree of the basic `Node` objects.
+
+You can evaluate the success of the unification by analyzing the properties of the root node.
+For a fully adapted UAST the method `getProperty` with the parameter `language` will return the string `common`.
+
+We expect to use the result UAST model in static code analyzers.
+
+## Green-Red syntax tree
+
+We suggest the *Green-Red Syntax Tree* (GRST) model as an approach to unify the syntactic constructions of languages. 
+The GRST is an approach to an AST markup.
+
+In this approach the AST nodes are "colored" in "green" or "red":
+* *Green* node – a GRST node that belongs to some syntax represented in all programming languages under consideration.
+* *Red* node – a node in GRST which does not belong to the general syntax represented in all programming languages under consideraion. 
+  It is language-specific.
+
+A distinctive feature of a *green* node is the ability to generate the corresponding code written in any of the programming languages considered from it. 
+And it is impossible to extract the source code in each of the languages from a *red* node.
+
+We assume that a *green* tree consists only of *green* nodes. 
+Such a tree has the following properties:
+1) code in any programming language under study can be generated from it; 
+2) an analyzer can be written on the basis of such a UAST and be suitable for any programming language under consideration.
+
+Examples of constructs that can be represented by *green* nodes:
+* a conditional statement; 
+* a function declaration; 
+* a binary operation;
+* a `for` loop.
+
+Examples of constructs that can be represented by *red* nodes:
+* slices (Python); 
+* a cycle `for in` (JavaScript); 
+* a `synchronized` method (Java).
+
+For the construction of GRST it is necessary to initially specify the group of programming languages for which 
+the AST unification has to be carried out. 
+In other words,unified trees can be constructed with relation to any language, based on its comparison with other languages. 
+The markup of GRST allows to visually evaluate by the number of green nodes the possibility to create unified constructs
+from several programming languages. 
+The presence of *red* nodes shows the semantic differences in the languages.
 
 ## AST model
 
@@ -132,7 +202,7 @@ A `Node` has the following methods:
 * `getChildCount()` - returns an amount of node`s children;
 * `getChild(int index)` - returns a specific child node by its index;
 * `getChildrenList()` - returns a list of node`s children;
-* `belongsToGroup(String type)` - checks if the node type belongs to the specific hierarchy of nodes.
+* `belongsToGroup(String type)` - checks if the node type belongs to the specific [hierarchy](#2-type-hierarchy) of nodes.
 
 ### §2. Type hierarchy
 
@@ -145,7 +215,7 @@ Also, `Binary Expression` is a common name for relational and arithmetic express
 Moreover, arithmetic expressions include a variety of operands, like addition, multiplication and others.
 Then the hierarchy for the node that performs addition will be the sequence:
 ```
-Node <- Expression <- Binary Expression <- Arithmetic Expression <- Addition
+Expression <- Binary Expression <- Arithmetic Expression <- Addition
 ```
 
 ### §3. Abstract node
@@ -162,7 +232,7 @@ In our AST `Arithmetic Expression` will be an abstract node.
 
 If the full hierarchy of language constructs is 
 ```
-Node <- Expression <- Binary Expression <- Arithmetic Expression <- Addition
+Expression <- Binary Expression <- Arithmetic Expression <- Addition
 ```
 
 then `Expression` and `BinaryExpression` will also be abstract.
@@ -179,7 +249,7 @@ Example:
 
 If the full hierarchy of language constructs is
 ```
-Node <- Expression <- Binary Expression <- Arithmetic Expression <- Addition
+Expression <- Binary Expression <- Arithmetic Expression <- Addition
 ```
 then in our AST the `Addition` will be a final node.
 
@@ -242,6 +312,8 @@ However, if a node is created with the usage of tags:
 FunctionDeclaration <- [modifiers@ModifierBlock], [restype@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 ```
 you can get a function name with the only one method `getName()`.
+
+
 
 ## Ongoing research
 
