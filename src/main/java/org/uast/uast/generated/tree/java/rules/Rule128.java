@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,29 @@ public final class Rule128 implements Converter {
     public static final Converter INSTANCE = new Rule128();
 
     /**
-     * The 'VoidType' string.
+     * The 'Modifier' string.
      */
-    private static final String VOID_TYPE = "VoidType";
+    private static final String MODIFIER = "Modifier";
+
+    /**
+     * The 'ModifierBlock' string.
+     */
+    private static final String MODIFIER_BLOCK = "ModifierBlock";
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 3;
+
+    /**
+     * The 'Parameter' string.
+     */
+    private static final String PARAMETER = "Parameter";
 
     /**
      * Constructor.
@@ -41,22 +62,65 @@ public final class Rule128 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher221.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher220.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule128.firstBuilder(factory);
+            result = Rule128.firstBuilder(factory, children, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'VoidType' type.
+     * Builds a node with 'Parameter' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory) {
+    private static Node firstBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule128.VOID_TYPE);
-        if (builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule128.PARAMETER);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule128.secondBuilder(factory, data));
+        list.addAll(children.get(Rule128.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule128.SECOND_HOLE_ID));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ModifierBlock' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule128.MODIFIER_BLOCK);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule128.thirdBuilder(factory, data));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Modifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule128.MODIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

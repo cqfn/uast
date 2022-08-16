@@ -27,24 +27,39 @@ public final class Rule137 implements Converter {
     public static final Converter INSTANCE = new Rule137();
 
     /**
+     * The 'Modifier' string.
+     */
+    private static final String MODIFIER = "Modifier";
+
+    /**
+     * The 'ModifierBlock' string.
+     */
+    private static final String MODIFIER_BLOCK = "ModifierBlock";
+
+    /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
-     * The 'Declarator' string.
+     * The 'ClassType' string.
      */
-    private static final String DECLARATOR = "Declarator";
+    private static final String CLASS_TYPE = "ClassType";
 
     /**
-     * The 'DeclaratorList' string.
+     * The 'ExtendsBlock' string.
      */
-    private static final String DECLARATOR_LIST = "DeclaratorList";
+    private static final String EXTENDS_BLOCK = "ExtendsBlock";
 
     /**
-     * The 'FieldDeclaration' string.
+     * The 'ClassBody' string.
      */
-    private static final String FIELD_DECLARATIO = "FieldDeclaration";
+    private static final String CLASS_BODY = "ClassBody";
+
+    /**
+     * The 'ClassDeclaration' string.
+     */
+    private static final String CLASS_DECLARATIO = "ClassDeclaration";
 
     /**
      * Constructor.
@@ -57,26 +72,30 @@ public final class Rule137 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher237.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher235.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule137.firstBuilder(factory, children);
+            result = Rule137.firstBuilder(factory, children, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'FieldDeclaration' type.
+     * Builds a node with 'ClassDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule137.FIELD_DECLARATIO);
+        final Builder builder = factory.createBuilder(Rule137.CLASS_DECLARATIO);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule137.secondBuilder(factory, data));
         list.addAll(children.get(Rule137.FIRST_HOLE_ID));
-        list.add(Rule137.secondBuilder(factory, children));
+        list.add(Rule137.fourthBuilder(factory, children));
+        list.add(Rule137.sixthBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -85,17 +104,16 @@ public final class Rule137 implements Converter {
     }
 
     /**
-     * Builds a node with 'DeclaratorList' type.
+     * Builds a node with 'ModifierBlock' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule137.DECLARATOR_LIST);
+        final Builder builder = factory.createBuilder(Rule137.MODIFIER_BLOCK);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule137.thirdBuilder(factory, children));
+        list.add(Rule137.thirdBuilder(factory, data));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -104,18 +122,67 @@ public final class Rule137 implements Converter {
     }
 
     /**
-     * Builds a node with 'Declarator' type.
+     * Builds a node with 'Modifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule137.MODIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ExtendsBlock' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node thirdBuilder(final Factory factory,
+    private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule137.DECLARATOR);
-        final List<Node> list = children.get(2);
+        final Builder builder = factory.createBuilder(Rule137.EXTENDS_BLOCK);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule137.fifthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ClassType' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node fifthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule137.CLASS_TYPE);
+        final List<Node> list = children.get(3);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ClassBody' type.
+     * @param factory The node factory
+     * @return A node
+     */
+    private static Node sixthBuilder(final Factory factory) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule137.CLASS_BODY);
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

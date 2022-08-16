@@ -39,7 +39,7 @@ public final class Rule142 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 4;
+    private static final int FIRST_HOLE_ID = 3;
 
     /**
      * The number of the second hole.
@@ -54,7 +54,7 @@ public final class Rule142 implements Converter {
     /**
      * The number of the third hole.
      */
-    private static final int THIRD_HOLE_ID = 5;
+    private static final int THIRD_HOLE_ID = 4;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -72,7 +72,7 @@ public final class Rule142 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher249.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher248.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule142.firstBuilder(factory, children, data);
         }
@@ -95,7 +95,7 @@ public final class Rule142 implements Converter {
         list.add(Rule142.secondBuilder(factory, data));
         list.addAll(children.get(Rule142.FIRST_HOLE_ID));
         list.addAll(children.get(Rule142.SECOND_HOLE_ID));
-        list.add(Rule142.fourthBuilder(factory, children));
+        list.add(Rule142.fourthBuilder(factory));
         list.addAll(children.get(Rule142.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -141,16 +141,12 @@ public final class Rule142 implements Converter {
     /**
      * Builds a node with 'ParameterBlock' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node fourthBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule142.PARAMETER_BLOCK);
-        final List<Node> list = children.get(3);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

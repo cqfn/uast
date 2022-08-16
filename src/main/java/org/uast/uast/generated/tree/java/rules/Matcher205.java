@@ -24,12 +24,17 @@ public final class Matcher205 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "EnclosedExpr";
+    private static final String EXPECTED_TYPE = "StringLiteralExpr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 0;
+
+    /**
+     * The number of the first hole.
+     */
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
@@ -41,8 +46,11 @@ public final class Matcher205 implements Matcher {
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        return node.belongsToGroup(Matcher205.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher205.EXPECTED_COUNT
-            && Matcher206.INSTANCE.match(node.getChild(0), children, data);
+        final boolean result = node.belongsToGroup(Matcher205.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher205.EXPECTED_COUNT;
+        if (result) {
+            data.put(Matcher205.FIRST_HOLE_ID, node.getData());
+        }
+        return result;
     }
 }

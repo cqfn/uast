@@ -63,6 +63,7 @@ import org.uast.uast.generated.tree.java.rules.Rule142;
 import org.uast.uast.generated.tree.java.rules.Rule143;
 import org.uast.uast.generated.tree.java.rules.Rule144;
 import org.uast.uast.generated.tree.java.rules.Rule145;
+import org.uast.uast.generated.tree.java.rules.Rule146;
 import org.uast.uast.generated.tree.java.rules.Rule15;
 import org.uast.uast.generated.tree.java.rules.Rule16;
 import org.uast.uast.generated.tree.java.rules.Rule17;
@@ -327,7 +328,8 @@ public final class JavaAdapter extends Adapter {
             Rule142.INSTANCE,
             Rule143.INSTANCE,
             Rule144.INSTANCE,
-            Rule145.INSTANCE
+            Rule145.INSTANCE,
+            Rule146.INSTANCE
         );
     }
 }

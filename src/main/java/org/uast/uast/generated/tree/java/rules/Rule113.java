@@ -26,9 +26,9 @@ public final class Rule113 implements Converter {
     public static final Converter INSTANCE = new Rule113();
 
     /**
-     * The 'Name' string.
+     * The 'Identifier' string.
      */
-    private static final String NAME = "Name";
+    private static final String IDENTIFIER = "Identifier";
 
     /**
      * Constructor.
@@ -43,24 +43,22 @@ public final class Rule113 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher200.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule113.firstBuilder(factory, children);
+            result = Rule113.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Name' type.
+     * Builds a node with 'Identifier' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule113.NAME);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule113.IDENTIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

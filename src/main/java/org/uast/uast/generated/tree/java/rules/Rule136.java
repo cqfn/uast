@@ -42,14 +42,19 @@ public final class Rule136 implements Converter {
     private static final int FIRST_HOLE_ID = 2;
 
     /**
+     * The 'Name' string.
+     */
+    private static final String NAME = "Name";
+
+    /**
      * The 'ClassType' string.
      */
     private static final String CLASS_TYPE = "ClassType";
 
     /**
-     * The 'ExtendsBlock' string.
+     * The 'ImplementsBlock' string.
      */
-    private static final String EXTENDS_BLOCK = "ExtendsBlock";
+    private static final String IMPLEMENTS_BLOCK = "ImplementsBlock";
 
     /**
      * The 'ClassBody' string.
@@ -72,7 +77,7 @@ public final class Rule136 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher234.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher232.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule136.firstBuilder(factory, children, data);
         }
@@ -95,7 +100,7 @@ public final class Rule136 implements Converter {
         list.add(Rule136.secondBuilder(factory, data));
         list.addAll(children.get(Rule136.FIRST_HOLE_ID));
         list.add(Rule136.fourthBuilder(factory, children));
-        list.add(Rule136.sixthBuilder(factory));
+        list.add(Rule136.seventhBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -138,7 +143,7 @@ public final class Rule136 implements Converter {
     }
 
     /**
-     * Builds a node with 'ExtendsBlock' type.
+     * Builds a node with 'ImplementsBlock' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -146,7 +151,7 @@ public final class Rule136 implements Converter {
     private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule136.EXTENDS_BLOCK);
+        final Builder builder = factory.createBuilder(Rule136.IMPLEMENTS_BLOCK);
         final List<Node> list = new LinkedList<>();
         list.add(Rule136.fifthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
@@ -166,6 +171,25 @@ public final class Rule136 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule136.CLASS_TYPE);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule136.sixthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Name' type.
+     * @param factory The node factory
+     * @param children The collection of child nodes
+     * @return A node
+     */
+    private static Node sixthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule136.NAME);
         final List<Node> list = children.get(3);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -179,7 +203,7 @@ public final class Rule136 implements Converter {
      * @param factory The node factory
      * @return A node
      */
-    private static Node sixthBuilder(final Factory factory) {
+    private static Node seventhBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule136.CLASS_BODY);
         if (builder.isValid()) {

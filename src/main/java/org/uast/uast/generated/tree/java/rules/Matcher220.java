@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -24,17 +25,32 @@ public final class Matcher220 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "Modifier";
+    private static final String EXPECTED_TYPE = "Parameter";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 3;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 2;
 
     /**
      * Constructor.
@@ -47,9 +63,17 @@ public final class Matcher220 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher220.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher220.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher220.EXPECTED_COUNT
+            && Matcher221.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
-            data.put(Matcher220.FIRST_HOLE_ID, node.getData());
+            children.put(
+                Matcher220.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher220.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher220.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher220.SECOND_CHILD_ID))
+            );
         }
         return result;
     }

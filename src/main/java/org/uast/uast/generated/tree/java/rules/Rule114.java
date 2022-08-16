@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,11 +31,6 @@ public final class Rule114 implements Converter {
     private static final String NAME = "Name";
 
     /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
      * Constructor.
      */
     private Rule114() {
@@ -61,26 +55,6 @@ public final class Rule114 implements Converter {
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule114.NAME);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule114.secondBuilder(factory, children));
-        list.addAll(children.get(Rule114.FIRST_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule114.NAME);

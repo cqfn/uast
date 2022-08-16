@@ -26,9 +26,9 @@ public final class Rule129 implements Converter {
     public static final Converter INSTANCE = new Rule129();
 
     /**
-     * The 'Program' string.
+     * The 'VoidType' string.
      */
-    private static final String PROGRAM = "Program";
+    private static final String VOID_TYPE = "VoidType";
 
     /**
      * Constructor.
@@ -43,24 +43,20 @@ public final class Rule129 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher222.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule129.firstBuilder(factory, children);
+            result = Rule129.firstBuilder(factory);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Program' type.
+     * Builds a node with 'VoidType' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule129.PROGRAM);
-        final List<Node> list = children.get(1);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule129.VOID_TYPE);
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

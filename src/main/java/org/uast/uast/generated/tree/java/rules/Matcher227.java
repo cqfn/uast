@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -25,22 +24,17 @@ public final class Matcher227 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "ClassOrInterfaceDeclaration";
+    private static final String EXPECTED_TYPE = "Modifier";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 2;
+    private static final int EXPECTED_COUNT = 0;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The index of the first child.
-     */
-    private static final int FIRST_CHILD_ID = 1;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
@@ -53,13 +47,9 @@ public final class Matcher227 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher227.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher227.EXPECTED_COUNT
-            && Matcher228.INSTANCE.match(node.getChild(0), children, data);
+            && node.getChildCount() == Matcher227.EXPECTED_COUNT;
         if (result) {
-            children.put(
-                Matcher227.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher227.FIRST_CHILD_ID))
-            );
+            data.put(Matcher227.FIRST_HOLE_ID, node.getData());
         }
         return result;
     }

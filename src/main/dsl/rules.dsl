@@ -240,6 +240,7 @@ ExpressionStmt(#1) -> #1;
 ReturnStmt(#1) -> Return(#1);
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
+SynchronizedStmt(#1, #2) -> Synchronized(Variable(#1), #2);
 SimpleName<#1> -> Identifier<#1>;
 NameExpr(#1) -> Name(#1);
 FieldAccessExpr(NameExpr(#1), #2) -> Name(Name(#1), #2);

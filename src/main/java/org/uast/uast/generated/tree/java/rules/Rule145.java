@@ -39,7 +39,7 @@ public final class Rule145 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 7;
+    private static final int FIRST_HOLE_ID = 6;
 
     /**
      * The number of the second hole.
@@ -62,19 +62,14 @@ public final class Rule145 implements Converter {
     private static final int FIFTH_HOLE_ID = 5;
 
     /**
-     * The number of the sixth hole.
-     */
-    private static final int SIXTH_HOLE_ID = 6;
-
-    /**
      * The 'ParameterBlock' string.
      */
     private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
-     * The number of the seventh hole.
+     * The number of the sixth hole.
      */
-    private static final int SEVENTH_HOLE_ID = 8;
+    private static final int SIXTH_HOLE_ID = 7;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -92,7 +87,7 @@ public final class Rule145 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher255.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher254.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule145.firstBuilder(factory, children, data);
         }
@@ -116,7 +111,7 @@ public final class Rule145 implements Converter {
         list.addAll(children.get(Rule145.FIRST_HOLE_ID));
         list.addAll(children.get(Rule145.SECOND_HOLE_ID));
         list.add(Rule145.fourthBuilder(factory, children));
-        list.addAll(children.get(Rule145.SEVENTH_HOLE_ID));
+        list.addAll(children.get(Rule145.SIXTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -172,7 +167,6 @@ public final class Rule145 implements Converter {
         list.addAll(children.get(Rule145.THIRD_HOLE_ID));
         list.addAll(children.get(Rule145.FOURTH_HOLE_ID));
         list.addAll(children.get(Rule145.FIFTH_HOLE_ID));
-        list.addAll(children.get(Rule145.SIXTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

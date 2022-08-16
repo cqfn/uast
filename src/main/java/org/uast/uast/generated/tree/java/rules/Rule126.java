@@ -32,14 +32,19 @@ public final class Rule126 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
-     * The number of the second hole.
+     * The 'Dimension' string.
      */
-    private static final int SECOND_HOLE_ID = 2;
+    private static final String DIMENSION = "Dimension";
 
     /**
-     * The 'Parameter' string.
+     * The 'DimensionList' string.
      */
-    private static final String PARAMETER = "Parameter";
+    private static final String DIMENSION_LIST = "DimensionList";
+
+    /**
+     * The 'ArrayType' string.
+     */
+    private static final String ARRAY_TYPE = "ArrayType";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule126 implements Converter {
     }
 
     /**
-     * Builds a node with 'Parameter' type.
+     * Builds a node with 'ArrayType' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,12 +73,43 @@ public final class Rule126 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule126.PARAMETER);
+        final Builder builder = factory.createBuilder(Rule126.ARRAY_TYPE);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule126.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule126.SECOND_HOLE_ID));
+        list.add(Rule126.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'DimensionList' type.
+     * @param factory The node factory
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule126.DIMENSION_LIST);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule126.thirdBuilder(factory));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Dimension' type.
+     * @param factory The node factory
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule126.DIMENSION);
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;

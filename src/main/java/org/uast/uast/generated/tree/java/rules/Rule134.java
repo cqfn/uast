@@ -29,7 +29,7 @@ public final class Rule134 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 1;
+    private static final int FIRST_HOLE_ID = 2;
 
     /**
      * The 'ClassBody' string.
@@ -71,7 +71,7 @@ public final class Rule134 implements Converter {
         final Builder builder = factory.createBuilder(Rule134.CLASS_DECLARATIO);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule134.FIRST_HOLE_ID));
-        list.add(Rule134.secondBuilder(factory, children));
+        list.add(Rule134.secondBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -82,16 +82,12 @@ public final class Rule134 implements Converter {
     /**
      * Builds a node with 'ClassBody' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node secondBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule134.CLASS_BODY);
-        final List<Node> list = children.get(2);
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        if (builder.isValid()) {
             result = builder.createNode();
         }
         return result;
