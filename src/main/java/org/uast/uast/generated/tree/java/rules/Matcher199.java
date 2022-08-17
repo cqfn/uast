@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import org.uast.uast.base.Matcher;
@@ -24,17 +25,32 @@ public final class Matcher199 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "SimpleName";
+    private static final String EXPECTED_TYPE = "SynchronizedStmt";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 0;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * The number of the first hole.
      */
     private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The index of the first child.
+     */
+    private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -49,7 +65,14 @@ public final class Matcher199 implements Matcher {
         final boolean result = node.belongsToGroup(Matcher199.EXPECTED_TYPE)
             && node.getChildCount() == Matcher199.EXPECTED_COUNT;
         if (result) {
-            data.put(Matcher199.FIRST_HOLE_ID, node.getData());
+            children.put(
+                Matcher199.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher199.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher199.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher199.SECOND_CHILD_ID))
+            );
         }
         return result;
     }

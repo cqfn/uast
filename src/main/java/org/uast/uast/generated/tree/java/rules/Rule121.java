@@ -32,14 +32,19 @@ public final class Rule121 implements Converter {
     private static final int FIRST_HOLE_ID = 1;
 
     /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
      * The 'ExpressionList' string.
      */
     private static final String EXPRESSION_LIST = "ExpressionList";
 
     /**
-     * The 'FunctionCallExpression' string.
+     * The 'FunctionCall' string.
      */
-    private static final String FUNCTION_CALL_EX = "FunctionCallExpression";
+    private static final String FUNCTION_CALL = "FunctionCall";
 
     /**
      * Constructor.
@@ -60,7 +65,7 @@ public final class Rule121 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCallExpression' type.
+     * Builds a node with 'FunctionCall' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -68,9 +73,10 @@ public final class Rule121 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule121.FUNCTION_CALL_EX);
+        final Builder builder = factory.createBuilder(Rule121.FUNCTION_CALL);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule121.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule121.SECOND_HOLE_ID));
         list.add(Rule121.secondBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
@@ -89,7 +95,7 @@ public final class Rule121 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule121.EXPRESSION_LIST);
-        final List<Node> list = children.get(2);
+        final List<Node> list = children.get(3);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

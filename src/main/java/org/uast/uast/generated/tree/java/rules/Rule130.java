@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,29 +26,9 @@ public final class Rule130 implements Converter {
     public static final Converter INSTANCE = new Rule130();
 
     /**
-     * The 'Modifier' string.
+     * The 'Program' string.
      */
-    private static final String MODIFIER = "Modifier";
-
-    /**
-     * The 'ModifierBlock' string.
-     */
-    private static final String MODIFIER_BLOCK = "ModifierBlock";
-
-    /**
-     * The number of the first hole.
-     */
-    private static final int FIRST_HOLE_ID = 2;
-
-    /**
-     * The 'ClassBody' string.
-     */
-    private static final String CLASS_BODY = "ClassBody";
-
-    /**
-     * The 'ClassDeclaration' string.
-     */
-    private static final String CLASS_DECLARATIO = "ClassDeclaration";
+    private static final String PROGRAM = "Program";
 
     /**
      * Constructor.
@@ -64,79 +43,22 @@ public final class Rule130 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher223.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule130.firstBuilder(factory, children, data);
+            result = Rule130.firstBuilder(factory, children);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ClassDeclaration' type.
+     * Builds a node with 'Program' type.
      * @param factory The node factory
      * @param children The collection of child nodes
-     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children,
-        final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule130.CLASS_DECLARATIO);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule130.secondBuilder(factory, data));
-        list.addAll(children.get(Rule130.FIRST_HOLE_ID));
-        list.add(Rule130.fourthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ModifierBlock' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule130.MODIFIER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule130.thirdBuilder(factory, data));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule130.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ClassBody' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule130.CLASS_BODY);
-        final List<Node> list = children.get(3);
+        final Builder builder = factory.createBuilder(Rule130.PROGRAM);
+        final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

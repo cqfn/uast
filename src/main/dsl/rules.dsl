@@ -240,6 +240,7 @@ ExpressionStmt(#1) -> #1;
 ReturnStmt(#1) -> Return(#1);
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
+SynchronizedStmt(#1, #2) -> Synchronized(Variable(#1), #2);
 SimpleName<#1> -> Identifier<#1>;
 NameExpr(#1) -> Name(#1);
 FieldAccessExpr(NameExpr(#1), #2) -> Name(Name(#1), #2);
@@ -272,6 +273,7 @@ ClassOrInterfaceDeclaration(Modifier<#1>, #2) ->
   ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody);
 
 ClassOrInterfaceDeclaration(#2) -> ClassDeclaration(#2, ClassBody);
+ClassOrInterfaceDeclaration(#1, #2...) -> ClassDeclaration(#1, ClassBody(#2));
 
 ClassOrInterfaceDeclaration(Modifier<#1>, #2, InterfaceType(#3)) ->
   ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ImplementsBlock(ClassType(Name(#3))), ClassBody);
@@ -505,6 +507,7 @@ functionDeclaration(literal<"function">, #1, #2, #3) ->
   FunctionDeclaration(#1, #2, #3);
 
 methodDefinition(propertyName(identifierName(#1)), functionBody) -> FunctionDeclaration(#1, ParameterBlock, StatementBlock);
+methodDefinition(propertyName(identifierName(#1)), #2, #3) ->  FunctionDeclaration(#1, #2, #3);
 
 formalParameterArg(assignable(#1)) -> Parameter(#1);
 formalParameterList(#1...) -> ParameterBlock(#1);

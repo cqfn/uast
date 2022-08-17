@@ -52,7 +52,7 @@ public final class Rule118 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher207.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher206.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule118.firstBuilder(factory, children);
         }

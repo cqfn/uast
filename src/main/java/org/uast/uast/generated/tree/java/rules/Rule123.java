@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,14 +26,9 @@ public final class Rule123 implements Converter {
     public static final Converter INSTANCE = new Rule123();
 
     /**
-     * The 'Name' string.
+     * The 'StatementBlock' string.
      */
-    private static final String NAME = "Name";
-
-    /**
-     * The 'ClassType' string.
-     */
-    private static final String CLASS_TYPE = "ClassType";
+    private static final String STATEMENT_BLOCK = "StatementBlock";
 
     /**
      * Constructor.
@@ -47,7 +41,7 @@ public final class Rule123 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher215.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher214.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule123.firstBuilder(factory, children);
         }
@@ -55,7 +49,7 @@ public final class Rule123 implements Converter {
     }
 
     /**
-     * Builds a node with 'ClassType' type.
+     * Builds a node with 'StatementBlock' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -63,26 +57,7 @@ public final class Rule123 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule123.CLASS_TYPE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule123.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule123.NAME);
+        final Builder builder = factory.createBuilder(Rule123.STATEMENT_BLOCK);
         final List<Node> list = children.get(1);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {

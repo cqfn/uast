@@ -62,7 +62,7 @@ public final class Rule132 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher227.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher226.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule132.firstBuilder(factory, children, data);
         }
@@ -84,7 +84,7 @@ public final class Rule132 implements Converter {
         final List<Node> list = new LinkedList<>();
         list.add(Rule132.secondBuilder(factory, data));
         list.addAll(children.get(Rule132.FIRST_HOLE_ID));
-        list.add(Rule132.fourthBuilder(factory));
+        list.add(Rule132.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -129,12 +129,16 @@ public final class Rule132 implements Converter {
     /**
      * Builds a node with 'ClassBody' type.
      * @param factory The node factory
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fourthBuilder(final Factory factory) {
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule132.CLASS_BODY);
-        if (builder.isValid()) {
+        final List<Node> list = children.get(3);
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

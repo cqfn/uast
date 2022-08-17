@@ -30,7 +30,7 @@ public final class Matcher239 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 3;
+    private static final int EXPECTED_COUNT = 2;
 
     /**
      * The number of the first hole.
@@ -53,16 +53,6 @@ public final class Matcher239 implements Matcher {
     private static final int SECOND_CHILD_ID = 1;
 
     /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 3;
-
-    /**
-     * The index of the third child.
-     */
-    private static final int THIRD_CHILD_ID = 2;
-
-    /**
      * Constructor.
      */
     private Matcher239() {
@@ -82,10 +72,6 @@ public final class Matcher239 implements Matcher {
             children.put(
                 Matcher239.SECOND_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher239.SECOND_CHILD_ID))
-            );
-            children.put(
-                Matcher239.THIRD_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher239.THIRD_CHILD_ID))
             );
         }
         return result;

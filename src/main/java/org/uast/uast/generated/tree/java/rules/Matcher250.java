@@ -30,7 +30,7 @@ public final class Matcher250 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 6;
+    private static final int EXPECTED_COUNT = 5;
 
     /**
      * The number of the first hole.
@@ -73,16 +73,6 @@ public final class Matcher250 implements Matcher {
     private static final int FOURTH_CHILD_ID = 4;
 
     /**
-     * The number of the fifth hole.
-     */
-    private static final int FIFTH_HOLE_ID = 6;
-
-    /**
-     * The index of the fifth child.
-     */
-    private static final int FIFTH_CHILD_ID = 5;
-
-    /**
      * Constructor.
      */
     private Matcher250() {
@@ -111,10 +101,6 @@ public final class Matcher250 implements Matcher {
             children.put(
                 Matcher250.FOURTH_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher250.FOURTH_CHILD_ID))
-            );
-            children.put(
-                Matcher250.FIFTH_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher250.FIFTH_CHILD_ID))
             );
         }
         return result;

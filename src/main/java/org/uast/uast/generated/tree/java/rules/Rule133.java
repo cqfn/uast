@@ -27,6 +27,16 @@ public final class Rule133 implements Converter {
     public static final Converter INSTANCE = new Rule133();
 
     /**
+     * The 'Modifier' string.
+     */
+    private static final String MODIFIER = "Modifier";
+
+    /**
+     * The 'ModifierBlock' string.
+     */
+    private static final String MODIFIER_BLOCK = "ModifierBlock";
+
+    /**
      * The number of the first hole.
      */
     private static final int FIRST_HOLE_ID = 2;
@@ -52,9 +62,9 @@ public final class Rule133 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher229.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher228.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule133.firstBuilder(factory, children);
+            result = Rule133.firstBuilder(factory, children, data);
         }
         return result;
     }
@@ -63,17 +73,54 @@ public final class Rule133 implements Converter {
      * Builds a node with 'ClassDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
     private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+        final Map<Integer, List<Node>> children,
+        final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule133.CLASS_DECLARATIO);
         final List<Node> list = new LinkedList<>();
+        list.add(Rule133.secondBuilder(factory, data));
         list.addAll(children.get(Rule133.FIRST_HOLE_ID));
-        list.add(Rule133.secondBuilder(factory));
+        list.add(Rule133.fourthBuilder(factory));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'ModifierBlock' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule133.MODIFIER_BLOCK);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule133.thirdBuilder(factory, data));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
+            result = builder.createNode();
+        }
+        return result;
+    }
+
+    /**
+     * Builds a node with 'Modifier' type.
+     * @param factory The node factory
+     * @param data The data
+     * @return A node
+     */
+    private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
+        Node result = EmptyTree.INSTANCE;
+        final Builder builder = factory.createBuilder(Rule133.MODIFIER);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;
@@ -84,7 +131,7 @@ public final class Rule133 implements Converter {
      * @param factory The node factory
      * @return A node
      */
-    private static Node secondBuilder(final Factory factory) {
+    private static Node fourthBuilder(final Factory factory) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule133.CLASS_BODY);
         if (builder.isValid()) {

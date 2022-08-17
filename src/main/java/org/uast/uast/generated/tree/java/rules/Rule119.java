@@ -37,24 +37,9 @@ public final class Rule119 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The 'Name' string.
+     * The 'Addition' string.
      */
-    private static final String NAME = "Name";
-
-    /**
-     * The 'Variable' string.
-     */
-    private static final String VARIABLE = "Variable";
-
-    /**
-     * The 'ExpressionList' string.
-     */
-    private static final String EXPRESSION_LIST = "ExpressionList";
-
-    /**
-     * The 'FunctionCall' string.
-     */
-    private static final String FUNCTION_CALL = "FunctionCall";
+    private static final String ADDITION = "Addition";
 
     /**
      * Constructor.
@@ -67,7 +52,7 @@ public final class Rule119 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher209.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher208.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule119.firstBuilder(factory, children);
         }
@@ -75,7 +60,7 @@ public final class Rule119 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionCall' type.
+     * Builds a node with 'Addition' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -83,67 +68,10 @@ public final class Rule119 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule119.FUNCTION_CALL);
+        final Builder builder = factory.createBuilder(Rule119.ADDITION);
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule119.FIRST_HOLE_ID));
         list.addAll(children.get(Rule119.SECOND_HOLE_ID));
-        list.add(Rule119.secondBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'ExpressionList' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node secondBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule119.EXPRESSION_LIST);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule119.thirdBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Variable' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node thirdBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule119.VARIABLE);
-        final List<Node> list = new LinkedList<>();
-        list.add(Rule119.fourthBuilder(factory, children));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Name' type.
-     * @param factory The node factory
-     * @param children The collection of child nodes
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule119.NAME);
-        final List<Node> list = children.get(3);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

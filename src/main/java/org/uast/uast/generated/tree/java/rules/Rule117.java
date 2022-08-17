@@ -5,7 +5,6 @@
 
 package org.uast.uast.generated.tree.java.rules;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,19 +26,9 @@ public final class Rule117 implements Converter {
     public static final Converter INSTANCE = new Rule117();
 
     /**
-     * The number of the first hole.
+     * The 'StringLiteral' string.
      */
-    private static final int FIRST_HOLE_ID = 1;
-
-    /**
-     * The number of the second hole.
-     */
-    private static final int SECOND_HOLE_ID = 2;
-
-    /**
-     * The 'Addition' string.
-     */
-    private static final String ADDITION = "Addition";
+    private static final String STRING_LITERAL = "StringLiteral";
 
     /**
      * Constructor.
@@ -54,26 +43,22 @@ public final class Rule117 implements Converter {
         final Map<Integer, String> data = new TreeMap<>();
         final boolean matched = Matcher205.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule117.firstBuilder(factory, children);
+            result = Rule117.firstBuilder(factory, data);
         }
         return result;
     }
 
     /**
-     * Builds a node with 'Addition' type.
+     * Builds a node with 'StringLiteral' type.
      * @param factory The node factory
-     * @param children The collection of child nodes
+     * @param data The data
      * @return A node
      */
-    private static Node firstBuilder(final Factory factory,
-        final Map<Integer, List<Node>> children) {
+    private static Node firstBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule117.ADDITION);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule117.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule117.SECOND_HOLE_ID));
-        final boolean applied = builder.setChildrenList(list);
-        if (applied && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule117.STRING_LITERAL);
+        final boolean set = builder.setData(data.get(1));
+        if (set && builder.isValid()) {
             result = builder.createNode();
         }
         return result;

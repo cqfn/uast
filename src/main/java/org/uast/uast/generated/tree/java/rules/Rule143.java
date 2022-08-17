@@ -39,7 +39,7 @@ public final class Rule143 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 6;
+    private static final int FIRST_HOLE_ID = 4;
 
     /**
      * The number of the second hole.
@@ -47,29 +47,14 @@ public final class Rule143 implements Converter {
     private static final int SECOND_HOLE_ID = 2;
 
     /**
-     * The number of the third hole.
-     */
-    private static final int THIRD_HOLE_ID = 3;
-
-    /**
-     * The number of the fourth hole.
-     */
-    private static final int FOURTH_HOLE_ID = 4;
-
-    /**
-     * The number of the fifth hole.
-     */
-    private static final int FIFTH_HOLE_ID = 5;
-
-    /**
      * The 'ParameterBlock' string.
      */
     private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
-     * The number of the sixth hole.
+     * The number of the third hole.
      */
-    private static final int SIXTH_HOLE_ID = 7;
+    private static final int THIRD_HOLE_ID = 5;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -87,7 +72,7 @@ public final class Rule143 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher252.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher250.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule143.firstBuilder(factory, children, data);
         }
@@ -111,7 +96,7 @@ public final class Rule143 implements Converter {
         list.addAll(children.get(Rule143.FIRST_HOLE_ID));
         list.addAll(children.get(Rule143.SECOND_HOLE_ID));
         list.add(Rule143.fourthBuilder(factory, children));
-        list.addAll(children.get(Rule143.SIXTH_HOLE_ID));
+        list.addAll(children.get(Rule143.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -163,10 +148,7 @@ public final class Rule143 implements Converter {
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule143.PARAMETER_BLOCK);
-        final List<Node> list = new LinkedList<>();
-        list.addAll(children.get(Rule143.THIRD_HOLE_ID));
-        list.addAll(children.get(Rule143.FOURTH_HOLE_ID));
-        list.addAll(children.get(Rule143.FIFTH_HOLE_ID));
+        final List<Node> list = children.get(3);
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

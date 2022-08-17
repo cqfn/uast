@@ -25,22 +25,32 @@ public final class Matcher210 implements Matcher {
     /**
      * Expected node type.
      */
-    private static final String EXPECTED_TYPE = "Name";
+    private static final String EXPECTED_TYPE = "MethodCallExpr";
 
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 1;
+    private static final int EXPECTED_COUNT = 3;
 
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 3;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The index of the first child.
      */
     private static final int FIRST_CHILD_ID = 0;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The index of the second child.
+     */
+    private static final int SECOND_CHILD_ID = 1;
 
     /**
      * Constructor.
@@ -53,11 +63,16 @@ public final class Matcher210 implements Matcher {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         final boolean result = node.belongsToGroup(Matcher210.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher210.EXPECTED_COUNT;
+            && node.getChildCount() == Matcher210.EXPECTED_COUNT
+            && Matcher211.INSTANCE.match(node.getChild(2), children, data);
         if (result) {
             children.put(
                 Matcher210.FIRST_HOLE_ID,
                 Collections.singletonList(node.getChild(Matcher210.FIRST_CHILD_ID))
+            );
+            children.put(
+                Matcher210.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher210.SECOND_CHILD_ID))
             );
         }
         return result;

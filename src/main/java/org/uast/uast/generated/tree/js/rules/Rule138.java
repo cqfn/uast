@@ -5,6 +5,7 @@
 
 package org.uast.uast.generated.tree.js.rules;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,9 +27,24 @@ public final class Rule138 implements Converter {
     public static final Converter INSTANCE = new Rule138();
 
     /**
-     * The 'Parameter' string.
+     * The number of the first hole.
      */
-    private static final String PARAMETER = "Parameter";
+    private static final int FIRST_HOLE_ID = 1;
+
+    /**
+     * The number of the second hole.
+     */
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The number of the third hole.
+     */
+    private static final int THIRD_HOLE_ID = 3;
+
+    /**
+     * The 'FunctionDeclaration' string.
+     */
+    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
 
     /**
      * Constructor.
@@ -49,7 +65,7 @@ public final class Rule138 implements Converter {
     }
 
     /**
-     * Builds a node with 'Parameter' type.
+     * Builds a node with 'FunctionDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -57,8 +73,11 @@ public final class Rule138 implements Converter {
     private static Node firstBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule138.PARAMETER);
-        final List<Node> list = children.get(1);
+        final Builder builder = factory.createBuilder(Rule138.FUNCTION_DECLARA);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule138.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule138.SECOND_HOLE_ID));
+        list.addAll(children.get(Rule138.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
