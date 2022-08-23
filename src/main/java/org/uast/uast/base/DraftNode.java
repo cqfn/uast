@@ -109,7 +109,9 @@ public final class DraftNode implements Node {
 
         @Override
         public Builder createBuilder() {
-            return new Constructor();
+            final Constructor builder = new Constructor();
+            builder.setName(this.name);
+            return builder;
         }
     }
 
