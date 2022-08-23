@@ -26,7 +26,7 @@ public final class JavaAdapter extends Adapter {
     /**
      * The number of rules.
      */
-    private static final int RULES_NUM = 147;
+    private static final int RULES_NUM = 149;
 
     /**
      * The prefix of a rule class name.

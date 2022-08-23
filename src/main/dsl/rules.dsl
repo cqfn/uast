@@ -85,7 +85,7 @@ FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
 Parameter <- [ModifierBlock], [TypeName], Identifier;
 FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 ParameterBlock <- {Parameter};
-ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
+ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], body@ClassBody;
 ExtendsBlock <- {ClassType};
 ImplementsBlock <- {ClassType};
 ClassBody <- {ClassItem};
@@ -283,6 +283,9 @@ ClassOrInterfaceDeclaration(Modifier<#1>, #2, ClassType(#3)) ->
 
 FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2)));
 FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
+
+FieldDeclaration(Modifier<#3>, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(Modifier<#3>), #1, DeclaratorList(Declarator(#2)));
+FieldDeclaration(Modifier<#4>, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(Modifier<#4>), #1, DeclaratorList(Declarator(#2, #3)));
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 

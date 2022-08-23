@@ -11,11 +11,15 @@ import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.converters.FileConverter;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import org.uast.uast.algorithms.Algorithm;
 import org.uast.uast.base.Node;
 import org.uast.uast.exceptions.VisualizerException;
 import org.uast.uast.handlers.json.JsonSerializer;
 import org.uast.uast.handlers.visualizer.AstVisualizer;
 import org.uast.uast.lang.SourceCodeParser;
+import org.uast.uast.utils.cli.AlgorithmConverter;
 import org.uast.uast.utils.cli.ImagePathValidator;
 import org.uast.uast.utils.cli.JsonPathValidator;
 import org.uast.uast.utils.cli.LanguageConverter;
@@ -73,6 +77,16 @@ public final class Main {
     private String json;
 
     /**
+     * The algorithms to be applied.
+     */
+    @Parameter(
+        names = { "--process", "-pr" },
+        converter = AlgorithmConverter.class,
+        description = "The names of the algorithm(s) to be applied"
+    )
+    private List<Algorithm> algorithms;
+
+    /**
      * The raw option.
      */
     @Parameter(
@@ -104,6 +118,7 @@ public final class Main {
         this.language = "";
         this.image = "";
         this.json = "";
+        this.algorithms = new LinkedList<>();
     }
 
     /**
@@ -145,12 +160,18 @@ public final class Main {
         }
         final Node node = new SourceCodeParser(this.source.getPath())
             .parse(lang, !this.raw, this.antlr);
+        Node result = node;
+        if (!this.algorithms.isEmpty()) {
+            for (final Algorithm algorithm : this.algorithms) {
+                result = algorithm.process(node);
+            }
+        }
         if (!this.image.isEmpty()) {
-            final AstVisualizer visualizer = new AstVisualizer(node);
+            final AstVisualizer visualizer = new AstVisualizer(result);
             visualizer.visualize(new File(this.image));
         }
         if (!this.json.isEmpty()) {
-            final JsonSerializer serializer = new JsonSerializer(node);
+            final JsonSerializer serializer = new JsonSerializer(result);
             serializer.serializeToFile(this.json);
         }
     }

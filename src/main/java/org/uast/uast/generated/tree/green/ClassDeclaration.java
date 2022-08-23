@@ -42,6 +42,11 @@ public final class ClassDeclaration implements ProgramItem {
     private List<Node> children;
 
     /**
+     * Child with the 'body' tag.
+     */
+    private ClassBody body;
+
+    /**
      * Constructor.
      */
     private ClassDeclaration() {
@@ -70,6 +75,14 @@ public final class ClassDeclaration implements ProgramItem {
     @Override
     public Node getChild(final int index) {
         return this.children.get(index);
+    }
+
+    /**
+     * Returns the child with the 'body' tag.
+     * @return The node
+     */
+    public ClassBody getBody() {
+        return this.body;
     }
 
     /**
@@ -220,9 +233,9 @@ public final class ClassDeclaration implements ProgramItem {
         private static final int FOURTH_POS = 3;
 
         /**
-         * The position of the 'fifth' field.
+         * The position of the 'body' field.
          */
-        private static final int FIFTH_POS = 4;
+        private static final int BODY_POS = 4;
 
         /**
          * The fragment associated with the node.
@@ -250,9 +263,9 @@ public final class ClassDeclaration implements ProgramItem {
         private ImplementsBlock fourth;
 
         /**
-         * Node 4.
+         * Node with the 'body' tag.
          */
-        private ClassBody fifth;
+        private ClassBody body;
 
         @Override
         public void setFragment(final Fragment obj) {
@@ -262,6 +275,14 @@ public final class ClassDeclaration implements ProgramItem {
         @Override
         public boolean setData(final String str) {
             return str.isEmpty();
+        }
+
+        /**
+         * Sets the node with the 'body' tag.
+         * @param node The node
+         */
+        public void setBody(final ClassBody node) {
+            this.body = node;
         }
 
         @Override
@@ -275,7 +296,7 @@ public final class ClassDeclaration implements ProgramItem {
                 this.second = (Identifier) mapping[Constructor.SECOND_POS];
                 this.third = (ExtendsBlock) mapping[Constructor.THIRD_POS];
                 this.fourth = (ImplementsBlock) mapping[Constructor.FOURTH_POS];
-                this.fifth = (ClassBody) mapping[Constructor.FIFTH_POS];
+                this.body = (ClassBody) mapping[Constructor.BODY_POS];
             }
             return result;
         }
@@ -283,7 +304,7 @@ public final class ClassDeclaration implements ProgramItem {
         @Override
         public boolean isValid() {
             return this.second != null
-                && this.fifth != null;
+                && this.body != null;
         }
 
         @Override
@@ -299,9 +320,10 @@ public final class ClassDeclaration implements ProgramItem {
                     this.second,
                     this.third,
                     this.fourth,
-                    this.fifth
+                    this.body
                 )
                 .make();
+            node.body = this.body;
             return node;
         }
     }

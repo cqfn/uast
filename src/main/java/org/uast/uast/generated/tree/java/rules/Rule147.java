@@ -20,11 +20,11 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Rule142 implements Converter {
+public final class Rule147 implements Converter {
     /**
      * The instance.
      */
-    public static final Converter INSTANCE = new Rule142();
+    public static final Converter INSTANCE = new Rule147();
 
     /**
      * The 'Modifier' string.
@@ -39,12 +39,27 @@ public final class Rule142 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 5;
+    private static final int FIRST_HOLE_ID = 6;
 
     /**
      * The number of the second hole.
      */
-    private static final int SECOND_HOLE_ID = 3;
+    private static final int SECOND_HOLE_ID = 2;
+
+    /**
+     * The number of the third hole.
+     */
+    private static final int THIRD_HOLE_ID = 3;
+
+    /**
+     * The number of the fourth hole.
+     */
+    private static final int FOURTH_HOLE_ID = 4;
+
+    /**
+     * The number of the fifth hole.
+     */
+    private static final int FIFTH_HOLE_ID = 5;
 
     /**
      * The 'ParameterBlock' string.
@@ -52,9 +67,9 @@ public final class Rule142 implements Converter {
     private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
-     * The number of the third hole.
+     * The number of the sixth hole.
      */
-    private static final int THIRD_HOLE_ID = 6;
+    private static final int SIXTH_HOLE_ID = 7;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -64,7 +79,7 @@ public final class Rule142 implements Converter {
     /**
      * Constructor.
      */
-    private Rule142() {
+    private Rule147() {
     }
 
     @Override
@@ -72,9 +87,9 @@ public final class Rule142 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher248.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher260.INSTANCE.match(node, children, data);
         if (matched) {
-            result = Rule142.firstBuilder(factory, children, data);
+            result = Rule147.firstBuilder(factory, children, data);
         }
         return result;
     }
@@ -90,13 +105,13 @@ public final class Rule142 implements Converter {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule142.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule147.FUNCTION_DECLARA);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule142.secondBuilder(factory, data));
-        list.addAll(children.get(Rule142.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule142.SECOND_HOLE_ID));
-        list.add(Rule142.fifthBuilder(factory, children));
-        list.addAll(children.get(Rule142.THIRD_HOLE_ID));
+        list.add(Rule147.secondBuilder(factory, data));
+        list.addAll(children.get(Rule147.FIRST_HOLE_ID));
+        list.addAll(children.get(Rule147.SECOND_HOLE_ID));
+        list.add(Rule147.fourthBuilder(factory, children));
+        list.addAll(children.get(Rule147.SIXTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -112,10 +127,9 @@ public final class Rule142 implements Converter {
      */
     private static Node secondBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule142.MODIFIER_BLOCK);
+        final Builder builder = factory.createBuilder(Rule147.MODIFIER_BLOCK);
         final List<Node> list = new LinkedList<>();
-        list.add(Rule142.thirdBuilder(factory, data));
-        list.add(Rule142.fourthBuilder(factory, data));
+        list.add(Rule147.thirdBuilder(factory, data));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -131,24 +145,8 @@ public final class Rule142 implements Converter {
      */
     private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule142.MODIFIER);
+        final Builder builder = factory.createBuilder(Rule147.MODIFIER);
         final boolean set = builder.setData(data.get(1));
-        if (set && builder.isValid()) {
-            result = builder.createNode();
-        }
-        return result;
-    }
-
-    /**
-     * Builds a node with 'Modifier' type.
-     * @param factory The node factory
-     * @param data The data
-     * @return A node
-     */
-    private static Node fourthBuilder(final Factory factory, final Map<Integer, String> data) {
-        Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule142.MODIFIER);
-        final boolean set = builder.setData(data.get(2));
         if (set && builder.isValid()) {
             result = builder.createNode();
         }
@@ -161,11 +159,14 @@ public final class Rule142 implements Converter {
      * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fifthBuilder(final Factory factory,
+    private static Node fourthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule142.PARAMETER_BLOCK);
-        final List<Node> list = children.get(4);
+        final Builder builder = factory.createBuilder(Rule147.PARAMETER_BLOCK);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule147.THIRD_HOLE_ID));
+        list.addAll(children.get(Rule147.FOURTH_HOLE_ID));
+        list.addAll(children.get(Rule147.FIFTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
