@@ -8,7 +8,7 @@ import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Node;
 
 /**
- * The algorithm that conducts carrying.
+ * The algorithm that performs carrying.
  *
  * @since 1.0
  */

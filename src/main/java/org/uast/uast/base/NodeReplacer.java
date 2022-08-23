@@ -13,7 +13,7 @@ import org.uast.uast.utils.Pair;
  *
  * @since 1.0
  */
-public class TreeReplacer {
+public class NodeReplacer {
     /**
      * Replaces a subtree of the initial tree with the newly created subtree.
      * @param tree The initial tree

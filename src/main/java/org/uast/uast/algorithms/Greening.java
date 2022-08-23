@@ -12,12 +12,12 @@ import org.uast.uast.base.Builder;
 import org.uast.uast.base.EmptyTree;
 import org.uast.uast.base.Factory;
 import org.uast.uast.base.Node;
-import org.uast.uast.base.TreeReplacer;
+import org.uast.uast.base.NodeReplacer;
 import org.uast.uast.generated.tree.green.GreenFactory;
 import org.uast.uast.utils.Pair;
 
 /**
- * The algorithm that conducts replacement of "red" nodes with "green".
+ * The algorithm that performs replacement of "red" nodes with "green".
  *
  * @since 1.0
  */
@@ -39,7 +39,7 @@ public final class Greening implements Algorithm {
         final Map<Node, Node> trees = this.findReplacementPairs(tree);
         for (final Map.Entry<Node, Node> entry : trees.entrySet()) {
             final Pair<Node, Integer> modification =
-                new TreeReplacer().replace(result, entry.getKey(), entry.getValue());
+                new NodeReplacer().replace(result, entry.getKey(), entry.getValue());
             result = modification.getKey();
         }
         return result;
