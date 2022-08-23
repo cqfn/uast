@@ -1,0 +1,35 @@
+{
+  "root": {
+    "type": "Program",
+    "children": [
+      {
+        "type": "ClassDeclaration",
+        "children": [
+          {
+            "type": "Identifier",
+            "data": "MyClass"
+          },
+          {
+            "type": "ClassBody",
+            "children": [
+              {
+                "type": "Property",
+                "children": [
+                  {
+                    "type": "Identifier",
+                    "data": "count"
+                  },
+                  {
+                    "type": "IntegerLiteral",
+                    "data": "0"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "language": "js"
+}
