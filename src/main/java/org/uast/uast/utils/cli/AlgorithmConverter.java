@@ -8,7 +8,6 @@ import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.ParameterException;
 import java.util.Locale;
 import org.uast.uast.algorithms.Algorithm;
-import org.uast.uast.algorithms.ArgumentsCounter;
 import org.uast.uast.algorithms.Carrying;
 import org.uast.uast.algorithms.Greening;
 
@@ -59,9 +58,6 @@ public final class AlgorithmConverter implements IStringConverter<Algorithm> {
                 break;
             case "carrying":
                 algorithm = Carrying.INSTANCE;
-                break;
-            case "argscount":
-                algorithm = ArgumentsCounter.INSTANCE;
                 break;
             default:
                 final StringBuilder message = new StringBuilder(50);
