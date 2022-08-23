@@ -15,11 +15,11 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher250 implements Matcher {
+public final class Matcher261 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher250();
+    public static final Matcher INSTANCE = new Matcher261();
 
     /**
      * Expected node type.
@@ -34,22 +34,22 @@ public final class Matcher250 implements Matcher {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 2;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * Constructor.
      */
-    private Matcher250() {
+    private Matcher261() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher250.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher250.EXPECTED_COUNT;
+        final boolean result = node.belongsToGroup(Matcher261.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher261.EXPECTED_COUNT;
         if (result) {
-            data.put(Matcher250.FIRST_HOLE_ID, node.getData());
+            data.put(Matcher261.FIRST_HOLE_ID, node.getData());
         }
         return result;
     }

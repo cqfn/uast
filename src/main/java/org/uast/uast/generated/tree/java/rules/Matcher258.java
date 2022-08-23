@@ -16,11 +16,11 @@ import org.uast.uast.base.Node;
  *
  * @since 1.0
  */
-public final class Matcher256 implements Matcher {
+public final class Matcher258 implements Matcher {
     /**
      * The instance.
      */
-    public static final Matcher INSTANCE = new Matcher256();
+    public static final Matcher INSTANCE = new Matcher258();
 
     /**
      * Expected node type.
@@ -30,7 +30,7 @@ public final class Matcher256 implements Matcher {
     /**
      * Expected number of child nodes.
      */
-    private static final int EXPECTED_COUNT = 5;
+    private static final int EXPECTED_COUNT = 6;
 
     /**
      * The number of the first hole.
@@ -73,34 +73,48 @@ public final class Matcher256 implements Matcher {
     private static final int FOURTH_CHILD_ID = 4;
 
     /**
+     * The number of the fifth hole.
+     */
+    private static final int FIFTH_HOLE_ID = 6;
+
+    /**
+     * The index of the fifth child.
+     */
+    private static final int FIFTH_CHILD_ID = 5;
+
+    /**
      * Constructor.
      */
-    private Matcher256() {
+    private Matcher258() {
     }
 
     @Override
     public boolean match(final Node node,
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
-        final boolean result = node.belongsToGroup(Matcher256.EXPECTED_TYPE)
-            && node.getChildCount() == Matcher256.EXPECTED_COUNT
-            && Matcher257.INSTANCE.match(node.getChild(0), children, data);
+        final boolean result = node.belongsToGroup(Matcher258.EXPECTED_TYPE)
+            && node.getChildCount() == Matcher258.EXPECTED_COUNT
+            && Matcher259.INSTANCE.match(node.getChild(0), children, data);
         if (result) {
             children.put(
-                Matcher256.FIRST_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher256.FIRST_CHILD_ID))
+                Matcher258.FIRST_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher258.FIRST_CHILD_ID))
             );
             children.put(
-                Matcher256.SECOND_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher256.SECOND_CHILD_ID))
+                Matcher258.SECOND_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher258.SECOND_CHILD_ID))
             );
             children.put(
-                Matcher256.THIRD_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher256.THIRD_CHILD_ID))
+                Matcher258.THIRD_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher258.THIRD_CHILD_ID))
             );
             children.put(
-                Matcher256.FOURTH_HOLE_ID,
-                Collections.singletonList(node.getChild(Matcher256.FOURTH_CHILD_ID))
+                Matcher258.FOURTH_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher258.FOURTH_CHILD_ID))
+            );
+            children.put(
+                Matcher258.FIFTH_HOLE_ID,
+                Collections.singletonList(node.getChild(Matcher258.FIFTH_CHILD_ID))
             );
         }
         return result;

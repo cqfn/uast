@@ -39,7 +39,7 @@ public final class Rule146 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 7;
+    private static final int FIRST_HOLE_ID = 5;
 
     /**
      * The number of the second hole.
@@ -57,24 +57,14 @@ public final class Rule146 implements Converter {
     private static final int FOURTH_HOLE_ID = 4;
 
     /**
-     * The number of the fifth hole.
-     */
-    private static final int FIFTH_HOLE_ID = 5;
-
-    /**
-     * The number of the sixth hole.
-     */
-    private static final int SIXTH_HOLE_ID = 6;
-
-    /**
      * The 'ParameterBlock' string.
      */
     private static final String PARAMETER_BLOCK = "ParameterBlock";
 
     /**
-     * The number of the seventh hole.
+     * The number of the fifth hole.
      */
-    private static final int SEVENTH_HOLE_ID = 8;
+    private static final int FIFTH_HOLE_ID = 6;
 
     /**
      * The 'FunctionDeclaration' string.
@@ -92,7 +82,7 @@ public final class Rule146 implements Converter {
         Node result = EmptyTree.INSTANCE;
         final Map<Integer, List<Node>> children = new TreeMap<>();
         final Map<Integer, String> data = new TreeMap<>();
-        final boolean matched = Matcher256.INSTANCE.match(node, children, data);
+        final boolean matched = Matcher258.INSTANCE.match(node, children, data);
         if (matched) {
             result = Rule146.firstBuilder(factory, children, data);
         }
@@ -116,7 +106,7 @@ public final class Rule146 implements Converter {
         list.addAll(children.get(Rule146.FIRST_HOLE_ID));
         list.addAll(children.get(Rule146.SECOND_HOLE_ID));
         list.add(Rule146.fourthBuilder(factory, children));
-        list.addAll(children.get(Rule146.SEVENTH_HOLE_ID));
+        list.addAll(children.get(Rule146.FIFTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -171,8 +161,6 @@ public final class Rule146 implements Converter {
         final List<Node> list = new LinkedList<>();
         list.addAll(children.get(Rule146.THIRD_HOLE_ID));
         list.addAll(children.get(Rule146.FOURTH_HOLE_ID));
-        list.addAll(children.get(Rule146.FIFTH_HOLE_ID));
-        list.addAll(children.get(Rule146.SIXTH_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();

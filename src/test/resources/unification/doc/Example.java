@@ -1,5 +1,5 @@
 class Count {
     public int add(final int a) {
-        return a + 10;
+        return a + 1 + 2 + 3;
     }
 }

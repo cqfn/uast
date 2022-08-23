@@ -39,27 +39,32 @@ public final class Rule141 implements Converter {
     /**
      * The number of the first hole.
      */
-    private static final int FIRST_HOLE_ID = 5;
+    private static final int FIRST_HOLE_ID = 1;
 
     /**
      * The number of the second hole.
      */
-    private static final int SECOND_HOLE_ID = 3;
-
-    /**
-     * The 'ParameterBlock' string.
-     */
-    private static final String PARAMETER_BLOCK = "ParameterBlock";
+    private static final int SECOND_HOLE_ID = 2;
 
     /**
      * The number of the third hole.
      */
-    private static final int THIRD_HOLE_ID = 6;
+    private static final int THIRD_HOLE_ID = 3;
 
     /**
-     * The 'FunctionDeclaration' string.
+     * The 'Declarator' string.
      */
-    private static final String FUNCTION_DECLARA = "FunctionDeclaration";
+    private static final String DECLARATOR = "Declarator";
+
+    /**
+     * The 'DeclaratorList' string.
+     */
+    private static final String DECLARATOR_LIST = "DeclaratorList";
+
+    /**
+     * The 'FieldDeclaration' string.
+     */
+    private static final String FIELD_DECLARATIO = "FieldDeclaration";
 
     /**
      * Constructor.
@@ -80,7 +85,7 @@ public final class Rule141 implements Converter {
     }
 
     /**
-     * Builds a node with 'FunctionDeclaration' type.
+     * Builds a node with 'FieldDeclaration' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @param data The data
@@ -90,13 +95,11 @@ public final class Rule141 implements Converter {
         final Map<Integer, List<Node>> children,
         final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule141.FUNCTION_DECLARA);
+        final Builder builder = factory.createBuilder(Rule141.FIELD_DECLARATIO);
         final List<Node> list = new LinkedList<>();
         list.add(Rule141.secondBuilder(factory, data));
         list.addAll(children.get(Rule141.FIRST_HOLE_ID));
-        list.addAll(children.get(Rule141.SECOND_HOLE_ID));
-        list.add(Rule141.fifthBuilder(factory, children));
-        list.addAll(children.get(Rule141.THIRD_HOLE_ID));
+        list.add(Rule141.fourthBuilder(factory, children));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -115,7 +118,6 @@ public final class Rule141 implements Converter {
         final Builder builder = factory.createBuilder(Rule141.MODIFIER_BLOCK);
         final List<Node> list = new LinkedList<>();
         list.add(Rule141.thirdBuilder(factory, data));
-        list.add(Rule141.fourthBuilder(factory, data));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
@@ -132,7 +134,7 @@ public final class Rule141 implements Converter {
     private static Node thirdBuilder(final Factory factory, final Map<Integer, String> data) {
         Node result = EmptyTree.INSTANCE;
         final Builder builder = factory.createBuilder(Rule141.MODIFIER);
-        final boolean set = builder.setData(data.get(1));
+        final boolean set = builder.setData(data.get(4));
         if (set && builder.isValid()) {
             result = builder.createNode();
         }
@@ -140,23 +142,26 @@ public final class Rule141 implements Converter {
     }
 
     /**
-     * Builds a node with 'Modifier' type.
+     * Builds a node with 'DeclaratorList' type.
      * @param factory The node factory
-     * @param data The data
+     * @param children The collection of child nodes
      * @return A node
      */
-    private static Node fourthBuilder(final Factory factory, final Map<Integer, String> data) {
+    private static Node fourthBuilder(final Factory factory,
+        final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule141.MODIFIER);
-        final boolean set = builder.setData(data.get(2));
-        if (set && builder.isValid()) {
+        final Builder builder = factory.createBuilder(Rule141.DECLARATOR_LIST);
+        final List<Node> list = new LinkedList<>();
+        list.add(Rule141.fifthBuilder(factory, children));
+        final boolean applied = builder.setChildrenList(list);
+        if (applied && builder.isValid()) {
             result = builder.createNode();
         }
         return result;
     }
 
     /**
-     * Builds a node with 'ParameterBlock' type.
+     * Builds a node with 'Declarator' type.
      * @param factory The node factory
      * @param children The collection of child nodes
      * @return A node
@@ -164,8 +169,10 @@ public final class Rule141 implements Converter {
     private static Node fifthBuilder(final Factory factory,
         final Map<Integer, List<Node>> children) {
         Node result = EmptyTree.INSTANCE;
-        final Builder builder = factory.createBuilder(Rule141.PARAMETER_BLOCK);
-        final List<Node> list = children.get(4);
+        final Builder builder = factory.createBuilder(Rule141.DECLARATOR);
+        final List<Node> list = new LinkedList<>();
+        list.addAll(children.get(Rule141.SECOND_HOLE_ID));
+        list.addAll(children.get(Rule141.THIRD_HOLE_ID));
         final boolean applied = builder.setChildrenList(list);
         if (applied && builder.isValid()) {
             result = builder.createNode();
