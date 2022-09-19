@@ -1,0 +1,20 @@
+assets:
+  settings.xml: "yegor256/cqfn-secrets#settings.xml"
+  pubring.gpg: "yegor256/cqfn-secrets#pubring.gpg"
+  secring.gpg: "yegor256/cqfn-secrets#secring.gpg"
+merge:
+  script: |
+    mvn clean install -Pqulice --errors --settings ../settings.xml
+deploy:
+  script: |
+    mvn clean deploy -Pqulice --errors --settings ../settings.xml
+release:
+  script: |
+    gpg --import /home/r/pubring.gpg
+    gpg --allow-secret-key-import --no-tty --batch --import /home/r/secring.gpg
+    mvn versions:set "-DnewVersion=${tag}"
+    git commit -am "${tag}"
+    mvn clean deploy -Pcqfn -Pqulice -Psonatype --settings /home/r/settings.xml
+architect:
+  - kniazkov
+  - pollyvolk
