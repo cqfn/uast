@@ -34,7 +34,7 @@ import java.util.Optional;
 /**
  * Custom implementation of CLI file parameter converter.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class FileConverter implements IStringConverter<File> {
     /**

@@ -28,7 +28,7 @@ import org.cqfn.astranaut.core.Node;
 /**
  * An algorithm to be applied to a UAST.
  *
- * @since 1.0
+ * @since 0.1
  */
 public interface Algorithm {
     /**

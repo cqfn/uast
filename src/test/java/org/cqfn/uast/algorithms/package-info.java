@@ -25,6 +25,6 @@
 /**
  * This package contains tests related to algorithms for UASTs processing.
  *
- * @since 1.0
+ * @since 0.1
  */
 package org.cqfn.uast.algorithms;

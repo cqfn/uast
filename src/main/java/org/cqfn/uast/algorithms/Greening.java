@@ -38,7 +38,7 @@ import org.cqfn.uast.tree.green.GreenFactory;
 /**
  * The algorithm that performs replacement of "red" nodes with "green".
  *
- * @since 1.0
+ * @since 0.1
  */
 public final class Greening implements Algorithm {
     /**
@@ -55,7 +55,7 @@ public final class Greening implements Algorithm {
     @Override
     public Node process(final Node tree) {
         Node result = tree;
-        final Map<Node, Node> trees = this.findReplacementPairs(tree);
+        final Map<Node, Node> trees = Greening.findReplacementPairs(tree);
         for (final Map.Entry<Node, Node> entry : trees.entrySet()) {
             final Pair<Node, Integer> modification =
                 new NodeReplacer().replace(result, entry.getKey(), entry.getValue());
@@ -69,9 +69,9 @@ public final class Greening implements Algorithm {
      * @param tree The root of an initial tree
      * @return Mappings of a subtree to be replaced and a newly created subtree
      */
-    private Map<Node, Node> findReplacementPairs(final Node tree) {
+    private static Map<Node, Node> findReplacementPairs(final Node tree) {
         final Map<Node, Node> result = new HashMap<>();
-        final List<Node> list = new LinkedList();
+        final List<Node> list = new LinkedList<>();
         list.add(tree);
         while (!list.isEmpty()) {
             final Node node = list.get(0);
@@ -79,9 +79,9 @@ public final class Greening implements Algorithm {
             list.addAll(node.getChildrenList());
             final String type = node.getTypeName();
             if ("ClassBody".equals(type)) {
-                final List<Node> children = this.processClassBody(node);
+                final List<Node> children = Greening.processClassBody(node);
                 if (!children.equals(node.getChildrenList())) {
-                    final Node body = this.createClassBody(node, children);
+                    final Node body = Greening.createClassBody(node, children);
                     result.put(node, body);
                 }
             }

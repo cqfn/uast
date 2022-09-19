@@ -31,7 +31,7 @@ import org.cqfn.uast.tree.java.JavaAdapter;
 /**
  * Parses Java source code to unified syntax tree.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class JavaParser {
     /**

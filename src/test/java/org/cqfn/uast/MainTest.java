@@ -38,7 +38,7 @@ import org.junit.jupiter.api.io.TempDir;
 /**
  * Test for {@link Main} class.
  *
- * @since 1.0
+ * @since 0.1
  */
 class MainTest {
     /**

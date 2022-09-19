@@ -34,7 +34,7 @@ import java.util.Optional;
 /**
  * Validator of an image path CLI parameter.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class ImagePathValidator implements IParameterValidator {
     @Override

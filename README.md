@@ -44,11 +44,23 @@ to use the same algorithms to analyze the code of chosen languages.
 * Java 1.8
 * Maven 3.6.3+ (to build)
 
-## How to build and download
-
-TODO after release
-
 ## How to use
+
+### Library
+
+Add the UAST dependency to your project's POM file:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.cqfn</groupId>
+    <artifactId>uast</artifactId>
+    <version>0.1</version>
+  </dependency>
+</dependencies>
+```
+
+You can find the latest release version [here](https://repo.maven.apache.org/maven2/org/cqfn/uast).
 
 ### Command line interface
 

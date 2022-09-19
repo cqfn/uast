@@ -25,6 +25,6 @@
 /**
  * This package contains tests for basic classes.
  *
- * @since 1.0
+ * @since 0.1
  */
 package org.cqfn.uast;

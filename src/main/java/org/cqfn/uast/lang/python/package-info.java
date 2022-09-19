@@ -26,6 +26,6 @@
  * This package contains classes related to source code parsing
  * in Python programming languages.
  *
- * @since 1.0
+ * @since 0.1
  */
 package org.cqfn.uast.lang.python;

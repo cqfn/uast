@@ -46,7 +46,7 @@ import org.cqfn.uast.lang.SourceCodeParser;
 /**
  * Main class.
  *
- * @since 1.0
+ * @since 0.1
  */
 @SuppressWarnings("PMD.ImmutableField")
 public final class Main {
