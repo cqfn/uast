@@ -55,7 +55,7 @@ public final class Greening implements Algorithm {
     @Override
     public Node process(final Node tree) {
         Node result = tree;
-        final Map<Node, Node> trees = this.findReplacementPairs(tree);
+        final Map<Node, Node> trees = Greening.findReplacementPairs(tree);
         for (final Map.Entry<Node, Node> entry : trees.entrySet()) {
             final Pair<Node, Integer> modification =
                 new NodeReplacer().replace(result, entry.getKey(), entry.getValue());
@@ -69,7 +69,7 @@ public final class Greening implements Algorithm {
      * @param tree The root of an initial tree
      * @return Mappings of a subtree to be replaced and a newly created subtree
      */
-    private Map<Node, Node> findReplacementPairs(final Node tree) {
+    private static Map<Node, Node> findReplacementPairs(final Node tree) {
         final Map<Node, Node> result = new HashMap<>();
         final List<Node> list = new LinkedList<>();
         list.add(tree);
