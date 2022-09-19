@@ -33,7 +33,7 @@ import org.cqfn.uast.algorithms.Greening;
 /**
  * Custom implementation of CLI algorithm parameter converter.
  *
- * @since 1.0
+ * @since 0.1
  */
 public final class AlgorithmConverter implements IStringConverter<Algorithm> {
     /**

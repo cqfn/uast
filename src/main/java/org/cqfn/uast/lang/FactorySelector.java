@@ -35,7 +35,7 @@ import org.cqfn.uast.tree.python.PythonFactory;
 /**
  * Selects a suitable factory for the specified programming language.
  *
- * @since 1.0
+ * @since 0.1
  */
 public final class FactorySelector implements org.cqfn.astranaut.core.FactorySelector {
     /**

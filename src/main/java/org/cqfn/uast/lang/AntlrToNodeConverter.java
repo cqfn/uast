@@ -39,7 +39,7 @@ import org.cqfn.astranaut.core.Node;
  * Converter from the format provided by the ANTLR parsers
  * to the {@link Node} interface.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class AntlrToNodeConverter {
     /**

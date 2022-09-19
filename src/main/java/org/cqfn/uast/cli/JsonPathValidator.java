@@ -32,7 +32,7 @@ import java.util.Optional;
 /**
  * Validator of a json path CLI parameter.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class JsonPathValidator implements IParameterValidator {
     @Override

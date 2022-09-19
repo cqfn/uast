@@ -35,7 +35,7 @@ import org.cqfn.uast.lang.python.PythonParser;
 /**
  * Parses source code into unified syntax tree.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class SourceCodeParser {
     /**

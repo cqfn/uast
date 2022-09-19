@@ -29,7 +29,7 @@ import org.cqfn.astranaut.core.Node;
 /**
  * The algorithm that performs carrying.
  *
- * @since 1.0
+ * @since 0.1
  */
 public final class Carrying implements Algorithm {
     /**

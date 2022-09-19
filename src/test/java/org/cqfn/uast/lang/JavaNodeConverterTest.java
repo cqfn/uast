@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Test for {@link JavaRawToNodeConverter} class.
  *
- * @since 1.0
+ * @since 0.1
  */
 class JavaNodeConverterTest {
     /**

@@ -42,7 +42,7 @@ import org.cqfn.astranaut.core.Node;
  * Converter from the format provided by the JavaParser parser ("raw")
  * to the {@link Node} interface.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class JavaRawToNodeConverter {
     /**
@@ -104,7 +104,7 @@ public class JavaRawToNodeConverter {
     /**
      * Extracts data from a node of JavaParser.
      *
-     * @since 1.0
+     * @since 0.1
      */
     private static class JavaParserNodeDataExtractor {
         /**

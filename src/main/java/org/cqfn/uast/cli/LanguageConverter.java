@@ -31,7 +31,7 @@ import java.util.Locale;
 /**
  * Custom implementation of CLI language parameter converter.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class LanguageConverter implements IStringConverter<String> {
     /**

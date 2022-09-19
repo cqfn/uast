@@ -39,7 +39,7 @@ import org.cqfn.uast.tree.python.PythonAdapter;
 /**
  * Parses Python source code to unified syntax tree.
  *
- * @since 1.0
+ * @since 0.1
  */
 public class PythonParser {
     /**

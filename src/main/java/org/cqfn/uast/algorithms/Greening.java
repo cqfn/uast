@@ -38,7 +38,7 @@ import org.cqfn.uast.tree.green.GreenFactory;
 /**
  * The algorithm that performs replacement of "red" nodes with "green".
  *
- * @since 1.0
+ * @since 0.1
  */
 public final class Greening implements Algorithm {
     /**
