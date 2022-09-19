@@ -1,0 +1,89 @@
+--parse src/test/resources/unification/print_to_console/Print.java
+-v data/test/Print_java.png
+
+--parse src/test/resources/unification/binary_expression/Multiplication.java
+-v data/test/Multiplication_java.png
+
+--parse src/test/resources/unification/binary_expression/AdditionVariables.java
+-v data/test/AdditionVariables_java.png
+
+
+--parse src/test/resources/unification/unary_expression/PreIncrement.java
+-v data/test/PreIncrement_java.png
+
+--parse src/test/resources/unification/relational_expression/IsEqualTo.java
+-v data/test/IsEqualTo_java.png
+
+--parse
+src/test/resources/unification/relational_expression/IsEqualToVarLiteral.py
+-v
+data/test/IsEqualToVarLiteral_py.png
+
+--parse
+src/test/resources/unification/bitwise_expression/RightShiftVariables.java
+-v
+data/test/RightShiftVariables_java.png
+
+--parse
+src/test/resources/unification/logical_expression/LogicalNot.java
+-v
+data/test/LogicalNot_java.png
+
+--parse
+src/test/resources/unification/assignment_expression/AdditionAssignment.java
+-v
+data/test/AdditionAssignment_java.png
+
+--parse
+src/test/resources/unification/classes/EmptyClass.java
+-v
+data/test/EmptyClass_java.png
+
+--action
+generate
+--rules
+D:\Documents\unified-ast\unified-ast\src\main\dsl\rules.dsl
+--output
+D:\Documents\unified-ast\unified-ast\src\main\java
+--package
+org.uast.uast.generated.tree
+--base
+org.uast.uast.base
+--version
+1.0
+-l
+D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+
+
+
+--action
+generate
+--rules
+D:\Documents\unified-ast\unified-ast\src\main\dsl\rules.dsl
+--output
+D:\Documents\unified-ast\unified-ast\src\main\java
+--package
+org.uast.uast.generated.tree
+--base
+org.uast.uast.base
+--version
+1.0
+-l
+D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+
+
+--action
+generate
+--rules
+src\main\dsl\rules.dsl
+--output
+data\test\comments
+--package
+org.uast.uast.generated.tree
+--base
+org.uast.uast.base
+--version
+1.0
+-l
+D:\Documents\unified-ast\unified-ast\LICENSE_header.txt
+--test
