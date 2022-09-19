@@ -44,10 +44,6 @@ to use the same algorithms to analyze the code of chosen languages.
 * Java 1.8
 * Maven 3.6.3+ (to build)
 
-## How to build and download
-
-TODO after release
-
 ## How to use
 
 ### Command line interface
