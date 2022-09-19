@@ -71,7 +71,7 @@ public final class Greening implements Algorithm {
      */
     private Map<Node, Node> findReplacementPairs(final Node tree) {
         final Map<Node, Node> result = new HashMap<>();
-        final List<Node> list = new LinkedList();
+        final List<Node> list = new LinkedList<>();
         list.add(tree);
         while (!list.isEmpty()) {
             final Node node = list.get(0);
@@ -79,9 +79,9 @@ public final class Greening implements Algorithm {
             list.addAll(node.getChildrenList());
             final String type = node.getTypeName();
             if ("ClassBody".equals(type)) {
-                final List<Node> children = this.processClassBody(node);
+                final List<Node> children = Greening.processClassBody(node);
                 if (!children.equals(node.getChildrenList())) {
-                    final Node body = this.createClassBody(node, children);
+                    final Node body = Greening.createClassBody(node, children);
                     result.put(node, body);
                 }
             }

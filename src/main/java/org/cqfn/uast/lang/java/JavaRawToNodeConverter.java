@@ -63,7 +63,7 @@ public class JavaRawToNodeConverter {
             }
             ctor.setName(builder.toString());
         } else if (node instanceof ClassOrInterfaceType) {
-            this.processClassOrInterfaceType(node, ctor);
+            JavaRawToNodeConverter.processClassOrInterfaceType(node, ctor);
         } else {
             ctor.setName(node.getClass().getSimpleName());
         }
