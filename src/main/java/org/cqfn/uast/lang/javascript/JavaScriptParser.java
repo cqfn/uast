@@ -23,6 +23,7 @@
  */
 package org.cqfn.uast.lang.javascript;
 
+import antlr4.JavaScriptLexer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

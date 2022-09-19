@@ -23,6 +23,7 @@
  */
 package org.cqfn.uast.lang.python;
 
+import antlr4.PythonLexer;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
