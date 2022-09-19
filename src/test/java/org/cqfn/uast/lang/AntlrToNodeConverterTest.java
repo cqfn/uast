@@ -24,6 +24,8 @@
 
 package org.cqfn.uast.lang;
 
+import antlr4.JavaScriptLexer;
+import antlr4.JavaScriptParser;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
