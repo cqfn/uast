@@ -46,6 +46,22 @@ to use the same algorithms to analyze the code of chosen languages.
 
 ## How to use
 
+### Library
+
+Add the UAST dependency to your project's POM file:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.cqfn</groupId>
+    <artifactId>uast</artifactId>
+    <version>0.1</version>
+  </dependency>
+</dependencies>
+```
+
+You can find the latest release version [here](https://repo.maven.apache.org/maven2/org/cqfn/uast).
+
 ### Command line interface
 
 > Here and below, it is assumed that the name of the executable file is `uast.jar`.
