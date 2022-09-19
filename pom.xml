@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.uast</groupId>
-    <artifactId>aunified-ast</artifactId>
+    <groupId>org.cqfn</groupId>
+    <artifactId>uast</artifactId>
     <version>1.0-SNAPSHOT</version>
     <developers>
         <developer>
@@ -34,7 +34,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <qulice.license>${project.basedir}/LICENSE_header.txt</qulice.license>
+        <qulice.license>${project.basedir}/LICENSE.txt</qulice.license>
     </properties>
     <build>
         <plugins>
@@ -49,15 +49,15 @@
             <plugin>
                 <groupId>com.qulice</groupId>
                 <artifactId>qulice-maven-plugin</artifactId>
-                <version>0.19.1</version>
+                <version>0.22.0</version>
                 <configuration>
                     <license>file:${qulice.license}</license>
                     <excludes combine.children="append">
-                        <exclude>checkstyle:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
-                        <exclude>pmd:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
-                        <exclude>dependencies:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
-                        <exclude>duplicatefinder:/src/main/java/org/uast/uast/generated/antlr4/.*</exclude>
-                        <exclude>findbugs:~src.main.java.org.uast.uast.generated.antlr4.*</exclude>
+                        <exclude>checkstyle:/src/main/java/antlr4/.*</exclude>
+                        <exclude>pmd:/src/main/java/antlr4/.*</exclude>
+                        <exclude>dependencies:/src/main/java/antlr4/.*</exclude>
+                        <exclude>duplicatefinder:/src/main/java/antlr4/.*</exclude>
+                        <exclude>findbugs:~src.main.java.antlr4.*</exclude>
                         <exclude>dependencies:org.slf4j:slf4j-nop</exclude>
                         <exclude>checkstyle:/src/test/resources/.*</exclude>
                         <exclude>pmd:/src/test/resources/.*</exclude>
@@ -101,6 +101,14 @@
                 <groupId>org.antlr</groupId>
                 <artifactId>antlr4-maven-plugin</artifactId>
                 <version>4.9.3</version>
+                <configuration>
+                    <sourceDirectory>${basedir}/src/main/antlr</sourceDirectory>
+                    <outputDirectory>${basedir}/src/main/java/antlr4</outputDirectory>
+                    <arguments>
+                        <argument>-package</argument>
+                        <argument>antlr4</argument>
+                    </arguments>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -109,9 +117,32 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.cqfn</groupId>
+                <artifactId>astranaut-maven-plugin</artifactId>
+                <version>0.1.1</version>
+                <configuration>
+                    <dsl>${basedir}/src/main/dsl/rules.dsl</dsl>
+                    <output>${basedir}/src/main/java</output>
+                    <version>0.1</version>
+                    <pkg>org.cqfn.uast.tree</pkg>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
+        <dependency>
+            <groupId>org.cqfn</groupId>
+            <artifactId>astranaut-core</artifactId>
+            <version>1.0.3</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -135,29 +166,9 @@
             <version>4.9.3</version>
         </dependency>
         <dependency>
-            <groupId>guru.nidi</groupId>
-            <artifactId>graphviz-java</artifactId>
-            <version>0.18.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <version>1.7.36</version>
-        </dependency>
-        <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.82</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.9.0</version>
         </dependency>
     </dependencies>
 </project>
