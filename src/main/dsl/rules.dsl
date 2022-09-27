@@ -8,11 +8,11 @@ Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
 Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
- FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression;
+ FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
-Statement <- Return | StatementBlock | Assignment | VariableDeclaration | ExpressionStatement;
+Statement <- Return | StatementBlock | VariableDeclaration | ExpressionStatement;
 TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
 UnaryExpression <- PreIncrement | PreDecrement | PostIncrement | PostDecrement | Positive | Negative;
 BitwiseExpression <- BitwiseComplement | LeftShift | RightShift | UnsignedRightShift | BitwiseAnd | BitwiseOr | ExclusiveOr;
@@ -236,7 +236,9 @@ VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#
 VariableDeclarationExpr(Modifier<#1>, VariableDeclarator(#2, #3, #4))
     -> VariableDeclaration(ModifierBlock(Modifier<#1>), #2, DeclaratorList(Declarator(#3, #4)));
 
+ExpressionStmt(#1) -> ExpressionStatement(#1);
 ExpressionStmt(#1) -> #1;
+
 ReturnStmt(#1) -> Return(#1);
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
@@ -248,10 +250,9 @@ FieldAccessExpr(#1, #2) -> Name(#1, #2);
 StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
-MethodCallExpr(#1, #2, Name(#3)) -> ExpressionStatement(FunctionCall(#1, #2, ExpressionList(Variable(Name(#3)))));
-MethodCallExpr(#1, #2, #3) -> ExpressionStatement(FunctionCall(#1, #2, ExpressionList(#3)));
+MethodCallExpr(#1, #2, Name(#3)) -> FunctionCall(#1, #2, ExpressionList(Variable(Name(#3))));
+MethodCallExpr(#1, #2, #3) -> FunctionCall(#1, #2, ExpressionList(#3));
 MethodCallExpr(#1, #2...) -> FunctionCall(#1, ExpressionList(#2));
-BlockStmt(ExpressionStmt(#1)) -> StatementBlock(#1);
 ClassType(#1) -> ClassType(Name(#1));
 ClassOrInterfaceType(#1) -> ClassType(Name(#1));
 ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
@@ -462,9 +463,7 @@ variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDec
 variableDeclarationList(varModifier(literal<"var">), #1...) -> VariableDeclaration(DeclaratorList(#1));
 
 sourceElement(statement(variableStatement(#1))) -> #1;
-// sourceElement(statement(expressionStatement(expressionSequence(#1)))) -> #1;
-
-expressionStatement(expressionSequence(#1)) -> #1;
+expressionStatement(expressionSequence(#1)) -> ExpressionStatement(#1);
 
 sourceElement(statement(FunctionCall(#1...))) -> ExpressionStatement(FunctionCall(#1));
 sourceElement(statement(#1)) -> #1;
@@ -577,6 +576,8 @@ expr(atom(name(literal<#1>)), trailer(arguments(arglist(#2...)))) ->
   FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(literal<#1>), trailer(arguments(arglist(#2...)))) ->
   FunctionCall(Identifier<#1>, ExpressionList(#2));
+expr(atom(name(literal<#1>)), trailer(name(literal<#2>), arguments(arglist(#3...)))) ->
+  FunctionCall(Name(Identifier<#1>), Identifier<#2>, ExpressionList(#3));
 
 small_stmt(FunctionCall(#1...)) -> ExpressionStatement(FunctionCall(#1));
 
@@ -597,7 +598,8 @@ small_stmt(#1, assign_part(literal<"^=">, #2)) -> ExclusiveOr(#1, #2);
 small_stmt(#1, assign_part(literal<">>=">, #2)) -> RightShift(#1, #2);
 small_stmt(#1, assign_part(literal<"<<=">, #2)) -> LeftShift(#1, #2);
 
-
+stmt(#1) -> ExpressionStatement(#1);
+stmt(#1) -> #1;
 
 named_parameter(name(literal<#1>)) -> Parameter(Identifier<#1>);
 def_parameters(#1...) -> ParameterBlock(#1);
@@ -635,4 +637,4 @@ classdef(literal<"class">, name(literal<#1>), #2...)
 
 small_stmt(Variable(Name(#1))) -> FieldDeclaration(DeclaratorList(Declarator(#1)));
 
-suite(SimpleAssignment(Variable(Name(#1)), #2)) -> FieldDeclaration(DeclaratorList(Declarator(#1, #2)));
+suite(ExpressionStatement(SimpleAssignment(Variable(Name(#1)), #2))) -> FieldDeclaration(DeclaratorList(Declarator(#1, #2)));

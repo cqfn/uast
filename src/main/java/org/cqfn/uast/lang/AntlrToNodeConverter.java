@@ -48,7 +48,7 @@ public class AntlrToNodeConverter {
     private static final Set<String> SKIPPED_NODES = new HashSet<>(
         Arrays.asList(
             "single_input", "eval_input",
-            "stmt", "simple_stmt", "compound_stmt",
+            "simple_stmt", "compound_stmt",
             "test", "testlist",
             "def_parameter",
             "number"
