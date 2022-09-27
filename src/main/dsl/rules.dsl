@@ -8,12 +8,11 @@ Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
 Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
- FunctionCallExpression | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression;
-FunctionCallExpression <- [owner@Name], name@Identifier, arguments@ExpressionList;
+ FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
-Statement <- Return | StatementBlock | FunctionCall | Assignment | VariableDeclaration;
+Statement <- Return | StatementBlock | Assignment | VariableDeclaration | ExpressionStatement;
 TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
 UnaryExpression <- PreIncrement | PreDecrement | PostIncrement | PostDecrement | Positive | Negative;
 BitwiseExpression <- BitwiseComplement | LeftShift | RightShift | UnsignedRightShift | BitwiseAnd | BitwiseOr | ExclusiveOr;
@@ -22,6 +21,7 @@ Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | Mu
     | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
 AssignableExpression <- Variable | 0;
+ExpressionStatement <- Expression;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
@@ -248,9 +248,9 @@ FieldAccessExpr(#1, #2) -> Name(#1, #2);
 StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
-MethodCallExpr(#1, #2, Name(#3)) -> FunctionCall(#1, #2, ExpressionList(Variable(Name(#3))));
-MethodCallExpr(#1, #2, #3) -> FunctionCall(#1, #2, ExpressionList(#3));
-MethodCallExpr(#1, #2...) -> FunctionCallExpression(#1, ExpressionList(#2));
+MethodCallExpr(#1, #2, Name(#3)) -> ExpressionStatement(FunctionCall(#1, #2, ExpressionList(Variable(Name(#3)))));
+MethodCallExpr(#1, #2, #3) -> ExpressionStatement(FunctionCall(#1, #2, ExpressionList(#3)));
+MethodCallExpr(#1, #2...) -> FunctionCall(#1, ExpressionList(#2));
 BlockStmt(ExpressionStmt(#1)) -> StatementBlock(#1);
 ClassType(#1) -> ClassType(Name(#1));
 ClassOrInterfaceType(#1) -> ClassType(Name(#1));
@@ -423,9 +423,9 @@ singleExpression(literal<"!">, singleExpression(#1)) -> LogicalNot(Variable(Name
 singleExpression(#1, literal<"+">, singleExpression(expressionSequence(#2))) -> Addition(#1, #2);
 
 singleExpression(singleExpression(singleExpression(#1), identifierName(#2)), arguments(argument(#3))) ->
-  FunctionCallExpression(Name(#1), #2, ExpressionList(#3));
+  FunctionCall(Name(#1), #2, ExpressionList(#3));
 singleExpression(singleExpression(Variable(#1), identifierName(#2)), arguments(#3...)) ->
-  FunctionCallExpression(#1, #2, ExpressionList(#3));
+  FunctionCall(#1, #2, ExpressionList(#3));
 
 singleExpression(literal<"++">, singleExpression(#1)) ->  PreIncrement(#1);
 singleExpression(literal<"--">, singleExpression(#1)) ->  PreDecrement(#1);
@@ -466,16 +466,16 @@ sourceElement(statement(variableStatement(#1))) -> #1;
 
 expressionStatement(expressionSequence(#1)) -> #1;
 
-sourceElement(statement(FunctionCallExpression(#1...))) -> FunctionCall(#1);
+sourceElement(statement(FunctionCall(#1...))) -> ExpressionStatement(FunctionCall(#1));
 sourceElement(statement(#1)) -> #1;
 
 expressionStatement(expressionSequence(singleExpression(singleExpression(#1), arguments))) ->
-  FunctionCall(#1, ExpressionList());
+  ExpressionStatement(FunctionCall(#1, ExpressionList()));
 
 argument(#1) -> #1;
 
 singleExpression(Variable(Name(#1)), arguments(#2...)) ->
-  FunctionCallExpression(#1, ExpressionList(#2));
+  FunctionCall(#1, ExpressionList(#2));
 
 program(sourceElements(sourceElement(statement(#1)), sourceElement(statement(#2)))) -> Program(#1, #2);
 program(sourceElements(sourceElement(statement(#1)))) -> Program(#1);
@@ -564,21 +564,21 @@ logical_test(#1, literal<"or">, #2) -> LogicalOr(#1, #2);
 argument(#1) -> #1;
 
 expr(atom(name(literal<#1>)), trailer(arguments(arglist(argument(comparison(#2)))))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(name(literal<#1>)), trailer(arguments(arglist(argument(#2))))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(literal<#1>), trailer(arguments(arglist(argument(comparison(#2)))))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(literal<#1>), trailer(arguments(arglist(argument(#2))))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(name(literal<#1>)), trailer(arguments())) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList());
+  FunctionCall(Identifier<#1>, ExpressionList());
 expr(atom(name(literal<#1>)), trailer(arguments(arglist(#2...)))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 expr(atom(literal<#1>), trailer(arguments(arglist(#2...)))) ->
-  FunctionCallExpression(Identifier<#1>, ExpressionList(#2));
+  FunctionCall(Identifier<#1>, ExpressionList(#2));
 
-small_stmt(FunctionCallExpression(#1...)) -> FunctionCall(#1);
+small_stmt(FunctionCall(#1...)) -> ExpressionStatement(FunctionCall(#1));
 
 testlist_star_expr(#1) -> #1;
 
