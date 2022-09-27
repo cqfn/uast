@@ -26,3 +26,7 @@ hs_err_pid*
 
 # IntelliJ IDEA module settings
 *.iml
+
+# Source folders
+src/main/java/antlr4/
+src/main/java/org/cqfn/uast/tree/
