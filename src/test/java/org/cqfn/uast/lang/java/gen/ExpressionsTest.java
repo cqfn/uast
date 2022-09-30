@@ -24,6 +24,8 @@
 package org.cqfn.uast.lang.java.gen;
 
 import java.util.Arrays;
+import java.util.Collections;
+
 import org.cqfn.astranaut.core.Builder;
 import org.cqfn.astranaut.core.Factory;
 import org.cqfn.astranaut.core.Node;
@@ -51,5 +53,37 @@ class ExpressionsTest {
         final Expressions generator = new Expressions();
         final String code = generator.generate((Expression) addition);
         Assertions.assertEquals("2 + 3", code);
+    }
+
+    @Test
+    void testVariable() {
+        final Factory factory = JavaFactory.INSTANCE;
+        final Builder ident = factory.createBuilder("Identifier");
+        ident.setData("var");
+        final Builder name = factory.createBuilder("Name");
+        name.setChildrenList(Collections.singletonList(ident.createNode()));
+        final Builder builder = factory.createBuilder("Variable");
+        builder.setChildrenList(Collections.singletonList(name.createNode()));
+        final Node variable = builder.createNode();
+        final Expressions generator = new Expressions();
+        final String code = generator.generate((Expression) variable);
+        Assertions.assertEquals("var", code);
+    }
+
+    @Test
+    void testPreDecrement() {
+        final Factory factory = JavaFactory.INSTANCE;
+        final Builder ident = factory.createBuilder("Identifier");
+        ident.setData("var");
+        final Builder name = factory.createBuilder("Name");
+        name.setChildrenList(Collections.singletonList(ident.createNode()));
+        final Builder variable = factory.createBuilder("Variable");
+        variable.setChildrenList(Collections.singletonList(name.createNode()));
+        final Builder builder = factory.createBuilder("PreDecrement");
+        builder.setChildrenList(Collections.singletonList(variable.createNode()));
+        final Node predecr = builder.createNode();
+        final Expressions generator = new Expressions();
+        final String code = generator.generate((Expression) predecr);
+        Assertions.assertEquals("--var", code);
     }
 }

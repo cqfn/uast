@@ -29,6 +29,14 @@ import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
 import org.cqfn.uast.tree.green.BinaryExpression;
 import org.cqfn.uast.tree.green.Expression;
+import org.cqfn.uast.tree.green.ExpressionList;
+import org.cqfn.uast.tree.green.FunctionCall;
+import org.cqfn.uast.tree.green.Name;
+import org.cqfn.uast.tree.green.PostDecrement;
+import org.cqfn.uast.tree.green.PostIncrement;
+import org.cqfn.uast.tree.green.PropertyAccess;
+import org.cqfn.uast.tree.green.UnaryExpression;
+import org.cqfn.uast.tree.green.Variable;
 
 /**
  * Code generator for Java expressions.
@@ -63,12 +71,154 @@ public class Expressions {
      */
     private Map<String, Generator> init() {
         final Map<String, Generator> gen = new TreeMap<>();
+        gen.put("This", expr -> "this");
         gen.put("IntegerLiteral", Node::getData);
+        gen.put("StringLiteral", Node::getData);
+        gen.put("Identifier", Node::getData);
+        gen.put(
+            "Variable",
+            expr -> {
+                final Variable node = (Variable) expr;
+                return this.generateName((Name) node.getChild(0));
+            }
+        );
+        gen.put(
+            "PropertyAccess",
+            expr -> {
+                final PropertyAccess node = (PropertyAccess) expr;
+                final String left = this.generate(node.getLeft());
+                final String right = this.generate(node.getRight());
+                return String.format("%s.%s", left, right);
+            }
+        );
+        gen.put(
+            "FunctionCall",
+            expr -> {
+                final FunctionCall node = (FunctionCall) expr;
+                String owner = "";
+                final String classname = this.generateName(node.getOwner());
+                if (!classname.isEmpty()) {
+                    owner = classname.concat(".");
+                }
+                final String name = this.generate(node.getName());
+                final ExpressionList list = node.getArguments();
+                String params = "";
+                final int size = list.getChildCount();
+                if (size > 0) {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append(this.generate(list.getExpression(0)));
+                    for (int idx = 1; idx < size; idx += 1) {
+                        builder.append(", ").append(this.generate(list.getExpression(idx)));
+                    }
+                    params = builder.toString();
+                }
+                return String.format("%s%s%s", owner, name, params);
+            }
+        );
+        gen.putAll(this.initBinaryExpressions());
+        gen.putAll(this.initUnaryExpressions());
+        gen.putAll(this.initAssignmentExpressions());
+        return gen;
+    }
+
+    /**
+     * Generates source code from name.
+     * @param name The name
+     * @return Java source code
+     */
+    private String generateName(final Name name) {
+        final Name composition = name.getComposition();
+        String left = "";
+        if (composition != null) {
+            left = this.generateName(composition);
+        }
+        final String last = this.generate(name.getLast());
+        final String result;
+        if (left.isEmpty()) {
+            result = last;
+        } else {
+            result = String.format("%s.%s", left, last);
+        }
+        return result;
+    }
+
+    /**
+     * Initialises map with binary expressions.
+     * @return A map
+     */
+    private Map<String, Generator> initBinaryExpressions() {
+        final Map<String, Generator> gen = new TreeMap<>();
         gen.put("Addition", new BinaryExpressionGenerator(this, "+"));
         gen.put("Subtraction", new BinaryExpressionGenerator(this, "-"));
         gen.put("Multiplication", new BinaryExpressionGenerator(this, "*"));
+        gen.put("Division", new BinaryExpressionGenerator(this, "/"));
+        gen.put("Modulus", new BinaryExpressionGenerator(this, "%"));
+        gen.put("IsEqualTo", new BinaryExpressionGenerator(this, "=="));
+        gen.put("NotEqualTo", new BinaryExpressionGenerator(this, "!="));
+        gen.put("GreaterThan", new BinaryExpressionGenerator(this, ">"));
+        gen.put("LessThan", new BinaryExpressionGenerator(this, "<"));
+        gen.put("GreaterThanOrEqualTo", new BinaryExpressionGenerator(this, ">="));
         gen.put("LessThanOrEqualTo", new BinaryExpressionGenerator(this, "<="));
-        gen.put("This", expr -> "this");
+        gen.put("BitwiseAnd", new BinaryExpressionGenerator(this, "&"));
+        gen.put("BitwiseOr", new BinaryExpressionGenerator(this, "|"));
+        gen.put("ExclusiveOr", new BinaryExpressionGenerator(this, "^"));
+        gen.put("LeftShift", new BinaryExpressionGenerator(this, "<<"));
+        gen.put("RightShift", new BinaryExpressionGenerator(this, ">>"));
+        gen.put("UnsignedRightShift", new BinaryExpressionGenerator(this, ">>>"));
+        gen.put("LogicalOr", new BinaryExpressionGenerator(this, "||"));
+        gen.put("LogicalAnd", new BinaryExpressionGenerator(this, "&&"));
+        return gen;
+    }
+
+    /**
+     * Initialises map with unary expressions.
+     * @return A map
+     */
+    private Map<String, Generator> initUnaryExpressions() {
+        final Map<String, Generator> gen = new TreeMap<>();
+        gen.put(
+            "PostIncrement",
+            expr -> {
+                final PostIncrement node = (PostIncrement) expr;
+                final String element = this.generate((Expression) node.getChild(0));
+                return String.format("%s++", element);
+            }
+        );
+        gen.put(
+            "PostDecrement",
+            expr -> {
+                final PostDecrement node = (PostDecrement) expr;
+                final String element = this.generate((Expression) node.getChild(0));
+                return String.format("%s--", element);
+            }
+        );
+        gen.put("BitwiseComplement", new PreUnaryExpressionGenerator(this, "~"));
+        gen.put("LogicalNot", new PreUnaryExpressionGenerator(this, "!"));
+        gen.put("PreIncrement", new PreUnaryExpressionGenerator(this, "++"));
+        gen.put("PreDecrement", new PreUnaryExpressionGenerator(this, "--"));
+        gen.put("Positive", new PreUnaryExpressionGenerator(this, "+"));
+        gen.put("Negative", new PreUnaryExpressionGenerator(this, "-"));
+        return gen;
+    }
+
+    /**
+     * Initialises map with assignment expressions.
+     * @return A map
+     */
+    private Map<String, Generator> initAssignmentExpressions() {
+        final Map<String, Generator> gen = new TreeMap<>();
+        gen.put("SimpleAssignment", new BinaryExpressionGenerator(this, "="));
+        gen.put("AdditionAssignment", new BinaryExpressionGenerator(this, "+="));
+        gen.put("SubtractionAssignment", new BinaryExpressionGenerator(this, "-="));
+        gen.put("MultiplicationAssignment", new BinaryExpressionGenerator(this, "*="));
+        gen.put("DivisionAssignment", new BinaryExpressionGenerator(this, "/="));
+        gen.put("ModulusAssignment", new BinaryExpressionGenerator(this, "%="));
+        gen.put("BitwiseAndAssignment", new BinaryExpressionGenerator(this, "&="));
+        gen.put("BitwiseOrAssignment", new BinaryExpressionGenerator(this, "|="));
+        gen.put("ExclusiveOrAssignment", new BinaryExpressionGenerator(this, "^="));
+        gen.put("RightShiftAssignment", new BinaryExpressionGenerator(this, ">>="));
+        gen.put("UnsignedRightShiftAssignment", new BinaryExpressionGenerator(this, ">>>="));
+        gen.put("LeftShiftAssignment", new BinaryExpressionGenerator(this, "<<="));
         return gen;
     }
 
@@ -118,6 +268,40 @@ public class Expressions {
             final String left = this.base.generate(node.getLeft());
             final String right = this.base.generate(node.getRight());
             return String.format("%s %s %s", left, this.operator, right);
+        }
+    }
+
+    /**
+     * Code generator for prefix unary expressions.
+     *
+     * @since 0.1.2
+     */
+    private static class PreUnaryExpressionGenerator implements Generator {
+        /**
+         * Base generator.
+         */
+        private final Expressions base;
+
+        /**
+         * Operator as a string.
+         */
+        private final String operator;
+
+        /**
+         * Constructor.
+         * @param base Base generator
+         * @param operator Operator as a string
+         */
+        PreUnaryExpressionGenerator(final Expressions base, final String operator) {
+            this.base = base;
+            this.operator = operator;
+        }
+
+        @Override
+        public String generate(final Expression expr) {
+            final UnaryExpression node = (UnaryExpression) expr;
+            final String element = this.base.generate((Expression) node.getChild(0));
+            return String.format("%s%s", this.operator, element);
         }
     }
 }
