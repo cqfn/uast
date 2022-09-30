@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.tree.green.Addition;
+import org.cqfn.uast.tree.green.BinaryExpression;
 import org.cqfn.uast.tree.green.Expression;
 
 /**
@@ -64,15 +64,11 @@ public class Expressions {
     private Map<String, Generator> init() {
         final Map<String, Generator> gen = new TreeMap<>();
         gen.put("IntegerLiteral", Node::getData);
-        gen.put(
-            "Addition",
-            expr -> {
-                final Addition node = (Addition) expr;
-                final String left = this.generate(node.getLeft());
-                final String right = this.generate(node.getRight());
-                return String.format("%s + %s", left, right);
-            }
-        );
+        gen.put("Addition", new BinaryExpressionGenerator(this, "+"));
+        gen.put("Subtraction", new BinaryExpressionGenerator(this, "-"));
+        gen.put("Multiplication", new BinaryExpressionGenerator(this, "*"));
+        gen.put("LessThanOrEqualTo", new BinaryExpressionGenerator(this, "<="));
+        gen.put("This", expr -> "this");
         return gen;
     }
 
@@ -88,5 +84,40 @@ public class Expressions {
          * @return Java source code
          */
         String generate(Expression expr);
+    }
+
+    /**
+     * Code generator for binary expressions.
+     *
+     * @since 0.1.2
+     */
+    private static class BinaryExpressionGenerator implements Generator {
+        /**
+         * Base generator.
+         */
+        private final Expressions base;
+
+        /**
+         * Operator as a string.
+         */
+        private final String operator;
+
+        /**
+         * Constructor.
+         * @param base Base generator
+         * @param operator Operator as a string
+         */
+        BinaryExpressionGenerator(final Expressions base, final String operator) {
+            this.base = base;
+            this.operator = operator;
+        }
+
+        @Override
+        public String generate(final Expression expr) {
+            final BinaryExpression node = (BinaryExpression) expr;
+            final String left = this.base.generate(node.getLeft());
+            final String right = this.base.generate(node.getRight());
+            return String.format("%s %s %s", left, this.operator, right);
+        }
     }
 }
