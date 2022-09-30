@@ -25,7 +25,6 @@ package org.cqfn.uast.lang.java.gen;
 
 import java.util.Arrays;
 import java.util.Collections;
-
 import org.cqfn.astranaut.core.Builder;
 import org.cqfn.astranaut.core.Factory;
 import org.cqfn.astranaut.core.Node;
