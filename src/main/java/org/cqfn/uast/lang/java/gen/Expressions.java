@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
+import org.cqfn.uast.tree.green.Assignment;
 import org.cqfn.uast.tree.green.BinaryExpression;
 import org.cqfn.uast.tree.green.Expression;
 import org.cqfn.uast.tree.green.ExpressionList;
@@ -112,7 +113,7 @@ public class Expressions {
                     }
                     params = builder.toString();
                 }
-                return String.format("%s%s%s", owner, name, params);
+                return String.format("%s%s(%s)", owner, name, params);
             }
         );
         gen.putAll(this.initBinaryExpressions());
@@ -207,18 +208,18 @@ public class Expressions {
      */
     private Map<String, Generator> initAssignmentExpressions() {
         final Map<String, Generator> gen = new TreeMap<>();
-        gen.put("SimpleAssignment", new BinaryExpressionGenerator(this, "="));
-        gen.put("AdditionAssignment", new BinaryExpressionGenerator(this, "+="));
-        gen.put("SubtractionAssignment", new BinaryExpressionGenerator(this, "-="));
-        gen.put("MultiplicationAssignment", new BinaryExpressionGenerator(this, "*="));
-        gen.put("DivisionAssignment", new BinaryExpressionGenerator(this, "/="));
-        gen.put("ModulusAssignment", new BinaryExpressionGenerator(this, "%="));
-        gen.put("BitwiseAndAssignment", new BinaryExpressionGenerator(this, "&="));
-        gen.put("BitwiseOrAssignment", new BinaryExpressionGenerator(this, "|="));
-        gen.put("ExclusiveOrAssignment", new BinaryExpressionGenerator(this, "^="));
-        gen.put("RightShiftAssignment", new BinaryExpressionGenerator(this, ">>="));
-        gen.put("UnsignedRightShiftAssignment", new BinaryExpressionGenerator(this, ">>>="));
-        gen.put("LeftShiftAssignment", new BinaryExpressionGenerator(this, "<<="));
+        gen.put("SimpleAssignment", new AssignmentExpressionGenerator(this, "="));
+        gen.put("AdditionAssignment", new AssignmentExpressionGenerator(this, "+="));
+        gen.put("SubtractionAssignment", new AssignmentExpressionGenerator(this, "-="));
+        gen.put("MultiplicationAssignment", new AssignmentExpressionGenerator(this, "*="));
+        gen.put("DivisionAssignment", new AssignmentExpressionGenerator(this, "/="));
+        gen.put("ModulusAssignment", new AssignmentExpressionGenerator(this, "%="));
+        gen.put("BitwiseAndAssignment", new AssignmentExpressionGenerator(this, "&="));
+        gen.put("BitwiseOrAssignment", new AssignmentExpressionGenerator(this, "|="));
+        gen.put("ExclusiveOrAssignment", new AssignmentExpressionGenerator(this, "^="));
+        gen.put("RightShiftAssignment", new AssignmentExpressionGenerator(this, ">>="));
+        gen.put("UnsignedRightShiftAssignment", new AssignmentExpressionGenerator(this, ">>>="));
+        gen.put("LeftShiftAssignment", new AssignmentExpressionGenerator(this, "<<="));
         return gen;
     }
 
@@ -265,6 +266,41 @@ public class Expressions {
         @Override
         public String generate(final Expression expr) {
             final BinaryExpression node = (BinaryExpression) expr;
+            final String left = this.base.generate(node.getLeft());
+            final String right = this.base.generate(node.getRight());
+            return String.format("%s %s %s", left, this.operator, right);
+        }
+    }
+
+    /**
+     * Code generator for assignment expressions.
+     *
+     * @since 0.1.2
+     */
+    private static class AssignmentExpressionGenerator implements Generator {
+        /**
+         * Base generator.
+         */
+        private final Expressions base;
+
+        /**
+         * Operator as a string.
+         */
+        private final String operator;
+
+        /**
+         * Constructor.
+         * @param base Base generator
+         * @param operator Operator as a string
+         */
+        AssignmentExpressionGenerator(final Expressions base, final String operator) {
+            this.base = base;
+            this.operator = operator;
+        }
+
+        @Override
+        public String generate(final Expression expr) {
+            final Assignment node = (Assignment) expr;
             final String left = this.base.generate(node.getLeft());
             final String right = this.base.generate(node.getRight());
             return String.format("%s %s %s", left, this.operator, right);
