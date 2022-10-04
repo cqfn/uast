@@ -41,11 +41,6 @@ public class CodeGenerator {
     private final Map<String, Generator> map;
 
     /**
-     * Code generator for Java expressions.
-     */
-    private final Expressions expressions;
-
-    /**
      * Source code builder.
      */
     private final CodeBuilder builder;
@@ -56,7 +51,6 @@ public class CodeGenerator {
      */
     public CodeGenerator(final CodeBuilder builder) {
         this.map = Collections.unmodifiableMap(this.init());
-        this.expressions = new Expressions();
         this.builder = builder;
     }
 
@@ -82,7 +76,10 @@ public class CodeGenerator {
                     this.builder.print("return;");
                 } else {
                     this.builder.print(
-                        String.format("return %s;", this.expressions.generate(stmt.getExpression()))
+                        String.format(
+                            "return %s;",
+                            Expressions.INSTANCE.generate(stmt.getExpression())
+                        )
                     );
                 }
             }

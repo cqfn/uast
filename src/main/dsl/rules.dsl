@@ -68,10 +68,10 @@ UnsignedRightShiftAssignment <- left@AssignableExpression, right@Expression;
 RightShiftAssignment <- left@AssignableExpression, right@Expression;
 LeftShiftAssignment <- left@AssignableExpression, right@Expression;
 
-ClassType <- Name;
-ArrayType <- TypeName, DimensionList;
+ClassType <- name@Name;
+ArrayType <- base@TypeName, dimensions@DimensionList;
 DimensionList <- {Dimension};
-Dimension <- [Expression];
+Dimension <- [expression@Expression];
 Return <- [expression@Expression];
 Name <- [composition@Name], last@Identifier;
 Variable <- Name;

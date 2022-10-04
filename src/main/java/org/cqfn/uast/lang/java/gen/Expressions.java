@@ -44,7 +44,12 @@ import org.cqfn.uast.tree.green.Variable;
  *
  * @since 0.1.2
  */
-public class Expressions {
+public final class Expressions {
+    /**
+     * The instance.
+     */
+    public static final Expressions INSTANCE = new Expressions();
+
     /**
      * Map that contains generators.
      */
@@ -53,7 +58,7 @@ public class Expressions {
     /**
      * Constructor.
      */
-    public Expressions() {
+    private Expressions() {
         this.map = Collections.unmodifiableMap(this.init());
     }
 
@@ -80,7 +85,7 @@ public class Expressions {
             "Variable",
             expr -> {
                 final Variable node = (Variable) expr;
-                return this.generateName((Name) node.getChild(0));
+                return Names.INSTANCE.generate((Name) node.getChild(0));
             }
         );
         gen.put(
@@ -97,7 +102,7 @@ public class Expressions {
             expr -> {
                 final FunctionCall node = (FunctionCall) expr;
                 String owner = "";
-                final String classname = this.generateName(node.getOwner());
+                final String classname = Names.INSTANCE.generate(node.getOwner());
                 if (!classname.isEmpty()) {
                     owner = classname.concat(".");
                 }
@@ -120,27 +125,6 @@ public class Expressions {
         gen.putAll(this.initUnaryExpressions());
         gen.putAll(this.initAssignmentExpressions());
         return gen;
-    }
-
-    /**
-     * Generates source code from name.
-     * @param name The name
-     * @return Java source code
-     */
-    private String generateName(final Name name) {
-        final Name composition = name.getComposition();
-        String left = "";
-        if (composition != null) {
-            left = this.generateName(composition);
-        }
-        final String last = this.generate(name.getLast());
-        final String result;
-        if (left.isEmpty()) {
-            result = last;
-        } else {
-            result = String.format("%s.%s", left, last);
-        }
-        return result;
     }
 
     /**

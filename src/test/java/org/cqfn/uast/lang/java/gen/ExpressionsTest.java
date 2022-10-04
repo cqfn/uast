@@ -64,8 +64,7 @@ class ExpressionsTest {
         final Builder builder = factory.createBuilder("Addition");
         builder.setChildrenList(Arrays.asList(left.createNode(), right.createNode()));
         final Node addition = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) addition);
+        final String code = Expressions.INSTANCE.generate((Expression) addition);
         Assertions.assertEquals("2 + 3", code);
     }
 
@@ -79,8 +78,7 @@ class ExpressionsTest {
         final Builder builder = factory.createBuilder(ExpressionsTest.VARIABLE);
         builder.setChildrenList(Collections.singletonList(name.createNode()));
         final Node variable = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) variable);
+        final String code = Expressions.INSTANCE.generate((Expression) variable);
         Assertions.assertEquals("var", code);
     }
 
@@ -96,8 +94,7 @@ class ExpressionsTest {
         final Builder builder = factory.createBuilder("PreDecrement");
         builder.setChildrenList(Collections.singletonList(variable.createNode()));
         final Node predecr = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) predecr);
+        final String code = Expressions.INSTANCE.generate((Expression) predecr);
         Assertions.assertEquals("--x", code);
     }
 
@@ -113,8 +110,7 @@ class ExpressionsTest {
         final Builder builder = factory.createBuilder("PostIncrement");
         builder.setChildrenList(Collections.singletonList(variable.createNode()));
         final Node predecr = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) predecr);
+        final String code = Expressions.INSTANCE.generate((Expression) predecr);
         Assertions.assertEquals("y++", code);
     }
 
@@ -132,8 +128,7 @@ class ExpressionsTest {
         final Builder builder = factory.createBuilder("ModulusAssignment");
         builder.setChildrenList(Arrays.asList(variable.createNode(), right.createNode()));
         final Node assign = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) assign);
+        final String code = Expressions.INSTANCE.generate((Expression) assign);
         Assertions.assertEquals("num %= 3", code);
     }
 
@@ -171,8 +166,7 @@ class ExpressionsTest {
             )
         );
         final Node call = builder.createNode();
-        final Expressions generator = new Expressions();
-        final String code = generator.generate((Expression) call);
+        final String code = Expressions.INSTANCE.generate((Expression) call);
         Assertions.assertEquals("java.lang.Math.abs(val)", code);
     }
 }
