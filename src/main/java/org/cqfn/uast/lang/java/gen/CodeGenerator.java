@@ -27,7 +27,15 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
+import org.cqfn.uast.tree.green.ClassDeclaration;
+import org.cqfn.uast.tree.green.Declarator;
+import org.cqfn.uast.tree.green.DeclaratorList;
+import org.cqfn.uast.tree.green.Expression;
+import org.cqfn.uast.tree.green.FieldDeclaration;
+import org.cqfn.uast.tree.green.Modifier;
+import org.cqfn.uast.tree.green.ModifierBlock;
 import org.cqfn.uast.tree.green.Return;
+import org.cqfn.uast.tree.green.TypeName;
 
 /**
  * Code generator for Java constructions (except expressions).
@@ -84,7 +92,89 @@ public class CodeGenerator {
                 }
             }
         );
+        gen.put(
+            "FieldDeclaration",
+            node -> {
+                final FieldDeclaration fdecl = (FieldDeclaration) node;
+                final StringBuilder code = new StringBuilder();
+                code.append(CodeGenerator.generateModifiersList(fdecl.getModifiers()));
+                final TypeName type = fdecl.getDatatype();
+                if (type == null) {
+                    code.append("Object");
+                } else {
+                    code.append(TypeNames.INSTANCE.generate(type));
+                }
+                code
+                    .append(' ')
+                    .append(CodeGenerator.generateDeclaratorsList(fdecl.getDeclarators()))
+                    .append(';');
+                this.builder.print(code.toString());
+            }
+        );
+        gen.put(
+            "Program",
+            node -> {
+                for (final Node item : node.getChildrenList()) {
+                    this.generate(item);
+                }
+            }
+        );
+        gen.put(
+            "ClassDeclaration",
+            node -> {
+                final ClassDeclaration cdecl = (ClassDeclaration) node;
+                final StringBuilder header = new StringBuilder();
+                header.append(CodeGenerator.generateModifiersList(cdecl.getModifiers()))
+                    .append("class ")
+                    .append(cdecl.getName().getData())
+                    .append(" {");
+                this.builder.print(header.toString());
+                this.builder.increaseIndent();
+                for (final Node item : cdecl.getBody().getChildrenList()) {
+                    this.generate(item);
+                }
+                this.builder.decreaseIndent();
+                this.builder.print("}");
+            }
+        );
         return gen;
+    }
+
+    /**
+     * Generates modifiers list.
+     * @param block Modifiers block
+     * @return Modifiers list
+     */
+    private static String generateModifiersList(final ModifierBlock block) {
+        final StringBuilder code = new StringBuilder();
+        if (block != null) {
+            for (int index = 0; index < block.getChildCount(); index = index + 1) {
+                final Modifier modifier = block.getModifier(index);
+                code.append(modifier.getData()).append(' ');
+            }
+        }
+        return code.toString();
+    }
+
+    /**
+     * Generates declarators list from node.
+     * @param list Node
+     * @return Declarators list
+     */
+    private static String generateDeclaratorsList(final DeclaratorList list) {
+        final StringBuilder code = new StringBuilder();
+        for (int index = 0; index < list.getChildCount(); index = index + 1) {
+            if (index > 0) {
+                code.append(", ");
+            }
+            final Declarator declarator = list.getDeclarator(index);
+            code.append(declarator.getName().getData());
+            final Expression value = declarator.getValue();
+            if (value != null) {
+                code.append(" = ").append(Expressions.INSTANCE.generate(value));
+            }
+        }
+        return code.toString();
     }
 
     /**
