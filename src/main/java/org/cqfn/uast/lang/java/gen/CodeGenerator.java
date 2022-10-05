@@ -28,14 +28,23 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
 import org.cqfn.uast.tree.green.ClassDeclaration;
+import org.cqfn.uast.tree.green.ClassType;
 import org.cqfn.uast.tree.green.Declarator;
 import org.cqfn.uast.tree.green.DeclaratorList;
 import org.cqfn.uast.tree.green.Expression;
+import org.cqfn.uast.tree.green.ExpressionStatement;
+import org.cqfn.uast.tree.green.ExtendsBlock;
 import org.cqfn.uast.tree.green.FieldDeclaration;
+import org.cqfn.uast.tree.green.FunctionDeclaration;
+import org.cqfn.uast.tree.green.ImplementsBlock;
 import org.cqfn.uast.tree.green.Modifier;
 import org.cqfn.uast.tree.green.ModifierBlock;
+import org.cqfn.uast.tree.green.Parameter;
+import org.cqfn.uast.tree.green.ParameterBlock;
 import org.cqfn.uast.tree.green.Return;
 import org.cqfn.uast.tree.green.TypeName;
+import org.cqfn.uast.tree.green.VariableDeclaration;
+import org.cqfn.uast.tree.java.Synchronized;
 
 /**
  * Code generator for Java constructions (except expressions).
@@ -93,6 +102,45 @@ public class CodeGenerator {
             }
         );
         gen.put(
+            "Program",
+            node -> {
+                for (final Node item : node.getChildrenList()) {
+                    this.generate(item);
+                }
+            }
+        );
+        gen.put(
+            "ClassDeclaration",
+            node -> {
+                final ClassDeclaration cdecl = (ClassDeclaration) node;
+                final StringBuilder header = new StringBuilder();
+                header.append(CodeGenerator.generateModifiersList(cdecl.getModifiers()))
+                    .append("class ")
+                    .append(cdecl.getName().getData())
+                    .append(CodeGenerator.generateExtendsBlock(cdecl.getExtendsbl()))
+                    .append(CodeGenerator.generateImplementsBlock(cdecl.getImplementsbl()))
+                    .append(" {");
+                this.builder.print(header.toString());
+                this.builder.increaseIndent();
+                for (final Node item : cdecl.getBody().getChildrenList()) {
+                    this.generate(item);
+                }
+                this.builder.decreaseIndent();
+                this.builder.print("}");
+            }
+        );
+        gen.putAll(this.initClassMemberDeclarations());
+        gen.putAll(this.initStatements());
+        return gen;
+    }
+
+    /**
+     * Initialises map with class member declarations.
+     * @return A map
+     */
+    private Map<String, Generator> initClassMemberDeclarations() {
+        final Map<String, Generator> gen = new TreeMap<>();
+        gen.put(
             "FieldDeclaration",
             node -> {
                 final FieldDeclaration fdecl = (FieldDeclaration) node;
@@ -112,29 +160,80 @@ public class CodeGenerator {
             }
         );
         gen.put(
-            "Program",
+            "FunctionDeclaration",
             node -> {
-                for (final Node item : node.getChildrenList()) {
-                    this.generate(item);
-                }
-            }
-        );
-        gen.put(
-            "ClassDeclaration",
-            node -> {
-                final ClassDeclaration cdecl = (ClassDeclaration) node;
+                final FunctionDeclaration fdecl = (FunctionDeclaration) node;
                 final StringBuilder header = new StringBuilder();
-                header.append(CodeGenerator.generateModifiersList(cdecl.getModifiers()))
-                    .append("class ")
-                    .append(cdecl.getName().getData())
+                header.append(CodeGenerator.generateModifiersList(fdecl.getModifiers()))
+                    .append(TypeNames.INSTANCE.generate(fdecl.getDatatype()))
+                    .append(' ')
+                    .append(fdecl.getName().getData())
+                    .append(CodeGenerator.generateParameterBlock(fdecl.getParameters()))
                     .append(" {");
                 this.builder.print(header.toString());
                 this.builder.increaseIndent();
-                for (final Node item : cdecl.getBody().getChildrenList()) {
+                for (final Node item : fdecl.getBody().getChildrenList()) {
                     this.generate(item);
                 }
                 this.builder.decreaseIndent();
                 this.builder.print("}");
+            }
+        );
+        return gen;
+    }
+
+    /**
+     * Initialises map with class member declarations.
+     * @return A map
+     */
+    private Map<String, Generator> initStatements() {
+        final Map<String, Generator> gen = new TreeMap<>();
+        gen.put(
+            "ExpressionStatement",
+            node -> {
+                final ExpressionStatement exprstmt = (ExpressionStatement) node;
+                this.builder.print(
+                    String.format(
+                        "%s;",
+                        Expressions.INSTANCE.generate(exprstmt.getExpression())
+                    )
+                );
+            }
+        );
+        gen.put(
+            "Synchronized",
+            node -> {
+                final Synchronized synchr = (Synchronized) node;
+                final StringBuilder header = new StringBuilder(50);
+                header.append("synchronized (")
+                    .append(Expressions.INSTANCE.generate(synchr.getExpression()))
+                    .append(") {");
+                this.builder.print(header.toString());
+                this.builder.increaseIndent();
+                for (final Node item : synchr.getBody().getChildrenList()) {
+                    this.generate(item);
+                }
+                this.builder.decreaseIndent();
+                this.builder.print("}");
+            }
+        );
+        gen.put(
+            "VariableDeclaration",
+            node -> {
+                final VariableDeclaration vardecl = (VariableDeclaration) node;
+                final StringBuilder code = new StringBuilder();
+                code.append(CodeGenerator.generateModifiersList(vardecl.getModifiers()));
+                final TypeName type = vardecl.getDatatype();
+                if (type == null) {
+                    code.append("Object");
+                } else {
+                    code.append(TypeNames.INSTANCE.generate(type));
+                }
+                code
+                    .append(' ')
+                    .append(CodeGenerator.generateDeclaratorsList(vardecl.getDeclarators()))
+                    .append(';');
+                this.builder.print(code.toString());
             }
         );
         return gen;
@@ -174,6 +273,81 @@ public class CodeGenerator {
                 code.append(" = ").append(Expressions.INSTANCE.generate(value));
             }
         }
+        return code.toString();
+    }
+
+    /**
+     * Generates extends block from node.
+     * @param block Node
+     * @return Extends block
+     */
+    private static String generateExtendsBlock(final ExtendsBlock block) {
+        final StringBuilder code = new StringBuilder();
+        if (block != null) {
+            code.append(" extends ");
+            for (int index = 0; index < block.getChildCount(); index = index + 1) {
+                if (index > 0) {
+                    code.append(", ");
+                }
+                final ClassType type = block.getClassType(index);
+                code.append(TypeNames.INSTANCE.generate(type));
+            }
+        }
+        return code.toString();
+    }
+
+    /**
+     * Generates implements block from node.
+     * @param block Node
+     * @return Implements block
+     */
+    private static String generateImplementsBlock(final ImplementsBlock block) {
+        final StringBuilder code = new StringBuilder();
+        if (block != null) {
+            code.append(" implements ");
+            for (int index = 0; index < block.getChildCount(); index = index + 1) {
+                if (index > 0) {
+                    code.append(", ");
+                }
+                final ClassType type = block.getClassType(index);
+                code.append(TypeNames.INSTANCE.generate(type));
+            }
+        }
+        return code.toString();
+    }
+
+    /**
+     * Generates parameter block from node.
+     * @param block Node
+     * @return Parameter block
+     */
+    private static String generateParameterBlock(final ParameterBlock block) {
+        final StringBuilder code = new StringBuilder();
+        if (block != null) {
+            code.append('(');
+            for (int index = 0; index < block.getChildCount(); index = index + 1) {
+                if (index > 0) {
+                    code.append(", ");
+                }
+                final Parameter parameter = block.getParameter(index);
+                code.append(CodeGenerator.generateParameter(parameter));
+            }
+            code.append(')');
+        }
+        return code.toString();
+    }
+
+    /**
+     * Generates parameter from node.
+     * @param parameter Node
+     * @return Parameter
+     */
+    private static String generateParameter(final Parameter parameter) {
+        final StringBuilder code = new StringBuilder();
+        code.append(CodeGenerator.generateModifiersList(parameter.getModifiers()))
+            .append(TypeNames.INSTANCE.generate(parameter.getDatatype()))
+            .append(' ')
+            .append(parameter.getName().getData());
         return code.toString();
     }
 
