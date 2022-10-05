@@ -21,7 +21,7 @@ Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | Mu
     | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
 AssignableExpression <- Variable | 0;
-ExpressionStatement <- Expression;
+ExpressionStatement <- expression@Expression;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
@@ -82,22 +82,22 @@ PropertyAccess <- left@Expression, right@Expression;
 ModifierBlock <- {Modifier};
 ExpressionList <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
-Parameter <- [ModifierBlock], [TypeName], Identifier;
-FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
+FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 ParameterBlock <- {Parameter};
-ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [ExtendsBlock], [ImplementsBlock], body@ClassBody;
+ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
 ExtendsBlock <- {ClassType};
 ImplementsBlock <- {ClassType};
 ClassBody <- {ClassItem};
 ClassItem <- FunctionDeclaration | FieldDeclaration;
 FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
-VariableDeclaration <- [ModifierBlock], [TypeName], DeclaratorList;
+VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 DeclaratorList <- {Declarator};
 Declarator <- name@Identifier, [value@Expression];
 
 java:
 
-Synchronized <- Expression, StatementBlock;
+Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
