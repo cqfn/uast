@@ -33,6 +33,7 @@ import org.cqfn.uast.tree.green.Expression;
 import org.cqfn.uast.tree.green.ExpressionList;
 import org.cqfn.uast.tree.green.FunctionCall;
 import org.cqfn.uast.tree.green.Name;
+import org.cqfn.uast.tree.green.ParenthesizedExpression;
 import org.cqfn.uast.tree.green.PostDecrement;
 import org.cqfn.uast.tree.green.PostIncrement;
 import org.cqfn.uast.tree.green.PropertyAccess;
@@ -93,6 +94,13 @@ public final class Expressions {
             expr -> {
                 final Variable node = (Variable) expr;
                 return Names.INSTANCE.generate((Name) node.getChild(0));
+            }
+        );
+        gen.put(
+            "ParenthesizedExpression",
+            expr -> {
+                final ParenthesizedExpression node = (ParenthesizedExpression) expr;
+                return String.format("(%s)", this.generate(node.getExpression()));
             }
         );
         gen.put(

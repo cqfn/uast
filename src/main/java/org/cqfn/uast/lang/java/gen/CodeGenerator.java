@@ -122,8 +122,15 @@ public class CodeGenerator {
                     .append(" {");
                 this.builder.print(header.toString());
                 this.builder.increaseIndent();
+                int idx = 0;
                 for (final Node item : cdecl.getBody().getChildrenList()) {
+                    if (idx > 0) {
+                        this.builder.decreaseIndent();
+                        this.builder.print("");
+                        this.builder.increaseIndent();
+                    }
                     this.generate(item);
+                    idx += 1;
                 }
                 this.builder.decreaseIndent();
                 this.builder.print("}");

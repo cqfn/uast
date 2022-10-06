@@ -28,7 +28,6 @@ import org.cqfn.astranaut.core.Node;
 import org.cqfn.astranaut.core.utils.FilesReader;
 import org.cqfn.uast.lang.java.JavaParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -140,7 +139,6 @@ class CodeGeneratorTest {
      * Testing generator for complex carrying case.
      */
     @Test
-    @Disabled
     void carryingCase() {
         final String code = this.readTest("carrying/Carrying.java");
         final String result = CodeGeneratorTest.parseAndGenerate(code);
@@ -151,7 +149,6 @@ class CodeGeneratorTest {
      * Testing generator for printing to console case.
      */
     @Test
-    @Disabled
     void printToConsoleCase() {
         final String code = this.readTest("print_to_console/Print.java");
         final String result = CodeGeneratorTest.parseAndGenerate(code);

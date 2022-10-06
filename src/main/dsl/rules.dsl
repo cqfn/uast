@@ -8,7 +8,7 @@ Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
 Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
- FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment;
+ FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment | ParenthesizedExpression;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
@@ -21,7 +21,9 @@ Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | Mu
     | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
 AssignableExpression <- Variable | 0;
+
 ExpressionStatement <- expression@Expression;
+ParenthesizedExpression <- expression@Expression;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
@@ -101,6 +103,9 @@ Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
+
+
+EnclosedExpr(#1) -> ParenthesizedExpression(#1);
 
 BinaryExpr(#1, #2)<"+"> -> Addition(#1, #2);
 BinaryExpr(Name(#1), Name(#2))<"+"> -> Addition(Variable(Name(#1)), Variable(Name(#2)));
