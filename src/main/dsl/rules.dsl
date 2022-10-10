@@ -252,6 +252,8 @@ SimpleName<#1> -> Identifier<#1>;
 NameExpr(#1) -> Name(#1);
 FieldAccessExpr(NameExpr(#1), #2) -> Name(Name(#1), #2);
 FieldAccessExpr(#1, #2) -> Name(#1, #2);
+FieldAccessExpr(#1, #2) -> PropertyAccess(#1, #2);
+ThisExpr -> This;
 StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
