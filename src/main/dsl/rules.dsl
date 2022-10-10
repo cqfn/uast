@@ -7,7 +7,7 @@ PrimitiveType <- $String$, $#$, $#$;
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
-Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
+Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier |
  FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment | ParenthesizedExpression;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
@@ -20,7 +20,7 @@ LogicalExpression <- LogicalAnd | LogicalOr | LogicalNot;
 Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | MultiplicationAssignment | DivisionAssignment
     | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
-AssignableExpression <- Variable | 0;
+AssignableExpression <- Variable | PropertyAccess;
 
 ExpressionStatement <- expression@Expression;
 ParenthesizedExpression <- expression@Expression;
@@ -452,6 +452,7 @@ singleExpression(literal<"+">, #1) ->  Positive(#1);
 
 identifier(literal<#1>) -> Identifier<#1>;
 
+singleExpression(#1, literal<"=">, #2) -> SimpleAssignment(#1, #2);
 singleExpression(#1, literal<"=">, #2) -> SimpleAssignment(Variable(Name(#1)), #2);
 singleExpression(#1, assignmentOperator(literal<"+=">), #2) -> AdditionAssignment(#1, #2);
 singleExpression(#1, assignmentOperator(literal<"-=">), #2) -> SubtractionAssignment(#1, #2);
@@ -464,6 +465,9 @@ singleExpression(#1, assignmentOperator(literal<"^=">), #2) -> ExclusiveOr(#1, #
 singleExpression(#1, assignmentOperator(literal<">>=">), #2) -> RightShift(#1, #2);
 singleExpression(#1, assignmentOperator(literal<">>>=">), #2) -> UnsignedRightShift(#1, #2);
 singleExpression(#1, assignmentOperator(literal<"<<=">), #2) -> LeftShift(#1, #2);
+
+singleExpression(literal<"this">) -> This;
+singleExpression(This, identifierName(#1)) -> PropertyAccess(This, #1);
 
 variableDeclaration(assignable(#1), literal<"=">, #2) -> Declarator(#1, #2);
 variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDeclaration(DeclaratorList(#1));
