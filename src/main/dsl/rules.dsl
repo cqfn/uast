@@ -206,6 +206,7 @@ BinaryExpr(Name(#1), #2)<"||"> -> LogicalOr(Variable(Name(#1)), #2);
 BinaryExpr(#1, Name(#2))<"||"> -> LogicalOr(#1, Variable(Name(#2)));
 
 AssignExpr(#1, #2)<"="> -> SimpleAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"="> -> SimpleAssignment(#1, Variable(#2));
 AssignExpr(#1, #2)<"+="> -> AdditionAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"-="> -> SubtractionAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"*="> -> MultiplicationAssignment(Variable(#1), #2);
@@ -217,7 +218,6 @@ AssignExpr(#1, #2)<"^="> -> ExclusiveOrAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<">>="> -> RightShiftAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<">>>="> -> UnsignedRightShiftAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"<<="> -> LeftShiftAssignment(Variable(#1), #2);
-
 
 LogicalComplement(Name(#1)) -> LogicalNot(Variable(Name(#1)));
 LogicalComplement(#1) -> LogicalNot(#1);
@@ -266,6 +266,7 @@ ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 Parameter(#1, #2) -> Parameter(#1, #2);
 Parameter(Modifier<#1>, #2, #3) -> Parameter(ModifierBlock(Modifier<#1>), #2, #3);
 VoidType -> VoidType;
+Modifier<#1> -> Modifier<#1>;
 
 CompilationUnit(#1) -> Program(#1);
 
@@ -293,6 +294,7 @@ FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorL
 FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
 
 FieldDeclaration(Modifier<#3>, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(Modifier<#3>), #1, DeclaratorList(Declarator(#2)));
+FieldDeclaration(#1, #2, VariableDeclarator(#3, #4)) -> FieldDeclaration(ModifierBlock(#1, #2), #3, DeclaratorList(Declarator(#4)));
 FieldDeclaration(Modifier<#4>, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(Modifier<#4>), #1, DeclaratorList(Declarator(#2, #3)));
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
@@ -314,6 +316,9 @@ MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7) ->
   FunctionDeclaration(ModifierBlock(Modifier<#1>), #6, #2, ParameterBlock(#3, #4, #5), #7);
 MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7, #8) ->
   FunctionDeclaration(ModifierBlock(Modifier<#1>), #7, #2, ParameterBlock(#3, #4, #5, #6), #8);
+
+ConstructorDeclaration(#1, #2, #3, #4, #5) ->
+    FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3, #4), #5);
 
 js:
 
@@ -528,8 +533,6 @@ formalParameterList(#1...) -> ParameterBlock(#1);
 
 python:
 
-self -> This;
-
 expr(atom(literal<#1>)) -> StringLiteral<#1>;
 expr(atom(name(literal<#1>))) -> Variable(Name(Identifier<#1>));
 expr(atom(integer(literal<#1>))) -> IntegerLiteral<#1>;
@@ -542,6 +545,9 @@ expr(#1, literal<"/">, #2) -> Division(#1, #2);
 expr(#1, literal<"%">, #2) -> Modulus(#1, #2);
 
 expr(atom(testlist_comp(#1))) -> #1;
+
+atom(name(literal<"self">)) -> This;
+expr(This, trailer(name(literal<#1>))) -> PropertyAccess(This, Identifier<#1>);
 
 comparison(comparison(#1), literal<"==">, comparison(#2)) -> IsEqualTo(#1, #2);
 comparison(comparison(#1), literal<"!=">, comparison(#2)) -> NotEqualTo(#1, #2);
