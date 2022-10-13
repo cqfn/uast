@@ -73,7 +73,7 @@ public final class TypeNames {
     private Map<String, Generator> init() {
         final Map<String, Generator> gen = new TreeMap<>();
         gen.put("PrimitiveType", Node::getData);
-        gen.put("VoidType", name -> "Void");
+        gen.put("VoidType", name -> "void");
         gen.put(
             "ArrayType",
             name -> {

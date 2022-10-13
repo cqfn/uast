@@ -33,9 +33,11 @@ import org.cqfn.uast.tree.green.Expression;
 import org.cqfn.uast.tree.green.ExpressionList;
 import org.cqfn.uast.tree.green.FunctionCall;
 import org.cqfn.uast.tree.green.Name;
+import org.cqfn.uast.tree.green.ParenthesizedExpression;
 import org.cqfn.uast.tree.green.PostDecrement;
 import org.cqfn.uast.tree.green.PostIncrement;
 import org.cqfn.uast.tree.green.PropertyAccess;
+import org.cqfn.uast.tree.green.StringLiteral;
 import org.cqfn.uast.tree.green.UnaryExpression;
 import org.cqfn.uast.tree.green.Variable;
 
@@ -79,13 +81,26 @@ public final class Expressions {
         final Map<String, Generator> gen = new TreeMap<>();
         gen.put("This", expr -> "this");
         gen.put("IntegerLiteral", Node::getData);
-        gen.put("StringLiteral", Node::getData);
+        gen.put(
+            "StringLiteral",
+            expr -> {
+                final StringLiteral node = (StringLiteral) expr;
+                return String.format("\"%s\"", node.getData());
+            }
+        );
         gen.put("Identifier", Node::getData);
         gen.put(
             "Variable",
             expr -> {
                 final Variable node = (Variable) expr;
                 return Names.INSTANCE.generate((Name) node.getChild(0));
+            }
+        );
+        gen.put(
+            "ParenthesizedExpression",
+            expr -> {
+                final ParenthesizedExpression node = (ParenthesizedExpression) expr;
+                return String.format("(%s)", this.generate(node.getExpression()));
             }
         );
         gen.put(
@@ -102,9 +117,9 @@ public final class Expressions {
             expr -> {
                 final FunctionCall node = (FunctionCall) expr;
                 String owner = "";
-                final String classname = Names.INSTANCE.generate(node.getOwner());
-                if (!classname.isEmpty()) {
-                    owner = classname.concat(".");
+                final Name classname = node.getOwner();
+                if (classname != null) {
+                    owner = Names.INSTANCE.generate(classname).concat(".");
                 }
                 final String name = this.generate(node.getName());
                 final ExpressionList list = node.getArguments();

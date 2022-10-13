@@ -7,8 +7,8 @@ PrimitiveType <- $String$, $#$, $#$;
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
-Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | PropertyAccess |
- FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment;
+Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier |
+ FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment | ParenthesizedExpression;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
@@ -20,8 +20,10 @@ LogicalExpression <- LogicalAnd | LogicalOr | LogicalNot;
 Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | MultiplicationAssignment | DivisionAssignment
     | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
-AssignableExpression <- Variable | 0;
-ExpressionStatement <- Expression;
+AssignableExpression <- Variable | PropertyAccess;
+
+ExpressionStatement <- expression@Expression;
+ParenthesizedExpression <- expression@Expression;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
@@ -82,25 +84,28 @@ PropertyAccess <- left@Expression, right@Expression;
 ModifierBlock <- {Modifier};
 ExpressionList <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
-Parameter <- [ModifierBlock], [TypeName], Identifier;
-FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
+FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 ParameterBlock <- {Parameter};
-ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [ExtendsBlock], [ImplementsBlock], body@ClassBody;
+ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
 ExtendsBlock <- {ClassType};
 ImplementsBlock <- {ClassType};
 ClassBody <- {ClassItem};
 ClassItem <- FunctionDeclaration | FieldDeclaration;
 FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
-VariableDeclaration <- [ModifierBlock], [TypeName], DeclaratorList;
+VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 DeclaratorList <- {Declarator};
 Declarator <- name@Identifier, [value@Expression];
 
 java:
 
-Synchronized <- Expression, StatementBlock;
+Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
+
+
+EnclosedExpr(#1) -> ParenthesizedExpression(#1);
 
 BinaryExpr(#1, #2)<"+"> -> Addition(#1, #2);
 BinaryExpr(Name(#1), Name(#2))<"+"> -> Addition(Variable(Name(#1)), Variable(Name(#2)));
@@ -201,6 +206,7 @@ BinaryExpr(Name(#1), #2)<"||"> -> LogicalOr(Variable(Name(#1)), #2);
 BinaryExpr(#1, Name(#2))<"||"> -> LogicalOr(#1, Variable(Name(#2)));
 
 AssignExpr(#1, #2)<"="> -> SimpleAssignment(Variable(#1), #2);
+AssignExpr(#1, #2)<"="> -> SimpleAssignment(#1, Variable(#2));
 AssignExpr(#1, #2)<"+="> -> AdditionAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"-="> -> SubtractionAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"*="> -> MultiplicationAssignment(Variable(#1), #2);
@@ -212,7 +218,6 @@ AssignExpr(#1, #2)<"^="> -> ExclusiveOrAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<">>="> -> RightShiftAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<">>>="> -> UnsignedRightShiftAssignment(Variable(#1), #2);
 AssignExpr(#1, #2)<"<<="> -> LeftShiftAssignment(Variable(#1), #2);
-
 
 LogicalComplement(Name(#1)) -> LogicalNot(Variable(Name(#1)));
 LogicalComplement(#1) -> LogicalNot(#1);
@@ -247,6 +252,8 @@ SimpleName<#1> -> Identifier<#1>;
 NameExpr(#1) -> Name(#1);
 FieldAccessExpr(NameExpr(#1), #2) -> Name(Name(#1), #2);
 FieldAccessExpr(#1, #2) -> Name(#1, #2);
+FieldAccessExpr(#1, #2) -> PropertyAccess(#1, #2);
+ThisExpr -> This;
 StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
@@ -259,6 +266,7 @@ ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 Parameter(#1, #2) -> Parameter(#1, #2);
 Parameter(Modifier<#1>, #2, #3) -> Parameter(ModifierBlock(Modifier<#1>), #2, #3);
 VoidType -> VoidType;
+Modifier<#1> -> Modifier<#1>;
 
 CompilationUnit(#1) -> Program(#1);
 
@@ -286,6 +294,7 @@ FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorL
 FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
 
 FieldDeclaration(Modifier<#3>, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(Modifier<#3>), #1, DeclaratorList(Declarator(#2)));
+FieldDeclaration(#1, #2, VariableDeclarator(#3, #4)) -> FieldDeclaration(ModifierBlock(#1, #2), #3, DeclaratorList(Declarator(#4)));
 FieldDeclaration(Modifier<#4>, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(Modifier<#4>), #1, DeclaratorList(Declarator(#2, #3)));
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
@@ -307,6 +316,9 @@ MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7) ->
   FunctionDeclaration(ModifierBlock(Modifier<#1>), #6, #2, ParameterBlock(#3, #4, #5), #7);
 MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7, #8) ->
   FunctionDeclaration(ModifierBlock(Modifier<#1>), #7, #2, ParameterBlock(#3, #4, #5, #6), #8);
+
+ConstructorDeclaration(#1, #2, #3, #4, #5) ->
+    FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3, #4), #5);
 
 js:
 
@@ -445,6 +457,7 @@ singleExpression(literal<"+">, #1) ->  Positive(#1);
 
 identifier(literal<#1>) -> Identifier<#1>;
 
+singleExpression(#1, literal<"=">, #2) -> SimpleAssignment(#1, #2);
 singleExpression(#1, literal<"=">, #2) -> SimpleAssignment(Variable(Name(#1)), #2);
 singleExpression(#1, assignmentOperator(literal<"+=">), #2) -> AdditionAssignment(#1, #2);
 singleExpression(#1, assignmentOperator(literal<"-=">), #2) -> SubtractionAssignment(#1, #2);
@@ -457,6 +470,9 @@ singleExpression(#1, assignmentOperator(literal<"^=">), #2) -> ExclusiveOr(#1, #
 singleExpression(#1, assignmentOperator(literal<">>=">), #2) -> RightShift(#1, #2);
 singleExpression(#1, assignmentOperator(literal<">>>=">), #2) -> UnsignedRightShift(#1, #2);
 singleExpression(#1, assignmentOperator(literal<"<<=">), #2) -> LeftShift(#1, #2);
+
+singleExpression(literal<"this">) -> This;
+singleExpression(This, identifierName(#1)) -> PropertyAccess(This, #1);
 
 variableDeclaration(assignable(#1), literal<"=">, #2) -> Declarator(#1, #2);
 variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDeclaration(DeclaratorList(#1));
@@ -517,8 +533,6 @@ formalParameterList(#1...) -> ParameterBlock(#1);
 
 python:
 
-self -> This;
-
 expr(atom(literal<#1>)) -> StringLiteral<#1>;
 expr(atom(name(literal<#1>))) -> Variable(Name(Identifier<#1>));
 expr(atom(integer(literal<#1>))) -> IntegerLiteral<#1>;
@@ -531,6 +545,9 @@ expr(#1, literal<"/">, #2) -> Division(#1, #2);
 expr(#1, literal<"%">, #2) -> Modulus(#1, #2);
 
 expr(atom(testlist_comp(#1))) -> #1;
+
+atom(name(literal<"self">)) -> This;
+expr(This, trailer(name(literal<#1>))) -> PropertyAccess(This, Identifier<#1>);
 
 comparison(comparison(#1), literal<"==">, comparison(#2)) -> IsEqualTo(#1, #2);
 comparison(comparison(#1), literal<"!=">, comparison(#2)) -> NotEqualTo(#1, #2);
