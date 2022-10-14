@@ -26,6 +26,7 @@ package org.cqfn.uast.lang.java;
 
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.LiteralStringValueExpr;
@@ -95,6 +96,12 @@ public class JavaRawToNodeConverter {
                 ctor.setName("ClassType");
             } else {
                 ctor.setName("InterfaceType");
+            }
+        } else if (parent.isPresent() && parent.get() instanceof MethodDeclaration) {
+            if (((MethodDeclaration) parent.get()).getThrownExceptions().contains(node)) {
+                ctor.setName("Exception");
+            } else {
+                ctor.setName("ReturnType");
             }
         } else {
             ctor.setName(node.getClass().getSimpleName());

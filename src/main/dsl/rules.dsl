@@ -85,17 +85,19 @@ ModifierBlock <- {Modifier};
 ExpressionList <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
 Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
-FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, [throwsbl@ThrowsBlock], body@StatementBlock;
 ParameterBlock <- {Parameter};
 ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
 ExtendsBlock <- {ClassType};
 ImplementsBlock <- {ClassType};
+ThrowsBlock <- {Exception};
 ClassBody <- {ClassItem};
 ClassItem <- FunctionDeclaration | FieldDeclaration;
 FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 DeclaratorList <- {Declarator};
 Declarator <- name@Identifier, [value@Expression];
+Exception <- name@ClassType;
 
 java:
 
@@ -245,6 +247,7 @@ ExpressionStmt(#1) -> ExpressionStatement(#1);
 ExpressionStmt(#1) -> #1;
 
 ReturnStmt(#1) -> Return(#1);
+ReturnStmt(#1) -> Return(Variable(#1));
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
 SynchronizedStmt(#1, #2) -> Synchronized(Variable(#1), #2);
@@ -258,10 +261,13 @@ StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
 MethodCallExpr(#1, #2, Name(#3)) -> FunctionCall(#1, #2, ExpressionList(Variable(Name(#3))));
-MethodCallExpr(#1, #2, #3) -> FunctionCall(#1, #2, ExpressionList(#3));
 MethodCallExpr(#1, #2...) -> FunctionCall(#1, ExpressionList(#2));
+MethodCallExpr(Name#1, Identifier#2, #3...) -> FunctionCall(#1, #2, ExpressionList(#3));
 ClassType(#1) -> ClassType(Name(#1));
 ClassOrInterfaceType(#1) -> ClassType(Name(#1));
+ReturnType(#1) -> ClassType(Name(#1));
+Exception(#1) -> Exception(ClassType(Name(#1)));
+Exception(#1) -> Exception(ClassType(#1));
 ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 Parameter(Modifier#1, #2, #3) -> Parameter(ModifierBlock(#1), #2, #3);
 VoidType -> VoidType;
@@ -292,6 +298,8 @@ FieldDeclaration(Modifier#4, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration
 
 MethodDeclaration(Modifier#1, #2, Parameter#3, #4, #5) ->
   FunctionDeclaration(ModifierBlock(#1), #4, #2, ParameterBlock(#3), #5);
+MethodDeclaration(Modifier#1, #2, Parameter#3, Exception#6, #4, #5) ->
+  FunctionDeclaration(ModifierBlock(#1), #4, #2, ParameterBlock(#3), #5, ThrowsBlock(#6));
 
 ConstructorDeclaration(Modifier#1, #2, Parameter#3, #4) ->
     FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3), #4);
