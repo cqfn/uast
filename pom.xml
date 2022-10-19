@@ -149,7 +149,7 @@ SOFTWARE.
       <plugin>
         <groupId>org.cqfn</groupId>
         <artifactId>astranaut-maven-plugin</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.7</version>
         <configuration>
           <dsl>${basedir}/src/main/dsl/rules.dsl</dsl>
           <output>${basedir}/src/main/java</output>
