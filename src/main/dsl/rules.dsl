@@ -85,17 +85,19 @@ ModifierBlock <- {Modifier};
 ExpressionList <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
 Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
-FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
+FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, [throwsbl@ThrowsBlock], body@StatementBlock;
 ParameterBlock <- {Parameter};
 ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
 ExtendsBlock <- {ClassType};
 ImplementsBlock <- {ClassType};
+ThrowsBlock <- {Exception};
 ClassBody <- {ClassItem};
 ClassItem <- FunctionDeclaration | FieldDeclaration;
 FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
 DeclaratorList <- {Declarator};
 Declarator <- name@Identifier, [value@Expression];
+Exception <- name@ClassType;
 
 java:
 
@@ -238,13 +240,14 @@ Plus(#1) -> Positive(#1);
 PrimitiveType<#1> -> PrimitiveType<#1>;
 
 VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
-VariableDeclarationExpr(Modifier<#1>, VariableDeclarator(#2, #3, #4))
-    -> VariableDeclaration(ModifierBlock(Modifier<#1>), #2, DeclaratorList(Declarator(#3, #4)));
+VariableDeclarationExpr(Modifier#1, VariableDeclarator(#2, #3, #4))
+    -> VariableDeclaration(ModifierBlock(#1), #2, DeclaratorList(Declarator(#3, #4)));
 
 ExpressionStmt(#1) -> ExpressionStatement(#1);
 ExpressionStmt(#1) -> #1;
 
 ReturnStmt(#1) -> Return(#1);
+ReturnStmt(#1) -> Return(Variable(#1));
 BlockStmt(#1...) -> StatementBlock(#1);
 SynchronizedStmt(#1, #2) -> Synchronized(#1, #2);
 SynchronizedStmt(#1, #2) -> Synchronized(Variable(#1), #2);
@@ -258,13 +261,15 @@ StringLiteralExpr<#1> -> StringLiteral<#1>;
 EnclosedExpr(Addition(#1, #2)) -> Addition(#1, #2);
 BinaryExpr(#1, EnclosedExpr(#2))<"+"> -> Addition(#1, #2);
 MethodCallExpr(#1, #2, Name(#3)) -> FunctionCall(#1, #2, ExpressionList(Variable(Name(#3))));
-MethodCallExpr(#1, #2, #3) -> FunctionCall(#1, #2, ExpressionList(#3));
 MethodCallExpr(#1, #2...) -> FunctionCall(#1, ExpressionList(#2));
+MethodCallExpr(Name#1, Identifier#2, #3...) -> FunctionCall(#1, #2, ExpressionList(#3));
 ClassType(#1) -> ClassType(Name(#1));
 ClassOrInterfaceType(#1) -> ClassType(Name(#1));
+ReturnType(#1) -> ClassType(Name(#1));
+Exception(#1) -> Exception(ClassType(Name(#1)));
+Exception(#1) -> Exception(ClassType(#1));
 ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
-Parameter(#1, #2) -> Parameter(#1, #2);
-Parameter(Modifier<#1>, #2, #3) -> Parameter(ModifierBlock(Modifier<#1>), #2, #3);
+Parameter(Modifier#1, #2, #3) -> Parameter(ModifierBlock(#1), #2, #3);
 VoidType -> VoidType;
 Modifier<#1> -> Modifier<#1>;
 
@@ -272,53 +277,32 @@ CompilationUnit(#1) -> Program(#1);
 
 // Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
 
-ClassOrInterfaceDeclaration(Modifier<#1>, #2, #3) ->
-  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody(#3));
+ClassOrInterfaceDeclaration(Modifier#1, #2, InterfaceType(#3)) ->
+  ClassDeclaration(ModifierBlock(#1), #2, ImplementsBlock(ClassType(Name(#3))), ClassBody);
 
-ClassOrInterfaceDeclaration(Modifier<#1>, #2, #3...) ->
-  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody(#3));
+ClassOrInterfaceDeclaration(Modifier#1, #2, ClassType(#3)) ->
+  ClassDeclaration(ModifierBlock(#1), #2, ExtendsBlock(ClassType(#3)), ClassBody);
 
-ClassOrInterfaceDeclaration(Modifier<#1>, #2) ->
-  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ClassBody);
+ClassOrInterfaceDeclaration(Modifier#1, #2, #3...) ->
+  ClassDeclaration(ModifierBlock(#1), #2, ClassBody(#3));
 
-ClassOrInterfaceDeclaration(#2) -> ClassDeclaration(#2, ClassBody);
 ClassOrInterfaceDeclaration(#1, #2...) -> ClassDeclaration(#1, ClassBody(#2));
-
-ClassOrInterfaceDeclaration(Modifier<#1>, #2, InterfaceType(#3)) ->
-  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ImplementsBlock(ClassType(Name(#3))), ClassBody);
-
-ClassOrInterfaceDeclaration(Modifier<#1>, #2, ClassType(#3)) ->
-  ClassDeclaration(ModifierBlock(Modifier<#1>), #2, ExtendsBlock(ClassType(#3)), ClassBody);
 
 FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2)));
 FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
 
-FieldDeclaration(Modifier<#3>, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(Modifier<#3>), #1, DeclaratorList(Declarator(#2)));
-FieldDeclaration(#1, #2, VariableDeclarator(#3, #4)) -> FieldDeclaration(ModifierBlock(#1, #2), #3, DeclaratorList(Declarator(#4)));
-FieldDeclaration(Modifier<#4>, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(Modifier<#4>), #1, DeclaratorList(Declarator(#2, #3)));
+FieldDeclaration(Modifier#3, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(#3), #1, DeclaratorList(Declarator(#2)));
+FieldDeclaration(Modifier#4, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(#4), #1, DeclaratorList(Declarator(#2, #3)));
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 
-MethodDeclaration(Modifier<#1>, Modifier<#2>, #3, #4, #5, #6) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>, Modifier<#2>), #5, #3, ParameterBlock(#4), #6);
+MethodDeclaration(Modifier#1, #2, Parameter#3, #4, #5) ->
+  FunctionDeclaration(ModifierBlock(#1), #4, #2, ParameterBlock(#3), #5);
+MethodDeclaration(Modifier#1, #2, Parameter#3, Exception#6, #4, #5) ->
+  FunctionDeclaration(ModifierBlock(#1), #4, #2, ParameterBlock(#3), #5, ThrowsBlock(#6));
 
-MethodDeclaration(Modifier<#1>, Modifier<#2>, #3, #4, #5, #6) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>, Modifier<#2>), #5, #3, ParameterBlock(#4), #6);
-
-MethodDeclaration(Modifier<#1>, #2, #3, #4) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>), #3, #2, ParameterBlock, #4);
-
-MethodDeclaration(Modifier<#1>, #2, #3, #4, #5) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>), #4, #2, ParameterBlock(#3), #5);
-MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>), #5, #2, ParameterBlock(#3, #4), #6);
-MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>), #6, #2, ParameterBlock(#3, #4, #5), #7);
-MethodDeclaration(Modifier<#1>, #2, #3, #4, #5, #6, #7, #8) ->
-  FunctionDeclaration(ModifierBlock(Modifier<#1>), #7, #2, ParameterBlock(#3, #4, #5, #6), #8);
-
-ConstructorDeclaration(#1, #2, #3, #4, #5) ->
-    FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3, #4), #5);
+ConstructorDeclaration(Modifier#1, #2, Parameter#3, #4) ->
+    FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3), #4);
 
 js:
 
@@ -355,7 +339,7 @@ singleExpression(#1, literal<"/">, singleExpression(#2)) -> Division(#1, Variabl
 singleExpression(#1, literal<"%">, #2) -> Modulus(#1, #2);
 singleExpression(singleExpression(#1), literal<"%">, singleExpression(#2)) -> Modulus(Variable(Name(#1)), Variable(Name(#2)));
 singleExpression(singleExpression(#1), literal<"%">, #2) -> Modulus(Variable(Name(#1)), #2);
-singleExpression(#1, literal<"%">, singleExpression(#2)) -> Modulusfor(#1, Variable(Name(#2)));
+singleExpression(#1, literal<"%">, singleExpression(#2)) -> Modulus(#1, Variable(Name(#2)));
 
 singleExpression(#1, literal<"==">, #2) -> IsEqualTo(#1, #2);
 singleExpression(singleExpression(#1), literal<"==">, singleExpression(#2)) -> IsEqualTo(Variable(Name(#1)), Variable(Name(#2)));
@@ -501,7 +485,6 @@ returnStatement(literal<"return">, expressionSequence(#1)) -> Return(#1);
 
 // Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
 
-classDeclaration(literal<"class">, #1, classTail) -> ClassDeclaration(#1, ClassBody);
 classDeclaration(literal<"class">, #1, classTail(literal<"extends">, Variable(#2)))
     -> ClassDeclaration(#1, ExtendsBlock(ClassType(#2)), ClassBody);
 classDeclaration(literal<"class">, #1, classTail(#2, classElement(emptyStatement_)))
@@ -513,11 +496,11 @@ classElement(#1) -> #1;
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 
-functionBody(sourceElements(#1...)) -> StatementBlock(#1);
 functionBody(sourceElements(sourceElement(statement(expressionStatement(expressionSequence(#1)))))) ->
   StatementBlock(#1);
 functionBody(sourceElements(sourceElement(statement(#1)))) ->
   StatementBlock(#1);
+functionBody(sourceElements(#1...)) -> StatementBlock(#1);
 
 functionDeclaration(literal<"function">, #1, #2) ->
   FunctionDeclaration(#1, ParameterBlock, #2);
