@@ -27,17 +27,20 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
+import org.cqfn.uast.tree.green.ArrayInitializer;
 import org.cqfn.uast.tree.green.Assignment;
 import org.cqfn.uast.tree.green.BinaryExpression;
 import org.cqfn.uast.tree.green.Expression;
 import org.cqfn.uast.tree.green.ExpressionList;
 import org.cqfn.uast.tree.green.FunctionCall;
 import org.cqfn.uast.tree.green.Name;
+import org.cqfn.uast.tree.green.ObjectCreationExpression;
 import org.cqfn.uast.tree.green.ParenthesizedExpression;
 import org.cqfn.uast.tree.green.PostDecrement;
 import org.cqfn.uast.tree.green.PostIncrement;
 import org.cqfn.uast.tree.green.PropertyAccess;
 import org.cqfn.uast.tree.green.StringLiteral;
+import org.cqfn.uast.tree.green.TypeName;
 import org.cqfn.uast.tree.green.UnaryExpression;
 import org.cqfn.uast.tree.green.Variable;
 
@@ -80,6 +83,7 @@ public final class Expressions {
     private Map<String, Generator> init() {
         final Map<String, Generator> gen = new TreeMap<>();
         gen.put("This", expr -> "this");
+        gen.put("NullLiteral", expr -> "null");
         gen.put("IntegerLiteral", Node::getData);
         gen.put(
             "StringLiteral",
@@ -101,6 +105,58 @@ public final class Expressions {
             expr -> {
                 final ParenthesizedExpression node = (ParenthesizedExpression) expr;
                 return String.format("(%s)", this.generate(node.getExpression()));
+            }
+        );
+        gen.put(
+            "ArrayInitializer",
+            expr -> {
+                final ArrayInitializer node = (ArrayInitializer) expr;
+                String params = "";
+                final int size = node.getChildCount();
+                if (size > 0) {
+                    final StringBuilder builder = new StringBuilder();
+                    builder.append(this.generate(node.getExpression(0)));
+                    for (int idx = 1; idx < size; idx += 1) {
+                        builder.append(", ").append(this.generate(node.getExpression(idx)));
+                    }
+                    params = builder.toString();
+                }
+                return String.format("{%s}", params);
+            }
+        );
+        gen.putAll(this.initBinaryExpressions());
+        gen.putAll(this.initUnaryExpressions());
+        gen.putAll(this.initAssignmentExpressions());
+        gen.putAll(this.initObjectRelatedExpressions());
+        return gen;
+    }
+
+    /**
+     * Initialises map with expressions related to objects.
+     * @return A map
+     */
+    private Map<String, Generator> initObjectRelatedExpressions() {
+        final Map<String, Generator> gen = new TreeMap<>();
+        gen.put(
+            "ObjectCreationExpression",
+            expr -> {
+                final ObjectCreationExpression node = (ObjectCreationExpression) expr;
+                final TypeName typename = node.getDatatype();
+                final String name = TypeNames.INSTANCE.generate(typename);
+                final ExpressionList list = node.getArguments();
+                String params = "";
+                if (list != null) {
+                    final int size = list.getChildCount();
+                    if (size > 0) {
+                        final StringBuilder builder = new StringBuilder();
+                        builder.append(this.generate(list.getExpression(0)));
+                        for (int idx = 1; idx < size; idx += 1) {
+                            builder.append(", ").append(this.generate(list.getExpression(idx)));
+                        }
+                        params = builder.toString();
+                    }
+                }
+                return String.format("new %s(%s)", name, params);
             }
         );
         gen.put(
@@ -136,9 +192,6 @@ public final class Expressions {
                 return String.format("%s%s(%s)", owner, name, params);
             }
         );
-        gen.putAll(this.initBinaryExpressions());
-        gen.putAll(this.initUnaryExpressions());
-        gen.putAll(this.initAssignmentExpressions());
         return gen;
     }
 

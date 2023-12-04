@@ -156,6 +156,26 @@ class CodeGeneratorTest {
     }
 
     /**
+     * Testing generator for object creation.
+     */
+    @Test
+    void objectCreation() {
+        final String code = this.readTest("variable_declaration/ObjectDeclarator.java");
+        final String result = CodeGeneratorTest.parseAndGenerate(code);
+        Assertions.assertEquals(code, result);
+    }
+
+    /**
+     * Testing generator for array creation.
+     */
+    @Test
+    void arrayCreation() {
+        final String code = this.readTest("arrays/ArrayCreation.java");
+        final String result = CodeGeneratorTest.parseAndGenerate(code);
+        Assertions.assertEquals(code, result);
+    }
+
+    /**
      * Test that parses Java source code and then generate it again.
      * @param source Java source code
      * @return Generated source code

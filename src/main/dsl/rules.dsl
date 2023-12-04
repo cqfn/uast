@@ -7,8 +7,9 @@ PrimitiveType <- $String$, $#$, $#$;
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
-Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier |
- FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment | ParenthesizedExpression;
+Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | NullLiteral |
+ FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment |
+ ParenthesizedExpression | ObjectCreationExpression | ArrayInitializer;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
@@ -80,9 +81,11 @@ Variable <- Name;
 StatementBlock <- {Statement};
 This <- 0;
 VoidType <- 0;
+NullLiteral <- 0;
 PropertyAccess <- left@Expression, right@Expression;
 ModifierBlock <- {Modifier};
 ExpressionList <- {Expression};
+ArrayInitializer <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
 Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
 FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, [throwsbl@ThrowsBlock], body@StatementBlock;
@@ -98,6 +101,7 @@ VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarato
 DeclaratorList <- {Declarator};
 Declarator <- name@Identifier, [value@Expression];
 Exception <- name@ClassType;
+ObjectCreationExpression <- datatype@TypeName, [arguments@ExpressionList];
 
 java:
 
@@ -239,10 +243,6 @@ Plus(#1) -> Positive(#1);
 
 PrimitiveType<#1> -> PrimitiveType<#1>;
 
-VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
-VariableDeclarationExpr(Modifier#1, VariableDeclarator(#2, #3, #4))
-    -> VariableDeclaration(ModifierBlock(#1), #2, DeclaratorList(Declarator(#3, #4)));
-
 ExpressionStmt(#1) -> ExpressionStatement(#1);
 ExpressionStmt(#1) -> #1;
 
@@ -268,10 +268,17 @@ ClassOrInterfaceType(#1) -> ClassType(Name(#1));
 ReturnType(#1) -> ClassType(Name(#1));
 Exception(#1) -> Exception(ClassType(Name(#1)));
 Exception(#1) -> Exception(ClassType(#1));
-ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 Parameter(Modifier#1, #2, #3) -> Parameter(ModifierBlock(#1), #2, #3);
 VoidType -> VoidType;
 Modifier<#1> -> Modifier<#1>;
+NullLiteralExpr -> NullLiteral;
+
+// Arrays
+
+ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
+ArrayInitializerExpr(#1...) -> ArrayInitializer(#1);
+
+//
 
 CompilationUnit(#1) -> Program(#1);
 
@@ -288,11 +295,22 @@ ClassOrInterfaceDeclaration(Modifier#1, #2, #3...) ->
 
 ClassOrInterfaceDeclaration(#1, #2...) -> ClassDeclaration(#1, ClassBody(#2));
 
+// Field and variable declaration
+
+ObjectCreationExpr(#1) -> ObjectCreationExpression(#1);
+ObjectCreationExpr(#1, #2...) -> ObjectCreationExpression(#1, ExpressionList(#2));
+
 FieldDeclaration(VariableDeclarator(#1, #2)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2)));
 FieldDeclaration(VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
 
 FieldDeclaration(Modifier#3, VariableDeclarator(#1, #2)) -> FieldDeclaration(ModifierBlock(#3), #1, DeclaratorList(Declarator(#2)));
 FieldDeclaration(Modifier#4, VariableDeclarator(#1, #2, #3)) -> FieldDeclaration(ModifierBlock(#4), #1, DeclaratorList(Declarator(#2, #3)));
+
+VariableDeclarationExpr(VariableDeclarator(#1, #2)) -> VariableDeclaration(#1, DeclaratorList(Declarator(#2)));
+VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#1, DeclaratorList(Declarator(#2, #3)));
+
+VariableDeclarationExpr(Modifier#3, VariableDeclarator(#1, #2)) -> VariableDeclaration(ModifierBlock(#3), #1, DeclaratorList(Declarator(#2)));
+VariableDeclarationExpr(Modifier#4, VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(ModifierBlock(#4), #1, DeclaratorList(Declarator(#2, #3)));
 
 // Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 
@@ -307,12 +325,24 @@ ConstructorDeclaration(Modifier#1, #2, Parameter#3, #4) ->
 js:
 
 ClassItem <- & | Property;
+Expression <- & | ObjectLiteral;
+ObjectLiteral <- {Property};
+// PropertyList <- {Property};
+//ObjectLiteral <- 0;
 Property <- name@Identifier, value@Expression;
 Yield <- Expression;
+
+// ObjectCreationExpr(#1, #2...) -> ObjectCreationExpression(#1, ExpressionList(#2));
+// ObjectCreationExpression <- datatype@TypeName, [arguments@ExpressionList];
+propertyAssignment(propertyName(identifierName(#1)), #2) -> Property(#1, #2);
+objectLiteral(#1...) -> ObjectLiteral(#1);
+singleExpression(literal<"new">, Variable(#1), arguments(#2...)) ->
+    ObjectCreationExpression(ClassType(#1), ExpressionList(#2));
 
 singleExpression(expressionSequence(#1)) -> #1;
 singleExpression(Identifier<#1>) -> Variable(Name(Identifier<#1>));
 
+singleExpression(literal(literal<"null">)) -> NullLiteral;
 singleExpression(literal(numericLiteral(literal<#1>))) -> IntegerLiteral<#1>;
 singleExpression(literal(literal<#1>)) -> StringLiteral<#1>;
 
@@ -459,8 +489,10 @@ singleExpression(literal<"this">) -> This;
 singleExpression(This, identifierName(#1)) -> PropertyAccess(This, #1);
 
 variableDeclaration(assignable(#1), literal<"=">, #2) -> Declarator(#1, #2);
-variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDeclaration(DeclaratorList(#1));
+variableDeclaration(assignable(#1), literal<"=">, singleExpression(#2)) -> Declarator(#1, #2);
+variableDeclarationList(varModifier(let_(literal<"let">)), #1...) -> VariableDeclaration(ModifierBlock(Modifier<"let">),DeclaratorList(#1));
 variableDeclarationList(varModifier(literal<"var">), #1...) -> VariableDeclaration(DeclaratorList(#1));
+variableDeclarationList(varModifier(literal<"const">), #1...) -> VariableDeclaration(ModifierBlock(Modifier<"const">), DeclaratorList(#1));
 
 sourceElement(statement(variableStatement(#1))) -> #1;
 expressionStatement(expressionSequence(#1)) -> ExpressionStatement(#1);
