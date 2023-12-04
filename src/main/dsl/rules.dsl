@@ -7,19 +7,19 @@ PrimitiveType <- $String$, $#$, $#$;
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
 
-Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | NullLiteral |
- FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment |
- ParenthesizedExpression | ObjectCreationExpression | ArrayInitializer;
+Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | NullLiteral
+    | FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment
+    | ParenthesizedExpression | ObjectCreationExpression | ArrayInitializer;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
-Statement <- Return | StatementBlock | VariableDeclaration | ExpressionStatement;
+Statement <- Return | StatementBlock | VariableDeclaration | ExpressionStatement | IfElse;
 TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
 UnaryExpression <- PreIncrement | PreDecrement | PostIncrement | PostDecrement | Positive | Negative;
 BitwiseExpression <- BitwiseComplement | LeftShift | RightShift | UnsignedRightShift | BitwiseAnd | BitwiseOr | ExclusiveOr;
 LogicalExpression <- LogicalAnd | LogicalOr | LogicalNot;
-Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | MultiplicationAssignment | DivisionAssignment
-    | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
+Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | MultiplicationAssignment
+    | DivisionAssignment | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
 AssignableExpression <- Variable | PropertyAccess;
 
@@ -76,6 +76,7 @@ ArrayType <- base@TypeName, dimensions@DimensionList;
 DimensionList <- {Dimension};
 Dimension <- [expression@Expression];
 Return <- [expression@Expression];
+IfElse <- condition@Expression, ifbranch@Statement, [elsebranch@Statement];
 Name <- [composition@Name], last@Identifier;
 Variable <- Name;
 StatementBlock <- {Statement};
@@ -272,6 +273,7 @@ Parameter(Modifier#1, #2, #3) -> Parameter(ModifierBlock(#1), #2, #3);
 VoidType -> VoidType;
 Modifier<#1> -> Modifier<#1>;
 NullLiteralExpr -> NullLiteral;
+IfStmt(#1, #2) -> IfElse(#1, #2);
 
 // Arrays
 
