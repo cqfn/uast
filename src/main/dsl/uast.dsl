@@ -1,20 +1,95 @@
+/*
+    The MIT License (MIT)
+
+    Copyright (c) 2023 Ivan Kniazkov
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+*/
+
+/*
+            I. Unified AST description
+
+            1. Literals
+*/
+
 IntegerLiteral <- $int$, $String.valueOf(#)$, $Integer.parseInt(#)$, $NumberFormatException$;
 Identifier <- $String$, $#$, $#$;
 StringLiteral <- $String$, $#$, $#$;
 Modifier <- $String$, $#$, $#$;
 PrimitiveType <- $String$, $#$, $#$;
 
+Name <- [composition@Name], last@Identifier;
+
+/*
+            2. Program structure
+*/
+
 Program <- {ProgramItem};
 ProgramItem <- ClassDeclaration | Statement | ClassItem;
+ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
+ModifierBlock <- {Modifier};
+Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
+ParameterBlock <- {Parameter};
+ExtendsBlock <- {ClassType};
+ImplementsBlock <- {ClassType};
+ThrowsBlock <- {Exception};
+ClassBody <- {ClassItem};
+ClassItem <- FunctionDeclaration | FieldDeclaration;
+FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, [throwsbl@ThrowsBlock], body@StatementBlock;
+FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
+DeclaratorList <- {Declarator};
+Declarator <- name@Identifier, [value@Expression];
+Exception <- name@ClassType;
 
+/*
+            3. Data types
+*/
+
+TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
+ArrayType <- base@TypeName, dimensions@DimensionList;
+ClassType <- name@Name;
+VoidType <- 0;
+DimensionList <- {Dimension};
+Dimension <- [expression@Expression];
+
+/*
+            4. Statements
+*/
+
+Statement <- Return | StatementBlock | VariableDeclaration | ExpressionStatement | IfElse;
+Return <- [expression@Expression];
+StatementBlock <- {Statement};
+VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
+ExpressionStatement <- expression@Expression;
+IfElse <- condition@Expression, ifBranch@Statement, [elseBranch@Statement];
+
+/*
+            5. Expressions
+*/
+
+ExpressionList <- {Expression};
 Expression <- BinaryExpression | IntegerLiteral | This | StringLiteral | Identifier | NullLiteral
     | FunctionCall | UnaryExpression | BitwiseExpression | LogicalExpression | AssignableExpression | Assignment
     | ParenthesizedExpression | ObjectCreationExpression | ArrayInitializer;
 ArithmeticExpression <- Addition | Subtraction | Multiplication | Division | Modulus;
 BinaryExpression <-  ArithmeticExpression | RelationalExpression;
 RelationalExpression <- IsEqualTo | NotEqualTo | GreaterThan | LessThan | GreaterThanOrEqualTo | LessThanOrEqualTo;
-Statement <- Return | StatementBlock | VariableDeclaration | ExpressionStatement | IfElse;
-TypeName <- ArrayType | PrimitiveType | ClassType | VoidType;
 UnaryExpression <- PreIncrement | PreDecrement | PostIncrement | PostDecrement | Positive | Negative;
 BitwiseExpression <- BitwiseComplement | LeftShift | RightShift | UnsignedRightShift | BitwiseAnd | BitwiseOr | ExclusiveOr;
 LogicalExpression <- LogicalAnd | LogicalOr | LogicalNot;
@@ -22,9 +97,10 @@ Assignment <- SimpleAssignment | AdditionAssignment | SubtractionAssignment | Mu
     | DivisionAssignment | ModulusAssignment | BitwiseAndAssignment | BitwiseOrAssignment | ExclusiveOrAssignment
     | RightShiftAssignment | UnsignedRightShiftAssignment | LeftShiftAssignment;
 AssignableExpression <- Variable | PropertyAccess;
-
-ExpressionStatement <- expression@Expression;
 ParenthesizedExpression <- expression@Expression;
+
+This <- 0;
+NullLiteral <- 0;
 
 Addition <- left@Expression, right@Expression;
 Subtraction <- left@Expression, right@Expression;
@@ -71,46 +147,28 @@ UnsignedRightShiftAssignment <- left@AssignableExpression, right@Expression;
 RightShiftAssignment <- left@AssignableExpression, right@Expression;
 LeftShiftAssignment <- left@AssignableExpression, right@Expression;
 
-ClassType <- name@Name;
-ArrayType <- base@TypeName, dimensions@DimensionList;
-DimensionList <- {Dimension};
-Dimension <- [expression@Expression];
-Return <- [expression@Expression];
-IfElse <- condition@Expression, ifbranch@Statement, [elsebranch@Statement];
-Name <- [composition@Name], last@Identifier;
 Variable <- Name;
-StatementBlock <- {Statement};
-This <- 0;
-VoidType <- 0;
-NullLiteral <- 0;
-PropertyAccess <- left@Expression, right@Expression;
-ModifierBlock <- {Modifier};
-ExpressionList <- {Expression};
-ArrayInitializer <- {Expression};
 FunctionCall <- [owner@Name], name@Identifier, arguments@ExpressionList;
-Parameter <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier;
-FunctionDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], name@Identifier, parameters@ParameterBlock, [throwsbl@ThrowsBlock], body@StatementBlock;
-ParameterBlock <- {Parameter};
-ClassDeclaration <- [modifiers@ModifierBlock], name@Identifier, [extendsbl@ExtendsBlock], [implementsbl@ImplementsBlock], body@ClassBody;
-ExtendsBlock <- {ClassType};
-ImplementsBlock <- {ClassType};
-ThrowsBlock <- {Exception};
-ClassBody <- {ClassItem};
-ClassItem <- FunctionDeclaration | FieldDeclaration;
-FieldDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
-VariableDeclaration <- [modifiers@ModifierBlock], [datatype@TypeName], declarators@DeclaratorList;
-DeclaratorList <- {Declarator};
-Declarator <- name@Identifier, [value@Expression];
-Exception <- name@ClassType;
 ObjectCreationExpression <- datatype@TypeName, [arguments@ExpressionList];
+PropertyAccess <- left@Expression, right@Expression;
+ArrayInitializer <- {Expression};
+
+/*
+            II. Java
+
+            1. Red nodes
+*/
 
 java:
 
 Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
-IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
+/*
+            2. Transformation rules
+*/
 
+IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
 
 EnclosedExpr(#1) -> ParenthesizedExpression(#1);
 
@@ -275,16 +333,10 @@ Modifier<#1> -> Modifier<#1>;
 NullLiteralExpr -> NullLiteral;
 IfStmt(#1, #2) -> IfElse(#1, #2);
 
-// Arrays
-
 ArrayType(#1) -> ArrayType(#1, DimensionList(Dimension));
 ArrayInitializerExpr(#1...) -> ArrayInitializer(#1);
 
-//
-
 CompilationUnit(#1) -> Program(#1);
-
-// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
 
 ClassOrInterfaceDeclaration(Modifier#1, #2, InterfaceType(#3)) ->
   ClassDeclaration(ModifierBlock(#1), #2, ImplementsBlock(ClassType(Name(#3))), ClassBody);
@@ -296,8 +348,6 @@ ClassOrInterfaceDeclaration(Modifier#1, #2, #3...) ->
   ClassDeclaration(ModifierBlock(#1), #2, ClassBody(#3));
 
 ClassOrInterfaceDeclaration(#1, #2...) -> ClassDeclaration(#1, ClassBody(#2));
-
-// Field and variable declaration
 
 ObjectCreationExpr(#1) -> ObjectCreationExpression(#1);
 ObjectCreationExpr(#1, #2...) -> ObjectCreationExpression(#1, ExpressionList(#2));
@@ -314,8 +364,6 @@ VariableDeclarationExpr(VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(#
 VariableDeclarationExpr(Modifier#3, VariableDeclarator(#1, #2)) -> VariableDeclaration(ModifierBlock(#3), #1, DeclaratorList(Declarator(#2)));
 VariableDeclarationExpr(Modifier#4, VariableDeclarator(#1, #2, #3)) -> VariableDeclaration(ModifierBlock(#4), #1, DeclaratorList(Declarator(#2, #3)));
 
-// Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
-
 MethodDeclaration(Modifier#1, #2, Parameter#3, #4, #5) ->
   FunctionDeclaration(ModifierBlock(#1), #4, #2, ParameterBlock(#3), #5);
 MethodDeclaration(Modifier#1, #2, Parameter#3, Exception#6, #4, #5) ->
@@ -324,18 +372,24 @@ MethodDeclaration(Modifier#1, #2, Parameter#3, Exception#6, #4, #5) ->
 ConstructorDeclaration(Modifier#1, #2, Parameter#3, #4) ->
     FunctionDeclaration(ModifierBlock(#1), #2, ParameterBlock(#3), #4);
 
+/*
+            III. JavaScript
+
+            1. Red nodes
+*/
+
 js:
 
 ClassItem <- & | Property;
 Expression <- & | ObjectLiteral;
 ObjectLiteral <- {Property};
-// PropertyList <- {Property};
-//ObjectLiteral <- 0;
 Property <- name@Identifier, value@Expression;
 Yield <- Expression;
 
-// ObjectCreationExpr(#1, #2...) -> ObjectCreationExpression(#1, ExpressionList(#2));
-// ObjectCreationExpression <- datatype@TypeName, [arguments@ExpressionList];
+/*
+            2. Transformation rules
+*/
+
 propertyAssignment(propertyName(identifierName(#1)), #2) -> Property(#1, #2);
 objectLiteral(#1...) -> ObjectLiteral(#1);
 singleExpression(literal<"new">, Variable(#1), arguments(#2...)) ->
@@ -470,7 +524,6 @@ singleExpression(#1, literal<"--">) ->  PostDecrement(#1);
 singleExpression(literal<"-">, #1) ->  Negative(#1);
 singleExpression(literal<"+">, #1) ->  Positive(#1);
 
-
 identifier(literal<#1>) -> Identifier<#1>;
 
 singleExpression(#1, literal<"=">, #2) -> SimpleAssignment(#1, #2);
@@ -517,8 +570,6 @@ program(sourceElements(#1...)) -> Program(#1);
 
 returnStatement(literal<"return">, expressionSequence(#1)) -> Return(#1);
 
-// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
-
 classDeclaration(literal<"class">, #1, classTail(literal<"extends">, Variable(#2)))
     -> ClassDeclaration(#1, ExtendsBlock(ClassType(#2)), ClassBody);
 classDeclaration(literal<"class">, #1, classTail(#2, classElement(emptyStatement_)))
@@ -527,8 +578,6 @@ classDeclaration(literal<"class">, #1, classTail(#2...)) -> ClassDeclaration(#1,
 
 classElement(propertyName(identifierName(#1)), literal<"=">, #2) -> Property(#1, #2);
 classElement(#1) -> #1;
-
-// Function declaration FunctionDeclaration <- [modifiers@ModifierBlock], [typename@TypeName], name@Identifier, parameters@ParameterBlock, body@StatementBlock;
 
 functionBody(sourceElements(sourceElement(statement(expressionStatement(expressionSequence(#1)))))) ->
   StatementBlock(#1);
@@ -547,6 +596,9 @@ methodDefinition(propertyName(identifierName(#1)), #2, #3) ->  FunctionDeclarati
 formalParameterArg(assignable(#1)) -> Parameter(#1);
 formalParameterList(#1...) -> ParameterBlock(#1);
 
+/*
+            IV. Python
+*/
 
 python:
 
@@ -655,8 +707,6 @@ file_input(#1, small_stmt(comparison(#2))) -> Program(#1, #2);
 file_input(#1, small_stmt(#2)) -> Program(#1, #2);
 
 file_input(#1...) -> Program(#1);
-
-// Class declaration ClassDeclaration <- [ModifierBlock], Identifier, [ExtendsBlock], [ImplementsBlock], ClassBody;
 
 classdef(literal<"class">, name(literal<#1>), suite(small_stmt(literal<"pass">)))
     -> ClassDeclaration(Identifier<#1>, ClassBody);

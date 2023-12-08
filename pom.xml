@@ -2,7 +2,7 @@
 <!--
 The MIT License (MIT)
 
-Copyright (c) 2022 Ivan Kniazkov
+Copyright (c) 2023 Ivan Kniazkov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -149,12 +149,13 @@ SOFTWARE.
       <plugin>
         <groupId>org.cqfn</groupId>
         <artifactId>astranaut-maven-plugin</artifactId>
-        <version>0.1.10</version>
+        <version>0.1.15</version>
         <configuration>
-          <dsl>${basedir}/src/main/dsl/rules.dsl</dsl>
+          <dsl>${basedir}/src/main/dsl/uast.dsl</dsl>
           <output>${basedir}/src/main/java</output>
           <version>0.1</version>
           <pkg>org.cqfn.uast.tree</pkg>
+          <dbginfo>true</dbginfo>
         </configuration>
         <executions>
           <execution>
@@ -170,7 +171,7 @@ SOFTWARE.
     <dependency>
       <groupId>org.cqfn</groupId>
       <artifactId>astranaut-core</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.6</version>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
