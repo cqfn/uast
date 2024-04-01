@@ -55,11 +55,10 @@ public class SourceCodeParser {
      * Parses source code.
      * @param language The name of the programming language
      * @param unified Convert to unified syntax tree
-     * @param antlr Retain the original ANTLR syntax tree
      * @return Root node of the [unified] syntax tree
      * @throws IOException In case if impossible to read source code
      */
-    public Node parse(final String language, final boolean unified, final boolean antlr)
+    public Node parse(final String language, final boolean unified)
         throws IOException {
         Node node = EmptyTree.INSTANCE;
         final String code = new FilesReader(this.filename).readAsString();
@@ -69,11 +68,11 @@ public class SourceCodeParser {
                 node = jap.parse(unified);
                 break;
             case "py":
-                final PythonParser pyp = new PythonParser(code, antlr);
+                final PythonParser pyp = new PythonParser(code);
                 node = pyp.parse(unified);
                 break;
             case "js":
-                final JavaScriptParser jsp = new JavaScriptParser(code, antlr);
+                final JavaScriptParser jsp = new JavaScriptParser(code);
                 node = jsp.parse(unified);
                 break;
             case "json":

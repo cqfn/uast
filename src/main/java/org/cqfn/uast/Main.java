@@ -115,15 +115,6 @@ public final class Main {
     private boolean raw;
 
     /**
-     * The ANTLR option.
-     */
-    @Parameter(
-        names = "--antlr",
-        description = "Do not simplify ANTLR tree"
-    )
-    private boolean antlr;
-
-    /**
      * The help option.
      */
     @Parameter(names = "--help", help = true)
@@ -177,8 +168,7 @@ public final class Main {
                 lang = this.language;
             }
         }
-        final Node node = new SourceCodeParser(this.source.getPath())
-            .parse(lang, !this.raw, this.antlr);
+        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang, !this.raw);
         Node result = node;
         if (!this.algorithms.isEmpty()) {
             for (final Algorithm algorithm : this.algorithms) {

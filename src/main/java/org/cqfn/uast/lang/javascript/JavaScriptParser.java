@@ -43,11 +43,6 @@ import org.cqfn.uast.tree.js.JsAdapter;
  */
 public class JavaScriptParser {
     /**
-     * Retain the initial syntax ANTLR tree.
-     */
-    private final boolean initial;
-
-    /**
      * The source code.
      */
     private final String source;
@@ -55,11 +50,9 @@ public class JavaScriptParser {
     /**
      * Constructor.
      * @param source Source string
-     * @param initial If {@code true}, retain the initial ANTLR syntax tree
      */
-    public JavaScriptParser(final String source, final boolean initial) {
+    public JavaScriptParser(final String source) {
         this.source = source;
-        this.initial = initial;
     }
 
     /**
@@ -79,7 +72,7 @@ public class JavaScriptParser {
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final antlr4.JavaScriptParser parser =
                 new antlr4.JavaScriptParser(tokens);
-            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser, this.initial);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node draft = converter.convert(parser.program());
             if (unified) {
                 result = JsAdapter.INSTANCE.convert(draft);

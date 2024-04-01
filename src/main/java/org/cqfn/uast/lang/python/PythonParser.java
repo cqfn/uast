@@ -43,11 +43,6 @@ import org.cqfn.uast.tree.python.PythonAdapter;
  */
 public class PythonParser {
     /**
-     * Retain the initial ANTLR tree.
-     */
-    private final boolean initial;
-
-    /**
      * The source code.
      */
     private final String source;
@@ -55,11 +50,9 @@ public class PythonParser {
     /**
      * Constructor.
      * @param source Source string
-     * @param initial If {@code true}, retain the initial ANTLR syntax tree
      */
-    public PythonParser(final String source, final boolean initial) {
+    public PythonParser(final String source) {
         this.source = source;
-        this.initial = initial;
     }
 
     /**
@@ -79,7 +72,7 @@ public class PythonParser {
             final CommonTokenStream tokens = new CommonTokenStream(lexer);
             final antlr4.PythonParser parser =
                 new antlr4.PythonParser(tokens);
-            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser, this.initial);
+            final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node draft = converter.convert(parser.file_input());
             if (unified) {
                 result = PythonAdapter.INSTANCE.convert(draft);
