@@ -31,6 +31,12 @@ Identifier <- $String$, $#$, $#$;
 StringLiteral <- $String$, $#$, $#$;
 PrimitiveType <- $String$, $#$, $#$;
 
+Program <- {ProgramItem};
+
+ProgramItem <- ClassDeclaration | 0;
+
+ClassDeclaration <- name@Identifier;
+
 Statement <- Return | StatementBlock;
 Return <- [expression@Expression];
 StatementBlock <- {Statement};
@@ -47,6 +53,9 @@ java:
 
 Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
+
+ClassOrInterfaceDeclaration(SimpleName<#1>) -> ClassDeclaration(Identifier<#1>);
+CompilationUnit(#1) -> Program(#1);
 
 /*
     --- Python  ----------------------------------------------------------------------------------
