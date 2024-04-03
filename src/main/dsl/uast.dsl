@@ -72,3 +72,7 @@ atom(name(literal<"self">)) -> This;
 js:
 
 Yield <- Expression;
+
+identifier(literal<#1>) -> Identifier<#1>;
+sourceElement(statement(classDeclaration(Identifier<#1>, classTail<"{}">))) -> ClassDeclaration(Identifier<#1>);
+program(sourceElements(#1...)) -> Program(#1);

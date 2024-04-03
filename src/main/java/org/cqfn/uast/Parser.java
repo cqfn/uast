@@ -21,13 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.cqfn.uast.lang;
+package org.cqfn.uast;
 
 import java.io.IOException;
 import org.cqfn.astranaut.core.EmptyTree;
 import org.cqfn.astranaut.core.Node;
 import org.cqfn.astranaut.core.utils.FilesReader;
 import org.cqfn.astranaut.core.utils.JsonDeserializer;
+import org.cqfn.uast.lang.FactorySelector;
 import org.cqfn.uast.lang.java.JavaParser;
 import org.cqfn.uast.lang.javascript.JavaScriptParser;
 import org.cqfn.uast.lang.python.PythonParser;
@@ -37,7 +38,7 @@ import org.cqfn.uast.lang.python.PythonParser;
  *
  * @since 0.1
  */
-public class SourceCodeParser {
+public class Parser {
     /**
      * The name of the file that contains source code.
      */
@@ -47,7 +48,7 @@ public class SourceCodeParser {
      * Constructor.
      * @param filename The name of the file that contains source code
      */
-    public SourceCodeParser(final String filename) {
+    public Parser(final String filename) {
         this.filename = filename;
     }
 

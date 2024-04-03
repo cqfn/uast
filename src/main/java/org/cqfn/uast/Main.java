@@ -41,7 +41,6 @@ import org.cqfn.uast.cli.AlgorithmConverter;
 import org.cqfn.uast.cli.ImagePathValidator;
 import org.cqfn.uast.cli.JsonPathValidator;
 import org.cqfn.uast.cli.LanguageConverter;
-import org.cqfn.uast.lang.SourceCodeParser;
 
 /**
  * Main class.
@@ -168,7 +167,7 @@ public final class Main {
                 lang = this.language;
             }
         }
-        final Node node = new SourceCodeParser(this.source.getPath()).parse(lang, !this.raw);
+        final Node node = new Parser(this.source.getPath()).parse(lang, !this.raw);
         Node result = node;
         if (!this.algorithms.isEmpty()) {
             for (final Algorithm algorithm : this.algorithms) {
