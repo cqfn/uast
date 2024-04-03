@@ -31,7 +31,7 @@ import org.cqfn.astranaut.core.Builder;
 import org.cqfn.astranaut.core.EmptyTree;
 import org.cqfn.astranaut.core.Factory;
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.astranaut.core.NodeReplacer;
+import org.cqfn.astranaut.core.algorithms.ReplaceNode;
 import org.cqfn.astranaut.core.utils.Pair;
 import org.cqfn.uast.tree.green.GreenFactory;
 
@@ -58,7 +58,7 @@ public final class Greening implements Algorithm {
         final Map<Node, Node> trees = Greening.findReplacementPairs(tree);
         for (final Map.Entry<Node, Node> entry : trees.entrySet()) {
             final Pair<Node, Integer> modification =
-                new NodeReplacer().replace(result, entry.getKey(), entry.getValue());
+                new ReplaceNode().replace(result, entry.getKey(), entry.getValue());
             result = modification.getKey();
         }
         return result;
