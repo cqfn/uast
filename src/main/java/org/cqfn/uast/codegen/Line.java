@@ -21,11 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.cqfn.uast.codegen;
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * One line of source code.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+final class Line implements Code {
+    /**
+     * One "unit" of indentation.
+     */
+    private static final String TABULATION = "    ";
+
+    /**
+     * Text (program code itself).
+     */
+    private final String text;
+
+    /**
+     * Constructor.
+     * @param text Text
+     */
+    Line(final String text) {
+        this.text = text;
+    }
+
+    @Override
+    public void print(final StringBuilder builder, final int indent) {
+        assert indent >= 0;
+        for (int index = 0; index < indent; index = indent + 1) {
+            builder.append(Line.TABULATION);
+        }
+        builder.append(this.text).append('\n');
+    }
+
+    @Override
+    public String toString() {
+        return this.text;
+    }
+}

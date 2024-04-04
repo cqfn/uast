@@ -23,9 +23,8 @@
  */
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * This package contains classes related to source code generation.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+package org.cqfn.uast.codegen;

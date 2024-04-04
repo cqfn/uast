@@ -28,11 +28,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.cqfn.astranaut.core.EmptyTree;
 import org.cqfn.astranaut.core.Node;
+import org.cqfn.astranaut.core.algorithms.NodeSelector;
+import org.cqfn.astranaut.core.algorithms.Subtree;
 import org.cqfn.uast.lang.AntlrToNodeConverter;
 import org.cqfn.uast.tree.js.JsAdapter;
 
@@ -41,7 +46,7 @@ import org.cqfn.uast.tree.js.JsAdapter;
  *
  * @since 0.1
  */
-public class JavaScriptParser {
+public final class JavaScriptParser {
     /**
      * The source code.
      */
@@ -74,14 +79,34 @@ public class JavaScriptParser {
                 new antlr4.JavaScriptParser(tokens);
             final AntlrToNodeConverter converter = new AntlrToNodeConverter(parser);
             final Node draft = converter.convert(parser.program());
+            final Node preprocessed = JavaScriptParser.preprocessTree(draft);
             if (unified) {
-                result = JsAdapter.INSTANCE.convert(draft);
+                result = JsAdapter.INSTANCE.convert(preprocessed);
             } else {
-                result = draft;
+                result = preprocessed;
             }
         } catch (final IOException exception) {
             result = EmptyTree.INSTANCE;
         }
         return result;
+    }
+
+    /**
+     * Performs preprocessing of the syntax tree.
+     * Deletes some nodes (and maybe in the future will do something else).
+     * @param draft Draft syntax tree
+     * @return Preprocessed syntax tree
+     */
+    private static Node preprocessTree(final Node draft) {
+        final NodeSelector selector = new NodeSelector(draft);
+        final NodeSelector.Criteria criteria = (node, iterable) -> {
+            final String name = node.getTypeName();
+            final String data = node.getData();
+            final Set<String> literals = new TreeSet<>(Arrays.asList("{", "}", "<EOF>", "class"));
+            return name.equals("literal") && literals.contains(data);
+        };
+        final Set<Node> excluded = selector.select(criteria);
+        final Subtree subtree = new Subtree(draft, Subtree.EXCLUDE);
+        return subtree.create(excluded);
     }
 }

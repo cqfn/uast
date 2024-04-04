@@ -31,8 +31,15 @@ Identifier <- $String$, $#$, $#$;
 StringLiteral <- $String$, $#$, $#$;
 PrimitiveType <- $String$, $#$, $#$;
 
-Statement <- Return | StatementBlock;
+Program <- {ProgramItem};
+
+ProgramItem <- ClassDeclaration | 0;
+
+ClassDeclaration <- name@Identifier;
+
+Statement <- Return | EmptyStatement | StatementBlock;
 Return <- [expression@Expression];
+EmptyStatement <- 0;
 StatementBlock <- {Statement};
 
 Expression <- IntegerLiteral | StringLiteral | This;
@@ -48,6 +55,9 @@ java:
 Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
+ClassOrInterfaceDeclaration(SimpleName<#1>) -> ClassDeclaration(Identifier<#1>);
+CompilationUnit(#1) -> Program(#1);
+
 /*
     --- Python  ----------------------------------------------------------------------------------
 */
@@ -55,6 +65,10 @@ Statement <- & | Synchronized;
 python:
 
 atom(name(literal<"self">)) -> This;
+name(literal<#1>) -> Identifier<#1>;
+stmt(simple_stmt(small_stmt(literal<"pass">))) -> EmptyStatement;
+stmt(compound_stmt(classdef(Identifier<#1>, suite(EmptyStatement)))) -> ClassDeclaration(Identifier<#1>);
+file_input(#1...) -> Program(#1);
 
 /*
     --- JavaScript -------------------------------------------------------------------------------
@@ -63,3 +77,7 @@ atom(name(literal<"self">)) -> This;
 js:
 
 Yield <- Expression;
+
+identifier(literal<#1>) -> Identifier<#1>;
+sourceElement(statement(classDeclaration(Identifier<#1>, classTail<"{}">))) -> ClassDeclaration(Identifier<#1>);
+program(sourceElements(#1...)) -> Program(#1);

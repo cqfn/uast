@@ -21,11 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.cqfn.uast.codegen;
+
+import org.cqfn.astranaut.core.Node;
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * A generator that generates source code for a single node.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+public interface BaseNodeGen {
+    /**
+     * Visits a node and generates some source code for it.
+     * @param node Node
+     * @param code Code block in which to add lines of code and nested blocks
+     * @param syntax Programming language syntax
+     */
+    void visit(Node node, CodeBlock code, Syntax syntax);
+}

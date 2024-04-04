@@ -36,7 +36,7 @@ import java.util.Optional;
  *
  * @since 0.1
  */
-public class FileConverter implements IStringConverter<File> {
+public final class FileConverter implements IStringConverter<File> {
     /**
      * The option name.
      */

@@ -23,45 +23,52 @@
  */
 package org.cqfn.uast.lang.java;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
+import java.util.Map;
+import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.tree.java.JavaAdapter;
+import org.cqfn.uast.codegen.BaseNodeGen;
+import org.cqfn.uast.codegen.NodeGen;
+import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.tree.green.ClassDeclaration;
+import org.cqfn.uast.tree.green.Program;
 
 /**
- * Parses Java source code to unified syntax tree.
+ * The syntax of Java programming language.
  *
  * @since 0.1
  */
-public final class JavaParser {
+public final class JavaSyntax extends Syntax {
     /**
-     * The source code.
+     * The instance.
      */
-    private final String source;
+    public static final Syntax INSTANCE = new JavaSyntax();
 
     /**
-     * Constructor.
-     * @param source Source string.
+     * Private constructor.
      */
-    public JavaParser(final String source) {
-        this.source = source;
+    private JavaSyntax() {
     }
 
-    /**
-     * Parses Java source code to [unified] syntax tree.
-     * @param unified Convert into unified syntax tree after parsing
-     * @return Root node
-     */
-    public Node parse(final boolean unified) {
-        final Node result;
-        final CompilationUnit raw = StaticJavaParser.parse(this.source);
-        final JavaRawToNodeConverter converter = new JavaRawToNodeConverter();
-        final Node draft = converter.convert(raw);
-        if (unified) {
-            result = JavaAdapter.INSTANCE.convert(draft);
-        } else {
-            result = draft;
-        }
-        return result;
+    @Override
+    public Map<String, BaseNodeGen> initGenerators() {
+        final Map<String, BaseNodeGen> gen = new TreeMap<>();
+        gen.put(
+            "Program",
+            (NodeGen<Program>) (node, code, syntax) -> {
+                for (final Node child : node.getChildrenList()) {
+                    syntax.generate(child, code);
+                }
+            }
+        );
+        gen.put(
+            "ClassDeclaration",
+            (NodeGen<ClassDeclaration>) (node, code, syntax) -> {
+                final StringBuilder header = new StringBuilder();
+                header.append("class ").append(node.getName().getData()).append(" {");
+                code.addLine(header.toString());
+                code.addLine("}");
+            }
+        );
+        return gen;
     }
 }

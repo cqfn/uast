@@ -21,11 +21,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.cqfn.uast.codegen;
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * Source code in some form.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+interface Code {
+    /**
+     * Prints the source code.
+     * @param builder String builder, where to print to
+     * @param indent Indent at the beginning of each line (in tab units)
+     */
+    void print(StringBuilder builder, int indent);
+}

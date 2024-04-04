@@ -21,47 +21,59 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.cqfn.uast.lang.java;
+package org.cqfn.uast.codegen;
 
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.CompilationUnit;
-import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.tree.java.JavaAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Parses Java source code to unified syntax tree.
+ * Block of source code. It consists of source code lines and nested blocks.
+ * Nested blocks are printed with an indentation.
  *
  * @since 0.1
  */
-public final class JavaParser {
+public final class CodeBlock implements Code {
     /**
-     * The source code.
+     * Nested items.
      */
-    private final String source;
+    private final List<Code> items;
 
     /**
      * Constructor.
-     * @param source Source string.
      */
-    public JavaParser(final String source) {
-        this.source = source;
+    CodeBlock() {
+        this.items = new ArrayList<>(0);
     }
 
     /**
-     * Parses Java source code to [unified] syntax tree.
-     * @param unified Convert into unified syntax tree after parsing
-     * @return Root node
+     * Adds a single line to the block of code.
+     * @param text Text
      */
-    public Node parse(final boolean unified) {
-        final Node result;
-        final CompilationUnit raw = StaticJavaParser.parse(this.source);
-        final JavaRawToNodeConverter converter = new JavaRawToNodeConverter();
-        final Node draft = converter.convert(raw);
-        if (unified) {
-            result = JavaAdapter.INSTANCE.convert(draft);
-        } else {
-            result = draft;
+    public void addLine(final String text) {
+        this.items.add(new Line(text));
+    }
+
+    /**
+     * Creates and adds an empty block of code to be printed indented.
+     * @return Created block
+     */
+    public CodeBlock createIndentedBlock() {
+        final CodeBlock block = new CodeBlock();
+        this.items.add(block);
+        return block;
+    }
+
+    @Override
+    public void print(final StringBuilder builder, final int indent) {
+        for (final Code item : this.items) {
+            item.print(builder, indent + 1);
         }
-        return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        this.print(builder, -1);
+        return builder.toString();
     }
 }
