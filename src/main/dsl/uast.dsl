@@ -66,6 +66,7 @@ Statement <- & | Synchronized;
 
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
 
+FieldDeclaration(VariableDeclarator(PrimitiveType<#1>, SimpleName<#2>)) -> FieldDeclaration(PrimitiveType<#1>, Identifier<#2>);
 FieldDeclaration(VariableDeclarator(PrimitiveType<#1>, SimpleName<#2>, #3)) -> FieldDeclaration(PrimitiveType<#1>, Identifier<#2>, #3);
 
 ClassOrInterfaceDeclaration(SimpleName<#1>) -> ClassDeclaration(Identifier<#1>);

@@ -83,7 +83,7 @@ class UnificationTest {
                 UnificationTest.collectTests(file, set);
             } else {
                 final String path = file.getAbsolutePath();
-                if (!path.endsWith(".draft")) {
+                if (!path.endsWith(".txt")) {
                     set.add(path);
                 }
             }
