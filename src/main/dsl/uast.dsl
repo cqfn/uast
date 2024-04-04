@@ -35,7 +35,16 @@ Program <- {ProgramItem};
 
 ProgramItem <- ClassDeclaration | 0;
 
-ClassDeclaration <- name@Identifier;
+ClassDeclaration <- name@Identifier, [body@ClassBody];
+ClassBody <- {ClassItem};
+ClassItem <- FieldDeclaration | MethodDeclaration;
+
+DataType <- PrimitiveType | Void;
+Void <- 0;
+
+FieldDeclaration <- [dataType@DataType], name@Identifier, [initValue@Expression];
+
+MethodDeclaration <- 0;
 
 Statement <- Return | EmptyStatement | StatementBlock;
 Return <- [expression@Expression];
@@ -55,7 +64,13 @@ java:
 Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
+IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
+
+FieldDeclaration(VariableDeclarator(PrimitiveType<#1>, SimpleName<#2>, #3)) -> FieldDeclaration(PrimitiveType<#1>, Identifier<#2>, #3);
+
 ClassOrInterfaceDeclaration(SimpleName<#1>) -> ClassDeclaration(Identifier<#1>);
+ClassOrInterfaceDeclaration(SimpleName<#1>, #2...) -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+
 CompilationUnit(#1) -> Program(#1);
 
 /*
