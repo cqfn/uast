@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package org.cqfn.uast;
+package org.cqfn.uast.cli;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -36,14 +36,11 @@ import org.cqfn.astranaut.core.Node;
 import org.cqfn.astranaut.core.exceptions.WrongFileExtension;
 import org.cqfn.astranaut.core.utils.JsonSerializer;
 import org.cqfn.astranaut.core.utils.TreeVisualizer;
+import org.cqfn.uast.Parser;
 import org.cqfn.uast.algorithms.Algorithm;
-import org.cqfn.uast.cli.AlgorithmConverter;
-import org.cqfn.uast.cli.ImagePathValidator;
-import org.cqfn.uast.cli.JsonPathValidator;
-import org.cqfn.uast.cli.LanguageConverter;
 
 /**
- * Main class.
+ * Starting point of command-line interface.
  *
  * @since 0.1
  */
@@ -155,8 +152,7 @@ public final class Main {
      * @throws WrongFileExtension If a file extension for visualization is invalid
      */
     private void run() throws IOException, WrongFileExtension {
-        final String ext = this.source.getName()
-            .substring(this.source.getName().lastIndexOf('.') + 1);
+        final String ext = Parser.getFileExtension(this.source.getName());
         String lang = ext;
         if ("txt".equals(ext)) {
             if (this.language.isEmpty()) {
@@ -167,7 +163,11 @@ public final class Main {
                 lang = this.language;
             }
         }
-        final Node node = new Parser(this.source.getPath()).parse(lang, !this.raw);
+        final Parser parser = new Parser();
+        if (this.raw) {
+            parser.doNotUnifyResultingTree();
+        }
+        final Node node = parser.parseFile(this.source.getPath(), lang);
         Node result = node;
         if (!this.algorithms.isEmpty()) {
             for (final Algorithm algorithm : this.algorithms) {

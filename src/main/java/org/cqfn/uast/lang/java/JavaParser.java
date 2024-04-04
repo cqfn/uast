@@ -33,7 +33,7 @@ import org.cqfn.uast.tree.java.JavaAdapter;
  *
  * @since 0.1
  */
-public class JavaParser {
+public final class JavaParser {
     /**
      * The source code.
      */

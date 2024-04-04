@@ -38,53 +38,49 @@ import org.cqfn.uast.lang.python.PythonParser;
  *
  * @since 0.1
  */
-public class Parser {
+public final class Parser {
     /**
-     * The name of the file that contains source code.
+     * Flag indicating that the resulting tree should be unified.
      */
-    private final String filename;
+    private boolean unified;
 
     /**
      * Constructor.
-     * @param filename The name of the file that contains source code
      */
-    public Parser(final String filename) {
-        this.filename = filename;
+    public Parser() {
+        this.unified = true;
     }
 
     /**
-     * Parses source code into unified syntax tree.
-     * @param language The name of the programming language
-     * @return Root node of the unified syntax tree
-     * @throws IOException In case if impossible to read source code
+     * Do not unify the resulting tree.
+     * Result will be a tree from the original parser.
      */
-    public Node parse(final String language) throws IOException {
-        return this.parse(language, true);
+    public void doNotUnifyResultingTree() {
+        this.unified = false;
     }
 
     /**
-     * Parses source code.
+     * Parses source code from string.
+     * @param code Source code
      * @param language The name of the programming language
-     * @param unified Convert to unified syntax tree
      * @return Root node of the [unified] syntax tree
-     * @throws IOException In case if impossible to read source code
      */
-    public Node parse(final String language, final boolean unified)
-        throws IOException {
+    public Node parseString(final String code, final String language) {
         Node node = EmptyTree.INSTANCE;
-        final String code = new FilesReader(this.filename).readAsString();
         switch (language) {
             case "java":
                 final JavaParser jap = new JavaParser(code);
-                node = jap.parse(unified);
+                node = jap.parse(this.unified);
                 break;
+            case "python":
             case "py":
                 final PythonParser pyp = new PythonParser(code);
-                node = pyp.parse(unified);
+                node = pyp.parse(this.unified);
                 break;
+            case "javascript":
             case "js":
                 final JavaScriptParser jsp = new JavaScriptParser(code);
-                node = jsp.parse(unified);
+                node = jsp.parse(this.unified);
                 break;
             case "json":
                 final JsonDeserializer deserializer =
@@ -95,5 +91,47 @@ public class Parser {
                 break;
         }
         return node;
+    }
+
+    /**
+     * Parses source code from file.
+     * @param path Path to file
+     * @return Root node of the [unified] syntax tree
+     * @throws IOException In case if impossible to read source code
+     */
+    public Node parseFile(final String path) throws IOException {
+        final String code = new FilesReader(path).readAsString();
+        return this.parseString(code, Parser.getFileExtension(path));
+    }
+
+    /**
+     * Parses source code from file.
+     * @param path Path to file
+     * @param language The name of the programming language
+     * @return Root node of the [unified] syntax tree
+     * @throws IOException In case if impossible to read source code
+     */
+    public Node parseFile(final String path, final String language) throws IOException {
+        final String code = new FilesReader(path).readAsString();
+        return this.parseString(code, language);
+    }
+
+    /**
+     * Returns the extension (i.e., type) of a file by its full path.
+     * Of course, there is a similar function somewhere, but it is defined here
+     * so as not to have unnecessary dependencies.
+     * @param path Full file name
+     * @return File extension
+     */
+    @SuppressWarnings("PMD.ProhibitPublicStaticMethods")
+    public static String getFileExtension(final String path) {
+        final int point = path.lastIndexOf('.');
+        final String ext;
+        if (point < 0) {
+            ext = "";
+        } else {
+            ext = path.substring(point + 1);
+        }
+        return ext;
     }
 }

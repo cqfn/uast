@@ -34,7 +34,7 @@ import java.util.Optional;
  *
  * @since 0.1
  */
-public class JsonPathValidator implements IParameterValidator {
+public final class JsonPathValidator implements IParameterValidator {
     @Override
     /**
      * Validates an input option parameter that should contain

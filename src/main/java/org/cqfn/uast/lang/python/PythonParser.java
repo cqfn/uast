@@ -46,7 +46,7 @@ import org.cqfn.uast.tree.python.PythonAdapter;
  *
  * @since 0.1
  */
-public class PythonParser {
+public final class PythonParser {
     /**
      * The source code.
      */

@@ -32,7 +32,7 @@ import org.cqfn.uast.lang.SyntaxSelector;
  *
  * @since 0.1
  */
-public class Generator {
+public final class Generator {
     /**
      * Root node of the syntax tree.
      */

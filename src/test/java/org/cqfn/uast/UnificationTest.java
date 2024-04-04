@@ -48,18 +48,18 @@ class UnificationTest {
     void test() {
         final Set<String> set = new TreeSet<>();
         UnificationTest.collectTests(new File(UnificationTest.ROOT_FOLDER), set);
-        for (final String file : set) {
+        final Parser parser = new Parser();
+        for (final String path : set) {
             boolean oops = false;
             try {
-                final Parser parser = new Parser(file);
-                final String lang = file.substring(file.lastIndexOf('.') + 1);
-                final Node root = parser.parse(lang);
+                final String code = new FilesReader(path).readAsString();
+                final String lang = Parser.getFileExtension(path);
+                final Node root = parser.parseString(code, lang);
                 Assertions.assertNotNull(root);
                 Assertions.assertEquals("green", root.getType().getProperty("color"));
                 final Generator generator = new Generator(root);
                 final String generated = generator.generate(lang);
-                final String source = new FilesReader(file).readAsString();
-                Assertions.assertEquals(source, generated, file);
+                Assertions.assertEquals(code, generated, path);
             } catch (final IOException ignored) {
                 oops = true;
             }

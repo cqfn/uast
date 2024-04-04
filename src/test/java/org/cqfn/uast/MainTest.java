@@ -30,6 +30,7 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import org.cqfn.astranaut.core.exceptions.WrongFileExtension;
+import org.cqfn.uast.cli.Main;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

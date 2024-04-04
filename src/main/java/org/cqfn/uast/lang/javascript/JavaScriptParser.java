@@ -46,7 +46,7 @@ import org.cqfn.uast.tree.js.JsAdapter;
  *
  * @since 0.1
  */
-public class JavaScriptParser {
+public final class JavaScriptParser {
     /**
      * The source code.
      */
