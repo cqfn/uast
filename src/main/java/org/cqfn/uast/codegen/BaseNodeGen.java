@@ -26,15 +26,16 @@ package org.cqfn.uast.codegen;
 import org.cqfn.astranaut.core.Node;
 
 /**
- * A visitor that visits a single node and generates some source code.
+ * A generator that generates source code for a single node.
  *
  * @since 0.1
  */
-public interface BaseNodeVisitor {
+public interface BaseNodeGen {
     /**
      * Visits a node and generates some source code for it.
      * @param node Node
-     * @param builder Code builder
+     * @param code Code block in which to add lines of code and nested blocks
+     * @param syntax Programming language syntax
      */
-    void visit(Node node, CodeBuilder builder);
+    void visit(Node node, CodeBlock code, Syntax syntax);
 }
