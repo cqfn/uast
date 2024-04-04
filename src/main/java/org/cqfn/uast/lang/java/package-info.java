@@ -23,8 +23,8 @@
  */
 
 /**
- * This package contains classes related to source code parsing
- * in Java programming languages.
+ * This package contains classes related to source code parsing and generation
+ * for Java programming language.
  *
  * @since 0.1
  */

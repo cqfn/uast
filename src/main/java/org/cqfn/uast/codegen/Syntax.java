@@ -73,5 +73,5 @@ public abstract class Syntax {
      * Initializes generators for different types of nodes.
      * @return A collection of generators for different types of nodes.
      */
-    protected abstract Map<String, BaseNodeGen> initGenerators();
+    public abstract Map<String, BaseNodeGen> initGenerators();
 }

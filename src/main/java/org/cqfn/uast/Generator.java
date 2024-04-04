@@ -21,11 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.cqfn.uast;
+
+import org.cqfn.astranaut.core.Node;
+import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.lang.SyntaxSelector;
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * Generates source code from a unified tree.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+public class Generator {
+    /**
+     * Root node of the syntax tree.
+     */
+    private final Node root;
+
+    /**
+     * Constructor.
+     * @param root Root node of the syntax tree
+     */
+    public Generator(final Node root) {
+        this.root = root;
+    }
+
+    /**
+     * Generates source code from a unified tree.
+     * @param language The name of the programming language
+     * @return Source code
+     */
+    public String generate(final String language) {
+        String code = "";
+        final Syntax syntax = SyntaxSelector.INSTANCE.select(language);
+        if (syntax != null) {
+            code = syntax.generate(this.root);
+        }
+        return code;
+    }
+}

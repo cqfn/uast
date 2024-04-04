@@ -53,6 +53,16 @@ public class Parser {
     }
 
     /**
+     * Parses source code into unified syntax tree.
+     * @param language The name of the programming language
+     * @return Root node of the unified syntax tree
+     * @throws IOException In case if impossible to read source code
+     */
+    public Node parse(final String language) throws IOException {
+        return this.parse(language, true);
+    }
+
+    /**
      * Parses source code.
      * @param language The name of the programming language
      * @param unified Convert to unified syntax tree

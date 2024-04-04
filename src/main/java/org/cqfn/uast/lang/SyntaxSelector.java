@@ -27,55 +27,54 @@ import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import org.cqfn.astranaut.core.Factory;
-import org.cqfn.uast.tree.green.GreenFactory;
-import org.cqfn.uast.tree.java.JavaFactory;
-import org.cqfn.uast.tree.js.JsFactory;
-import org.cqfn.uast.tree.python.PythonFactory;
+import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.lang.java.JavaSyntax;
+import org.cqfn.uast.lang.javascript.JavaScriptSyntax;
+import org.cqfn.uast.lang.python.PythonSyntax;
 
 /**
- * Selects a suitable factory for the specified programming language.
+ * Selects a syntax for the specified programming language.
  *
  * @since 0.1
  */
-public final class FactorySelector implements org.cqfn.astranaut.core.FactorySelector {
+public final class SyntaxSelector {
     /**
      * The instance.
      */
-    public static final FactorySelector INSTANCE = new FactorySelector();
+    public static final SyntaxSelector INSTANCE = new SyntaxSelector();
 
     /**
-     * The factory collection.
+     * The syntax collection.
      */
-    private final Map<String, Factory> map;
+    private final Map<String, Syntax> map;
 
     /**
      * Constructor.
      */
-    private FactorySelector() {
-        this.map = Collections.unmodifiableMap(FactorySelector.init());
+    private SyntaxSelector() {
+        this.map = Collections.unmodifiableMap(SyntaxSelector.init());
     }
 
     /**
-     * Selects a suitable factory for the specified programming language.
+     * Returns the syntax for specified programming language.
      * @param language The language name
-     * @return A suitable factory
+     * @return Syntax
      */
-    public Factory select(final String language) {
-        return this.map.getOrDefault(language.toLowerCase(Locale.ENGLISH), GreenFactory.INSTANCE);
+    public Syntax select(final String language) {
+        return this.map.get(language.toLowerCase(Locale.ENGLISH));
     }
 
     /**
      * Initialises the map.
-     * @return The factory collection.
+     * @return The syntax collection.
      */
-    private static Map<String, Factory> init() {
-        final Map<String, Factory> map = new TreeMap<>();
-        map.put("java", JavaFactory.INSTANCE);
-        map.put("javascript", JsFactory.INSTANCE);
-        map.put("js", JsFactory.INSTANCE);
-        map.put("python", PythonFactory.INSTANCE);
-        map.put("py", PythonFactory.INSTANCE);
+    private static Map<String, Syntax> init() {
+        final Map<String, Syntax> map = new TreeMap<>();
+        map.put("java", JavaSyntax.INSTANCE);
+        map.put("javascript", JavaScriptSyntax.INSTANCE);
+        map.put("js", JavaScriptSyntax.INSTANCE);
+        map.put("python", PythonSyntax.INSTANCE);
+        map.put("py", PythonSyntax.INSTANCE);
         return map;
     }
 }
