@@ -59,7 +59,11 @@ public final class PythonSyntax extends CommonSyntax {
                 header.append("class ").append(node.getName().getData()).append(':');
                 code.addLine(header.toString());
                 final CodeBlock body = code.createIndentedBlock();
-                body.addLine("pass");
+                if (node.getBody() == null) {
+                    body.addLine("pass");
+                } else {
+                    syntax.generateBlock(node.getBody(), body);
+                }
             }
         );
         return gen;

@@ -51,9 +51,13 @@ Return <- [expression@Expression];
 EmptyStatement <- 0;
 StatementBlock <- {Statement};
 
-Expression <- IntegerLiteral | StringLiteral | This;
+Expression <- AssignableExpression | IntegerLiteral | StringLiteral | This | Assignment;
+AssignableExpression <- Variable | FieldAccess;
 ExpressionList <- {Expression};
 This <- 0;
+Variable <- name@Identifier;
+FieldAccess <- 0;
+Assignment <- left@AssignableExpression, right@Expression;
 
 /*
     --- Java -------------------------------------------------------------------------------------
@@ -82,8 +86,18 @@ python:
 
 atom(name(literal<"self">)) -> This;
 name(literal<#1>) -> Identifier<#1>;
+
+testlist_star_expr(testlist(test(logical_test(comparison(expr(atom(number(integer(literal<#1>))))))))) -> IntegerLiteral<#1>;
+testlist_star_expr(testlist(test(logical_test(comparison(expr(atom(Identifier<#1>))))))) -> Variable(Identifier<#1>);
+stmt(simple_stmt(small_stmt(#1, assign_part(literal<"=">, #2)))) -> Assignment(#1, #2);
+
 stmt(simple_stmt(small_stmt(literal<"pass">))) -> EmptyStatement;
+
+suite(Assignment(Variable(#1), #2)) -> FieldDeclaration(#1, #2);
+
 stmt(compound_stmt(classdef(Identifier<#1>, suite(EmptyStatement)))) -> ClassDeclaration(Identifier<#1>);
+stmt(compound_stmt(classdef(Identifier<#1>, #2...))) -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+
 file_input(#1...) -> Program(#1);
 
 /*
