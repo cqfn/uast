@@ -95,5 +95,11 @@ js:
 Yield <- Expression;
 
 identifier(literal<#1>) -> Identifier<#1>;
+singleExpression(literal(numericLiteral(literal<#1>))) -> IntegerLiteral<#1>;
+
+classElement(propertyName(identifierName(Identifier<#1>)), literal<"=">, #2) -> FieldDeclaration(Identifier<#1>, #2);
+
 sourceElement(statement(classDeclaration(Identifier<#1>, classTail<"{}">))) -> ClassDeclaration(Identifier<#1>);
+sourceElement(statement(classDeclaration(Identifier<#1>, classTail(#2...)))) -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+
 program(sourceElements(#1...)) -> Program(#1);

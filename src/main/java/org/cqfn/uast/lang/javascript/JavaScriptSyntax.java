@@ -27,6 +27,7 @@ import java.util.Map;
 import org.cqfn.uast.codegen.BaseBlockGenerator;
 import org.cqfn.uast.codegen.BaseLineGenerator;
 import org.cqfn.uast.codegen.BlockGenerator;
+import org.cqfn.uast.codegen.CodeBlock;
 import org.cqfn.uast.codegen.Syntax;
 import org.cqfn.uast.lang.green.CommonSyntax;
 import org.cqfn.uast.tree.green.ClassDeclaration;
@@ -57,6 +58,10 @@ public final class JavaScriptSyntax extends CommonSyntax {
                 final StringBuilder header = new StringBuilder();
                 header.append("class ").append(node.getName().getData()).append(" {");
                 code.addLine(header.toString());
+                if (node.getBody() != null) {
+                    final CodeBlock body = code.createIndentedBlock();
+                    syntax.generateBlock(node.getBody(), body);
+                }
                 code.addLine("}");
             }
         );

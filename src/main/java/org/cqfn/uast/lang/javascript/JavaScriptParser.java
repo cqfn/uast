@@ -103,7 +103,8 @@ public final class JavaScriptParser {
             final String name = node.getTypeName();
             final String data = node.getData();
             final Set<String> literals = new TreeSet<>(Arrays.asList("{", "}", "<EOF>", "class"));
-            return name.equals("literal") && literals.contains(data);
+            return name.equals("literal") && literals.contains(data)
+                || name.equals("classElement") && data.equals(";");
         };
         final Set<Node> excluded = selector.select(criteria);
         final Subtree subtree = new Subtree(draft, Subtree.EXCLUDE);
