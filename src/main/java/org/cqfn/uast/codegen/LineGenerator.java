@@ -26,16 +26,23 @@ package org.cqfn.uast.codegen;
 import org.cqfn.astranaut.core.Node;
 
 /**
- * A generator that generates source code for a single node.
+ * A generator that generates a line of code for a single node of specified type.
+ * @param <T> Node type
  *
  * @since 0.1
  */
-public interface BaseNodeGen {
+public interface LineGenerator<T extends Node> extends BaseLineGenerator {
     /**
      * Visits a node and generates some source code for it.
      * @param node Node
-     * @param code Code block in which to add lines of code and nested blocks
      * @param syntax Programming language syntax
+     * @return Line of code
      */
-    void visit(Node node, CodeBlock code, Syntax syntax);
+    String generate(T node, Syntax syntax);
+
+    @SuppressWarnings("unchecked")
+    @Override
+    default String exec(Node node, Syntax syntax) {
+        return this.generate((T) node, syntax);
+    }
 }

@@ -21,42 +21,32 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.cqfn.uast;
+package org.cqfn.uast.lang.green;
 
-import org.cqfn.astranaut.core.Node;
+import java.util.Map;
+import java.util.TreeMap;
+import org.cqfn.uast.codegen.BaseLineGenerator;
+import org.cqfn.uast.codegen.LineGenerator;
 import org.cqfn.uast.codegen.Syntax;
-import org.cqfn.uast.lang.SyntaxSelector;
+import org.cqfn.uast.tree.green.IntegerLiteral;
 
 /**
- * Generates source code from a unified tree.
+ * The class contains generators for some syntactic constructs that look the same
+ * in different programming languages.
  *
  * @since 0.1
  */
-public final class Generator {
+public abstract class CommonSyntax extends Syntax {
     /**
-     * Root node of the syntax tree.
+     * Initializes a collection of line generators for common cases.
+     * @return Collection of line generators for different types of nodes.
      */
-    private final Node root;
-
-    /**
-     * Constructor.
-     * @param root Root node of the syntax tree
-     */
-    public Generator(final Node root) {
-        this.root = root;
-    }
-
-    /**
-     * Generates source code from a unified tree.
-     * @param language The name of the programming language
-     * @return Source code
-     */
-    public String generate(final String language) {
-        String code = "";
-        final Syntax syntax = SyntaxSelector.INSTANCE.select(language);
-        if (syntax != null) {
-            code = syntax.getCode(this.root);
-        }
-        return code;
+    protected static Map<String, BaseLineGenerator> initCommonLineGenerators() {
+        final Map<String, BaseLineGenerator> gen = new TreeMap<>();
+        gen.put(
+            "IntegerLiteral",
+            (LineGenerator<IntegerLiteral>) (node, syntax) -> node.getData()
+        );
+        return gen;
     }
 }

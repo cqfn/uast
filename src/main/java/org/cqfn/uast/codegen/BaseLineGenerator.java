@@ -21,42 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.cqfn.uast;
+package org.cqfn.uast.codegen;
 
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.codegen.Syntax;
-import org.cqfn.uast.lang.SyntaxSelector;
 
 /**
- * Generates source code from a unified tree.
+ * A generator that generates a line of code for a single node.
  *
  * @since 0.1
  */
-public final class Generator {
+public interface BaseLineGenerator {
     /**
-     * Root node of the syntax tree.
+     * Visits a node and generates some source code for it.
+     * @param node Node
+     * @param syntax Programming language syntax
+     * @return Line of code
      */
-    private final Node root;
-
-    /**
-     * Constructor.
-     * @param root Root node of the syntax tree
-     */
-    public Generator(final Node root) {
-        this.root = root;
-    }
-
-    /**
-     * Generates source code from a unified tree.
-     * @param language The name of the programming language
-     * @return Source code
-     */
-    public String generate(final String language) {
-        String code = "";
-        final Syntax syntax = SyntaxSelector.INSTANCE.select(language);
-        if (syntax != null) {
-            code = syntax.getCode(this.root);
-        }
-        return code;
-    }
+    String exec(Node node, Syntax syntax);
 }

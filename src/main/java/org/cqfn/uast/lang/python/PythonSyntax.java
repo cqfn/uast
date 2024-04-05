@@ -26,10 +26,12 @@ package org.cqfn.uast.lang.python;
 import java.util.Map;
 import java.util.TreeMap;
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.codegen.BaseNodeGen;
+import org.cqfn.uast.codegen.BaseBlockGenerator;
+import org.cqfn.uast.codegen.BaseLineGenerator;
+import org.cqfn.uast.codegen.BlockGenerator;
 import org.cqfn.uast.codegen.CodeBlock;
-import org.cqfn.uast.codegen.NodeGen;
 import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.lang.green.CommonSyntax;
 import org.cqfn.uast.tree.green.ClassDeclaration;
 import org.cqfn.uast.tree.green.Program;
 
@@ -38,7 +40,7 @@ import org.cqfn.uast.tree.green.Program;
  *
  * @since 0.1
  */
-public final class PythonSyntax extends Syntax {
+public final class PythonSyntax extends CommonSyntax {
     /**
      * The instance.
      */
@@ -51,19 +53,19 @@ public final class PythonSyntax extends Syntax {
     }
 
     @Override
-    public Map<String, BaseNodeGen> initGenerators() {
-        final Map<String, BaseNodeGen> gen = new TreeMap<>();
+    public Map<String, BaseBlockGenerator> initBlockGenerators() {
+        final Map<String, BaseBlockGenerator> gen = new TreeMap<>();
         gen.put(
             "Program",
-            (NodeGen<Program>) (node, code, syntax) -> {
+            (BlockGenerator<Program>) (node, code, syntax) -> {
                 for (final Node child : node.getChildrenList()) {
-                    syntax.generate(child, code);
+                    syntax.generateBlock(child, code);
                 }
             }
         );
         gen.put(
             "ClassDeclaration",
-            (NodeGen<ClassDeclaration>) (node, code, syntax) -> {
+            (BlockGenerator<ClassDeclaration>) (node, code, syntax) -> {
                 final StringBuilder header = new StringBuilder();
                 header.append("class ").append(node.getName().getData()).append(':');
                 code.addLine(header.toString());
@@ -72,5 +74,10 @@ public final class PythonSyntax extends Syntax {
             }
         );
         return gen;
+    }
+
+    @Override
+    public Map<String, BaseLineGenerator> initLineGenerators() {
+        return CommonSyntax.initCommonLineGenerators();
     }
 }
