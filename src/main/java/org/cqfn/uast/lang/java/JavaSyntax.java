@@ -24,20 +24,20 @@
 package org.cqfn.uast.lang.java;
 
 import java.util.Map;
-import java.util.TreeMap;
-import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.codegen.BaseNodeGen;
-import org.cqfn.uast.codegen.NodeGen;
+import org.cqfn.uast.codegen.BaseBlockGenerator;
+import org.cqfn.uast.codegen.BaseLineGenerator;
+import org.cqfn.uast.codegen.BlockGenerator;
+import org.cqfn.uast.codegen.CodeBlock;
 import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.lang.green.CommonSyntax;
 import org.cqfn.uast.tree.green.ClassDeclaration;
-import org.cqfn.uast.tree.green.Program;
 
 /**
  * The syntax of Java programming language.
  *
  * @since 0.1
  */
-public final class JavaSyntax extends Syntax {
+public final class JavaSyntax extends CommonSyntax {
     /**
      * The instance.
      */
@@ -50,25 +50,31 @@ public final class JavaSyntax extends Syntax {
     }
 
     @Override
-    public Map<String, BaseNodeGen> initGenerators() {
-        final Map<String, BaseNodeGen> gen = new TreeMap<>();
-        gen.put(
-            "Program",
-            (NodeGen<Program>) (node, code, syntax) -> {
-                for (final Node child : node.getChildrenList()) {
-                    syntax.generate(child, code);
-                }
-            }
-        );
+    public Map<String, BaseBlockGenerator> initBlockGenerators() {
+        final Map<String, BaseBlockGenerator> gen = this.initCommonBlockGenerators();
         gen.put(
             "ClassDeclaration",
-            (NodeGen<ClassDeclaration>) (node, code, syntax) -> {
+            (BlockGenerator<ClassDeclaration>) (node, code, syntax) -> {
                 final StringBuilder header = new StringBuilder();
                 header.append("class ").append(node.getName().getData()).append(" {");
                 code.addLine(header.toString());
+                if (node.getBody() != null) {
+                    final CodeBlock body = code.createIndentedBlock();
+                    syntax.generateBlock(node.getBody(), body);
+                }
                 code.addLine("}");
             }
         );
         return gen;
+    }
+
+    @Override
+    public Map<String, BaseLineGenerator> initLineGenerators() {
+        return CommonSyntax.initCommonLineGenerators();
+    }
+
+    @Override
+    public String getStatementSeparator() {
+        return ";";
     }
 }

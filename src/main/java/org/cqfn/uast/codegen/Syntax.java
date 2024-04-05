@@ -34,26 +34,32 @@ import org.cqfn.astranaut.core.Node;
  */
 public abstract class Syntax {
     /**
-     * Generators for all types of nodes.
+     * Code block generators.
      */
-    private final Map<String, BaseNodeGen> generators;
+    private final Map<String, BaseBlockGenerator> cbgen;
+
+    /**
+     * Line generators.
+     */
+    private final Map<String, BaseLineGenerator> lgen;
 
     /**
      * Constructor.
      */
     public Syntax() {
-        this.generators = this.initGenerators();
+        this.cbgen = this.initBlockGenerators();
+        this.lgen = this.initLineGenerators();
     }
 
     /**
-     * Generates some source code for node.
+     * Generates a block of code for a node.
      * @param node Node
      * @param code Code block in which to add lines of code and nested blocks
      */
-    public void generate(final Node node, final CodeBlock code) {
-        final BaseNodeGen generator = this.generators.get(node.getTypeName());
+    public void generateBlock(final Node node, final CodeBlock code) {
+        final BaseBlockGenerator generator = this.cbgen.get(node.getTypeName());
         assert generator != null;
-        generator.visit(node, code, this);
+        generator.exec(node, code, this);
     }
 
     /**
@@ -61,17 +67,30 @@ public abstract class Syntax {
      * @param node Node
      * @return Generated source code.
      */
-    public String generate(final Node node) {
-        final CodeBlock block = new CodeBlock();
-        this.generate(node, block);
-        final StringBuilder builder = new StringBuilder();
-        block.print(builder, -1);
-        return builder.toString();
+    public String getCode(final Node node) {
+        final String code;
+        final BaseLineGenerator generator = this.lgen.get(node.getTypeName());
+        if (generator == null) {
+            final CodeBlock block = new CodeBlock();
+            this.generateBlock(node, block);
+            final StringBuilder builder = new StringBuilder();
+            block.print(builder, -1);
+            code = builder.toString();
+        } else {
+            code = generator.exec(node, this);
+        }
+        return code;
     }
 
     /**
-     * Initializes generators for different types of nodes.
-     * @return A collection of generators for different types of nodes.
+     * Initializes block generators for different types of nodes.
+     * @return A collection of block generators for different types of nodes.
      */
-    public abstract Map<String, BaseNodeGen> initGenerators();
+    public abstract Map<String, BaseBlockGenerator> initBlockGenerators();
+
+    /**
+     * Initializes line generators for different types of nodes.
+     * @return A collection of line generators for different types of nodes.
+     */
+    public abstract Map<String, BaseLineGenerator> initLineGenerators();
 }

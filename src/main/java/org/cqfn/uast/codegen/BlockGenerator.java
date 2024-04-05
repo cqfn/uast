@@ -21,42 +21,28 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package org.cqfn.uast;
+package org.cqfn.uast.codegen;
 
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.uast.codegen.Syntax;
-import org.cqfn.uast.lang.SyntaxSelector;
 
 /**
- * Generates source code from a unified tree.
+ * A generator that generates a block of code for a single node of specified type.
+ * @param <T> Node type
  *
  * @since 0.1
  */
-public final class Generator {
+public interface BlockGenerator<T extends Node> extends BaseBlockGenerator {
     /**
-     * Root node of the syntax tree.
+     * Visits a node and generates some source code for it.
+     * @param node Node
+     * @param code Code block in which to add lines of code and nested blocks
+     * @param syntax Programming language syntax
      */
-    private final Node root;
+    void generate(T node, CodeBlock code, Syntax syntax);
 
-    /**
-     * Constructor.
-     * @param root Root node of the syntax tree
-     */
-    public Generator(final Node root) {
-        this.root = root;
-    }
-
-    /**
-     * Generates source code from a unified tree.
-     * @param language The name of the programming language
-     * @return Source code
-     */
-    public String generate(final String language) {
-        String code = "";
-        final Syntax syntax = SyntaxSelector.INSTANCE.select(language);
-        if (syntax != null) {
-            code = syntax.getCode(this.root);
-        }
-        return code;
+    @SuppressWarnings("unchecked")
+    @Override
+    default void exec(Node node, CodeBlock code, Syntax syntax) {
+        this.generate((T) node, code, syntax);
     }
 }
