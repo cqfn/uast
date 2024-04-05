@@ -25,10 +25,17 @@ package org.cqfn.uast.lang.green;
 
 import java.util.Map;
 import java.util.TreeMap;
+import org.cqfn.astranaut.core.Node;
+import org.cqfn.uast.codegen.BaseBlockGenerator;
 import org.cqfn.uast.codegen.BaseLineGenerator;
+import org.cqfn.uast.codegen.BlockGenerator;
 import org.cqfn.uast.codegen.LineGenerator;
 import org.cqfn.uast.codegen.Syntax;
+import org.cqfn.uast.tree.green.ClassBody;
+import org.cqfn.uast.tree.green.FieldDeclaration;
 import org.cqfn.uast.tree.green.IntegerLiteral;
+import org.cqfn.uast.tree.green.PrimitiveType;
+import org.cqfn.uast.tree.green.Program;
 
 /**
  * The class contains generators for some syntactic constructs that look the same
@@ -38,6 +45,53 @@ import org.cqfn.uast.tree.green.IntegerLiteral;
  */
 public abstract class CommonSyntax extends Syntax {
     /**
+     * Returns the separator that is used at the end of the previous language statement
+     * to separate it from the next one.
+     * @return Statement separator
+     */
+    public abstract String getStatementSeparator();
+
+    /**
+     * Initializes a collection of block generators for common cases.
+     * @return Collection of line generators for different types of nodes.
+     */
+    protected Map<String, BaseBlockGenerator> initCommonBlockGenerators() {
+        final Map<String, BaseBlockGenerator> gen = new TreeMap<>();
+        gen.put(
+            "Program",
+            (BlockGenerator<Program>) (node, code, syntax) -> {
+                for (final Node child : node.getChildrenList()) {
+                    syntax.generateBlock(child, code);
+                }
+            }
+        );
+        gen.put(
+            "ClassBody",
+            (BlockGenerator<ClassBody>) (node, code, syntax) -> {
+                for (final Node child : node.getChildrenList()) {
+                    syntax.generateBlock(child, code);
+                }
+            }
+        );
+        gen.put(
+            "FieldDeclaration",
+            (BlockGenerator<FieldDeclaration>) (node, code, syntax) -> {
+                final StringBuilder line = new StringBuilder();
+                if (node.getDataType() != null) {
+                    line.append(syntax.getCode(node.getDataType())).append(' ');
+                }
+                line.append(node.getName().getData());
+                if (node.getInitValue() != null) {
+                    line.append(" = ").append(syntax.getCode(node.getInitValue()));
+                }
+                line.append(this.getStatementSeparator());
+                code.addLine(line.toString());
+            }
+        );
+        return gen;
+    }
+
+    /**
      * Initializes a collection of line generators for common cases.
      * @return Collection of line generators for different types of nodes.
      */
@@ -46,6 +100,10 @@ public abstract class CommonSyntax extends Syntax {
         gen.put(
             "IntegerLiteral",
             (LineGenerator<IntegerLiteral>) (node, syntax) -> node.getData()
+        );
+        gen.put(
+            "PrimitiveType",
+            (LineGenerator<PrimitiveType>) (node, syntax) -> node.getData()
         );
         return gen;
     }

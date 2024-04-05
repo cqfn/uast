@@ -24,8 +24,6 @@
 package org.cqfn.uast.lang.python;
 
 import java.util.Map;
-import java.util.TreeMap;
-import org.cqfn.astranaut.core.Node;
 import org.cqfn.uast.codegen.BaseBlockGenerator;
 import org.cqfn.uast.codegen.BaseLineGenerator;
 import org.cqfn.uast.codegen.BlockGenerator;
@@ -33,7 +31,6 @@ import org.cqfn.uast.codegen.CodeBlock;
 import org.cqfn.uast.codegen.Syntax;
 import org.cqfn.uast.lang.green.CommonSyntax;
 import org.cqfn.uast.tree.green.ClassDeclaration;
-import org.cqfn.uast.tree.green.Program;
 
 /**
  * The syntax of Python programming language.
@@ -54,15 +51,7 @@ public final class PythonSyntax extends CommonSyntax {
 
     @Override
     public Map<String, BaseBlockGenerator> initBlockGenerators() {
-        final Map<String, BaseBlockGenerator> gen = new TreeMap<>();
-        gen.put(
-            "Program",
-            (BlockGenerator<Program>) (node, code, syntax) -> {
-                for (final Node child : node.getChildrenList()) {
-                    syntax.generateBlock(child, code);
-                }
-            }
-        );
+        final Map<String, BaseBlockGenerator> gen = this.initCommonBlockGenerators();
         gen.put(
             "ClassDeclaration",
             (BlockGenerator<ClassDeclaration>) (node, code, syntax) -> {
@@ -79,5 +68,10 @@ public final class PythonSyntax extends CommonSyntax {
     @Override
     public Map<String, BaseLineGenerator> initLineGenerators() {
         return CommonSyntax.initCommonLineGenerators();
+    }
+
+    @Override
+    public String getStatementSeparator() {
+        return "";
     }
 }
