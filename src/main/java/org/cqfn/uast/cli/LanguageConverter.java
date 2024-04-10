@@ -33,7 +33,7 @@ import java.util.Locale;
  *
  * @since 0.1
  */
-public class LanguageConverter implements IStringConverter<String> {
+public final class LanguageConverter implements IStringConverter<String> {
     /**
      * The option name.
      */

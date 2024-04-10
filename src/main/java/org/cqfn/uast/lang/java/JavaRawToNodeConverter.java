@@ -45,7 +45,7 @@ import org.cqfn.astranaut.core.Node;
  *
  * @since 0.1
  */
-public class JavaRawToNodeConverter {
+public final class JavaRawToNodeConverter {
     /**
      * Recursive converter from JavaParser context to {@link Node}.
      *

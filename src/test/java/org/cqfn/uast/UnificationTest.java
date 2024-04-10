@@ -21,92 +21,72 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package org.cqfn.uast;
 
 import java.io.File;
 import java.io.IOException;
-import org.cqfn.astranaut.core.EmptyTree;
+import java.util.Set;
+import java.util.TreeSet;
 import org.cqfn.astranaut.core.Node;
-import org.cqfn.astranaut.core.Type;
 import org.cqfn.astranaut.core.utils.FilesReader;
-import org.cqfn.uast.lang.java.JavaParser;
-import org.cqfn.uast.lang.javascript.JavaScriptParser;
-import org.cqfn.uast.lang.python.PythonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test for unification rules.
+ * Test covering parsing of various syntactic constructs into a unified tree
+ * and reverse source code generation.
  *
  * @since 0.1
  */
 class UnificationTest {
     /**
-     * The folder with test resources.
+     * Root folder containing test files.
      */
-    private static final String TESTS_PATH = "src/test/resources/unification/";
+    private static final String ROOT_FOLDER = "src/test/resources/unification/";
+
+    @Test
+    void test() {
+        final Set<String> set = new TreeSet<>();
+        UnificationTest.collectTests(new File(UnificationTest.ROOT_FOLDER), set);
+        final Parser parser = new Parser();
+        for (final String path : set) {
+            boolean oops = false;
+            try {
+                final String code = new FilesReader(path).readAsString();
+                final String lang = Parser.getFileExtension(path);
+                final Node root = parser.parseString(code, lang);
+                Assertions.assertNotNull(root);
+                Assertions.assertEquals("green", root.getType().getProperty("color"));
+                final Generator generator = new Generator(root);
+                final String generated = generator.generate(lang);
+                Assertions.assertEquals(code, generated, path);
+            } catch (final IOException ignored) {
+                oops = true;
+            }
+            Assertions.assertFalse(oops);
+        }
+    }
 
     /**
-     * Test unification of language constructions.
+     * Collects source code files from all folders.
+     * @param dir Folder containing test files and sub-folders
+     * @param set Resulting set containing file names
      */
-    @Test
-    void testConstructions() {
-        final File[] dirs = new File(UnificationTest.TESTS_PATH).listFiles(File::isDirectory);
-        Assertions.assertNotNull(dirs);
-        for (final File dir : dirs) {
-            final File[] files = dir.listFiles();
-            Assertions.assertNotNull(files);
-            for (final File file : files) {
-                final Node tree = this.parseFile(file);
-                Assertions.assertTrue(this.hasColor(tree), file.getName());
+    private static void collectTests(final File dir, final Set<String> set) {
+        assert dir.isDirectory();
+        final File[] list = dir.listFiles();
+        if (list == null)  {
+            return;
+        }
+        for (final File file : list) {
+            if (file.isDirectory()) {
+                UnificationTest.collectTests(file, set);
+            } else {
+                final String path = file.getAbsolutePath();
+                if (!path.endsWith(".txt")) {
+                    set.add(path);
+                }
             }
         }
-    }
-
-    /**
-     * Checks if a root of the tree has a color - red or green.
-     * @param tree The root node of the tree
-     * @return The result, @code{true} if the root has a color
-     */
-    private boolean hasColor(final Node tree) {
-        final Type type = tree.getType();
-        final String color = type.getProperty("color");
-        return !color.isEmpty();
-    }
-
-    /**
-     * Parses source code.
-     * @param file The file with source code on some language
-     * @return The created tree
-     */
-    private Node parseFile(final File file) {
-        final String extension = file.getPath().substring(file.getPath().lastIndexOf('.') + 1);
-        boolean oops = false;
-        String code = "";
-        try {
-            code = new FilesReader(file.getAbsolutePath()).readAsString();
-        } catch (final IOException exception) {
-            oops = true;
-        }
-        Assertions.assertFalse(oops);
-        Node node = EmptyTree.INSTANCE;
-        switch (extension) {
-            case "java":
-                final JavaParser jap = new JavaParser(code);
-                node = jap.parse(true);
-                break;
-            case "py":
-                final PythonParser pyp = new PythonParser(code, false);
-                node = pyp.parse(true);
-                break;
-            case "js":
-                final JavaScriptParser jsp = new JavaScriptParser(code, false);
-                node = jsp.parse(true);
-                break;
-            default:
-                break;
-        }
-        return node;
     }
 }

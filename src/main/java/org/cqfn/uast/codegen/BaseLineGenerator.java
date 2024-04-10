@@ -21,11 +21,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package org.cqfn.uast.codegen;
+
+import org.cqfn.astranaut.core.Node;
 
 /**
- * This package contains classes related to source code parsing and generation
- * for Python programming language.
+ * A generator that generates a line of code for a single node.
  *
  * @since 0.1
  */
-package org.cqfn.uast.lang.python;
+public interface BaseLineGenerator {
+    /**
+     * Visits a node and generates some source code for it.
+     * @param node Node
+     * @param syntax Programming language syntax
+     * @return Line of code
+     */
+    String exec(Node node, Syntax syntax);
+}

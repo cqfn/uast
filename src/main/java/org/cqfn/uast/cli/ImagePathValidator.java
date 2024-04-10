@@ -36,7 +36,7 @@ import java.util.Optional;
  *
  * @since 0.1
  */
-public class ImagePathValidator implements IParameterValidator {
+public final class ImagePathValidator implements IParameterValidator {
     @Override
     /**
      * Validates an input option parameter that should contain

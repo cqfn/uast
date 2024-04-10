@@ -1,1 +1,0 @@
-point = Point(1, 2)

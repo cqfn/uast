@@ -1,2 +1,2 @@
 class MyClass:
-    pass
+    i = 0
