@@ -28,9 +28,11 @@ import org.cqfn.uast.codegen.BaseBlockGenerator;
 import org.cqfn.uast.codegen.BaseLineGenerator;
 import org.cqfn.uast.codegen.BlockGenerator;
 import org.cqfn.uast.codegen.CodeBlock;
+import org.cqfn.uast.codegen.LineGenerator;
 import org.cqfn.uast.codegen.Syntax;
 import org.cqfn.uast.lang.green.CommonSyntax;
 import org.cqfn.uast.tree.green.ClassDeclaration;
+import org.cqfn.uast.tree.green.Public;
 
 /**
  * The syntax of Java programming language.
@@ -56,6 +58,12 @@ public final class JavaSyntax extends CommonSyntax {
             "ClassDeclaration",
             (BlockGenerator<ClassDeclaration>) (node, code, syntax) -> {
                 final StringBuilder header = new StringBuilder();
+                if (node.getAccessMod() != null) {
+                    header.append(syntax.getCode(node.getAccessMod())).append(' ');
+                }
+                if (node.getFinalMod() != null) {
+                    header.append("final ");
+                }
                 header.append("class ").append(node.getName().getData()).append(" {");
                 code.addLine(header.toString());
                 if (node.getBody() != null) {
@@ -70,7 +78,12 @@ public final class JavaSyntax extends CommonSyntax {
 
     @Override
     public Map<String, BaseLineGenerator> initLineGenerators() {
-        return CommonSyntax.initCommonLineGenerators();
+        final Map<String, BaseLineGenerator> gen = CommonSyntax.initCommonLineGenerators();
+        gen.put("Public", (LineGenerator<Public>) (node, syntax) -> "public");
+        gen.put("Protected", (LineGenerator<Public>) (node, syntax) -> "protected");
+        gen.put("Private", (LineGenerator<Public>) (node, syntax) -> "private");
+        gen.put("Final", (LineGenerator<Public>) (node, syntax) -> "final");
+        return gen;
     }
 
     @Override

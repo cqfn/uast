@@ -35,9 +35,16 @@ Program <- {ProgramItem};
 
 ProgramItem <- ClassDeclaration | 0;
 
-ClassDeclaration <- name@Identifier, [body@ClassBody];
+ClassDeclaration <- [accessMod@AccessModifier], [finalMod@Final], name@Identifier, [body@ClassBody];
 ClassBody <- {ClassItem};
 ClassItem <- FieldDeclaration | MethodDeclaration;
+
+Public <- 0;
+Protected <- 0;
+Private <- 0;
+AccessModifier <- Public | Protected | Private;
+Final <- 0;
+Modifier <- AccessModifier | Final;
 
 DataType <- PrimitiveType | Void;
 Void <- 0;
@@ -68,6 +75,11 @@ java:
 Synchronized <- expression@Expression, body@StatementBlock;
 Statement <- & | Synchronized;
 
+Modifier<"public"> -> Public;
+Modifier<"protected"> -> Protected;
+Modifier<"private"> -> Private;
+Modifier<"final"> -> Final;
+
 IntegerLiteralExpr<#1> -> IntegerLiteral<#1>;
 
 FieldDeclaration(VariableDeclarator(PrimitiveType<#1>, SimpleName<#2>)) -> FieldDeclaration(PrimitiveType<#1>, Identifier<#2>);
@@ -75,6 +87,7 @@ FieldDeclaration(VariableDeclarator(PrimitiveType<#1>, SimpleName<#2>, #3)) -> F
 
 ClassOrInterfaceDeclaration(SimpleName<#1>) -> ClassDeclaration(Identifier<#1>);
 ClassOrInterfaceDeclaration(SimpleName<#1>, #2...) -> ClassDeclaration(Identifier<#1>, ClassBody(#2));
+ClassOrInterfaceDeclaration(Public#1, Final#2, SimpleName<#3>) -> ClassDeclaration(#1, #2, Identifier<#3>);
 
 CompilationUnit(#1) -> Program(#1);
 
